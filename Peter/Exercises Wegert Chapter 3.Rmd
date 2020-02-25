@@ -1,0 +1,205 @@
+---
+title: "Exercises Wegert Chapter 3"
+author: "Peter Biber"
+date: "9 2 2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(viscomplexr)
+```
+
+## Polynomials
+
+Reproducing the image in Wegert's Figure 3.4 (p. 67). The function of interest is $f(z)=z^{5}-z^{4}-z+1$. First, we map in the normal way, but with different side lengths of the plots (100, 10, 4).
+
+```{r figPoly3Normal, fig.width=8, fig.height=2.8, cache=TRUE, results='hide', fig.keep='all', fig.cap="Polynomial $f(z)=z^{5}-z^{4}-z+1$ portrayed with side lengths of 100, 10, and 4."}
+op <- par(mfrow = c(1, 3), mar = c(1, 1, 1, 1))
+fFun <- "z^5-z^4-z+1"
+phasePortrait(fFun, xlim = c(-50, 50), ylim = c(-50, 50),
+              pType = "p", axes = FALSE)
+phasePortrait(fFun, xlim = c(-5, 5), ylim = c(-5, 5),
+              pType = "p", axes = FALSE)
+phasePortrait(fFun, xlim = c(-2, 2), ylim = c(-2, 2),
+              pType = "p", axes = FALSE)
+par(op)
+```
+
+Now, we flip over to the other side of the Riemann sphere by calling `phasePortrait` with `ìnvertFlip = TRUE`.
+
+```{r figPoly3invflip, fig.width=8, fig.height=2.8, cache=TRUE, results='hide', fig.keep='all', fig.cap="Polynomial $f(z)=z^{5}-z^{4}-z+1$ portrayed inversely."}
+op <- par(mfrow = c(1, 3), mar = c(1, 1, 1, 1))
+fFun <- "z^5-z^4-z+1"
+phasePortrait(fFun, xlim = c(-2, 2), ylim = c(-2, 2),
+              pType = "p", axes = FALSE, invertFlip = TRUE)
+phasePortrait(fFun, xlim = c(-5, 5), ylim = c(-5, 5),
+              pType = "p", axes = FALSE, invertFlip = TRUE)
+phasePortrait(fFun, xlim = c(-50, 50), ylim = c(-50, 50),
+              pType = "p", axes = FALSE, invertFlip = TRUE)
+par(op)
+```
+
+## Rational functions
+
+Ich versuche, die gebrochen rationale Funktion auf S. 71 nachzubauen. Ein doppelter Pol bei $0$, ein einfacher bei $-1+2i$, ein weiterer bei $-1-2i$. Eine Nullstelle bei $-1/2+1.5i$ und noch eine bei $-1/2-1.5i$. Zwei weitere Nullstellen bei $2+2i$ und $-2+2i$. Das kommt der Darstellung auf S. 72 schon sehr nahe. Die Funktion lautet:
+$$
+f(z)=\frac{(z-(-\frac{1}{2}+1\frac{1}{2}\text{i}))(z-(-\frac{1}{2}-1\frac{1}{2}\text{i}))(z-(2+2\text{i}))(z-(2-2\text{i}))}{z^{2}(z-(-1+2\text{i}))(z-(-1-2\text{i}))}
+$$
+
+```{r figRatioP71, fig.width=8, fig.height=2.8, cache=FALSE, results='hide', fig.keep='all', fig.cap="Partialbruchzerlegung."}
+op <- par(mfrow = c(1, 3), mar = c(1, 1, 1, 1))
+fFun <- "(z - (-1/2+1.5i))*(z - (-1/2-1.5i))*(z - (2+2i))*(z - (2-2i)) / 
+         ((z^2)*(z - (-1+2i))*(z - (-1-2i)))"
+phasePortrait(fFun, xlim = c(-2.5, 2.5), ylim = c(-2.5, 2.5),
+              pType = "pm", axes = FALSE, pi2Div = 18)
+fFun <- paste(fFun, "-1/z^2", sep = "")
+phasePortrait(fFun, xlim = c(-2.5, 2.5), ylim = c(-2.5, 2.5),
+              pType = "pm", axes = FALSE, pi2Div = 18)
+fFun <- "1/z^2"
+phasePortrait(fFun, xlim = c(-2.5, 2.5), ylim = c(-2.5, 2.5),
+              pType = "pm", axes = FALSE, pi2Div = 18)
+par(op)
+```
+Ich brauche jetzt ein einfaches Beispiel, sonst verstehe ich das nicht.
+
+```{r figSimplePeter, fig.width=8, fig.height=2.8, cache=TRUE, results='hide', fig.keep='all', fig.cap="Partialburchzerlegung einfach."}
+op <- par(mfrow = c(1, 3), mar = c(1, 1, 1, 1))
+fFun <- "1/(z^2 * (z - 1.5))"
+phasePortrait(fFun, xlim = c(-2.5, 2.5), ylim = c(-2.5, 2.5),
+              pType = "pm", axes = FALSE, pi2Div = 18)
+fFun <- paste(fFun, "-exp(-1i*pi)/z^2")
+phasePortrait(fFun, xlim = c(-2.5, 2.5), ylim = c(-2.5, 2.5),
+              pType = "pm", axes = FALSE, pi2Div = 18)
+phasePortrait(fFun, xlim = c(-2.5, 2.5), ylim = c(-2.5, 2.5),
+              pType = "pm", axes = FALSE, pi2Div = 18, invertFlip = TRUE)
+par(op)
+```
+
+Hier hängt offenbar sehr viel davon ab, dass die Konstante des zu subtrahierenden Terms richtig gefitted wird. Darüber, wie das geht, schweigt sich Wegert leider aus. Schade. Abe weiter mit einem neuen Unterkapitel.
+
+
+## Power series
+The first example: $f_n(z)=\sum{{_{i=0}^n}{z^{i}}}$.
+
+```{r figPowerSeries, fig.show= 'hold', fig.width=8, fig.height=2.8, cache=TRUE, results= 'hide', fig.keep='all', fig.cap="Power series $f_{20}$, $f_{60}$, $f_{150}$."} 
+op <- par(mfrow = c(1, 3), mar = c(1, 1, 1, 1))
+phasePortrait("sum(z^c(0:20))", xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5),
+              pType = "p", axes = FALSE, pi2Div = 18)
+phasePortrait("sum(z^c(0:60))", xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5),
+              pType = "p", axes = FALSE, pi2Div = 18)
+phasePortrait("sum(z^c(0:150))", xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5),
+              pType = "p", axes = FALSE, pi2Div = 18)
+par(op)
+```
+
+Nun die 200er Partialsummen folgender Potenzreihen: $\sum\limits_{k=0}^{\infty}{z^{k}}$, $\sum\limits_{k=1}^{\infty}\frac{z^{k}}{k}$, $\sum\limits_{k=1}^{\infty}\frac{z^{k}}{k^{2}}$
+
+```{r figPowerSeries2, fig.show= 'hold', fig.width=8, fig.height=2.8, cache=TRUE, results= 'hide', fig.keep='last', fig.cap="Partial sums 200 of the power series $\\sum_{k=0}^{\\infty}{z^{k}}$, $\\sum_{k=1}^{\\infty}\\frac{z^{k}}{k}$, and $\\sum_{k=1}^{\\infty}\\frac{z^{k}}{k^{2}}$."}
+op <- par(mfrow = c(1, 3), mar = c(1, 1, 1, 1))
+phasePortrait("sum(z^c(0:200))", xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5),
+              pType = "p", axes = FALSE, pi2Div = 18)
+plotrix::draw.circle(0, 0, 1)
+phasePortrait("sum(z^c(1:200)/c(1:200))", xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5),
+              pType = "p", axes = FALSE, pi2Div = 18)
+plotrix::draw.circle(0, 0, 1)
+phasePortrait("sum(z^c(1:200)/c(1:200)^2)", xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5),
+              pType = "p", axes = FALSE, pi2Div = 18)
+plotrix::draw.circle(0, 0, 1)
+par(op)
+```
+
+### Power series of real functions
+
+#### The logarithm
+
+The sum $$\sum_{k=1}^\infty (-1)^{k+1}\frac{z^k}{k}$$ concides for $z \in \mathbb{R}$ and $-1 < z < 1$ with $\log(z+1)$.
+
+```{r figLogarithm, fig.show= 'hold', fig.width=8, fig.height=2.8, cache=TRUE, results= 'hide', fig.keep='last', fig.cap="Logarithm series after Wegert p. 77 with $n=20, 60, 150$."}
+op <- par(mfrow = c(1, 3), mar = c(1, 1, 1, 1))
+phasePortrait("vapply(z, function(z, n) {
+                k <- c(1:n)
+                return(sum((-1)^(k+1)*z^k/k))
+              },
+              n = 20, FUN.VALUE = complex(1))", 
+              xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5),
+              pType = "p", axes = FALSE, pi2Div = 18)
+plotrix::draw.circle(0, 0, 1)
+phasePortrait("vapply(z, function(z, n) {
+                k <- c(1:n)
+                return(sum((-1)^(k+1)*z^k/k))
+              },
+              n = 60, FUN.VALUE = complex(1))", 
+              xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5),
+              pType = "p", axes = FALSE, pi2Div = 18)
+plotrix::draw.circle(0, 0, 1)
+phasePortrait("vapply(z, function(z, n) {
+                k <- c(1:n)
+                return(sum((-1)^(k+1)*z^k/k))
+              },
+              n = 150, FUN.VALUE = complex(1))", 
+              xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5),
+              pType = "p", axes = FALSE, pi2Div = 18)
+plotrix::draw.circle(0, 0, 1)
+par(op)
+```
+
+#### The exponential
+
+This is the series $$e^z=\sum_{k=0}^\infty \frac{z^k}{k!}=1+\frac{z}{1!}+\frac{z^2}{2!}+\cdots+\frac{z^k}{k!}+\cdots, z\in\mathbb{C}$$
+
+```{r figExponential, fig.show= 'hold', fig.width=8, fig.height=2.8, cache=TRUE, results= 'hide', fig.keep='last', fig.cap="Exponential series with $n=10, 20, 50$."}
+op <- par(mfrow = c(1, 3), mar = c(1, 1, 1, 1))
+phasePortrait("vapply(z, function(z, n) {
+                k <- c(0:n)
+                return(sum(z^k/factorial(k)))
+              },
+              n = 10, FUN.VALUE = complex(1))", 
+              xlim = c(-10, 10), ylim = c(-10, 10),
+              pType = "p", axes = FALSE, pi2Div = 18)
+phasePortrait("vapply(z, function(z, n) {
+                k <- c(0:n)
+                return(sum(z^k/factorial(k)))
+              },
+              n = 20, FUN.VALUE = complex(1))", 
+              xlim = c(-10, 10), ylim = c(-10, 10),
+              pType = "p", axes = FALSE, pi2Div = 18)
+phasePortrait("vapply(z, function(z, n) {
+                k <- c(0:n)
+                return(sum(z^k/factorial(k)))
+              },
+              n = 50, FUN.VALUE = complex(1))", 
+              xlim = c(-10, 10), ylim = c(-10, 10),
+              pType = "p", axes = FALSE, pi2Div = 18)
+par(op)
+```
+
+Die selbe Reihe, diesmal aber mit $z/n$ als Argument:
+
+```{r figExponential_zn, fig.show= 'hold', fig.width=8, fig.height=2.8, cache=TRUE, results= 'hide', fig.keep='last', fig.cap="Exponential series over $z/n$ ith $n=20, 40, 60$."}
+op <- par(mfrow = c(1, 3), mar = c(1, 1, 1, 1))
+phasePortrait("vapply(z, function(z, n) {
+                k <- c(0:n)
+                return(sum((z/n)^k/factorial(k)))
+              },
+              n = 20, FUN.VALUE = complex(1))", 
+              xlim = c(-200, 400), ylim = c(-300, 300),
+              pType = "p", axes = FALSE, pi2Div = 18)
+phasePortrait("vapply(z, function(z, n) {
+                k <- c(0:n)
+                return(sum((z/n)^k/factorial(k)))
+              },
+              n = 40, FUN.VALUE = complex(1))", 
+              xlim = c(-800, 1800), ylim = c(-1300, 1300),
+              pType = "p", axes = FALSE, pi2Div = 18)
+phasePortrait("vapply(z, function(z, n) {
+                k <- c(0:n)
+                return(sum((z/n)^k/factorial(k)))
+              },
+              n = 60, FUN.VALUE = complex(1))", 
+              xlim = c(-1500, 3500), ylim = c(-2500, 2500),
+              pType = "p", axes = FALSE, pi2Div = 18)
+par(op)
+```

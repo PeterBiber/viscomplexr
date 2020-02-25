@@ -1,0 +1,31 @@
+Package: viscomplexr
+Type: Package
+Title: Phase plots of functions in the complex number plane
+Version: 0.0.0.9011
+Authors@R: person("Peter", "Biber", email = "castor.fiber@gmx.de", 
+                  role = c("aut", "cre"))
+Description: The package provides functionality for creating phase plots
+    of functions in the complex number plane. It is designed to work with
+    R standard graphics, whose full functionality is available.
+    Parallel processing is used for optimum performance; large temporary
+    files are created.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    doParallel (>= 1.0.15),
+    grDevices,
+    foreach,
+    parallel,
+    scales,
+    plotrix,
+    Rdpack
+RdMacros:
+    Rdpack
+Depends:
+    R (>= 3.6),
+RoxygenNote: 7.0.2
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

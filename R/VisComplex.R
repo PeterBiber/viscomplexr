@@ -1,0 +1,957 @@
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# VisComplex
+#
+# Plot phase representations of complex functions
+#
+# Peter Biber
+#
+#
+# 18.1.2020: Bugfix - one-line arrays weren't dealt with correctly
+# when transforming funtion values into colors. Now made sure they
+# have two dimensions.
+# On Windows the new argument argOffset was not handed into the
+# parallel loop for number-color-transformation. Fixed.
+#
+#
+# Version 0.0.0.9006 (12.1.2020) incorporates a fourth shading scheme,
+# i.e. pType "pa" which displays phase colors and only phase contour lines
+# in addition.
+#
+# Version 0.0.0.9005 (12.1.2020) allows to specify if temporary
+# files are to be deleted or not.
+#
+# Version 0.0.0.9004 allows to specify the number of
+# cores for parallel processing.
+#
+# Version 0.0.0.9003  allows to adjust the level of the
+# darkest shading to be plotted.
+#
+# Version 0.0.0.9002 dissects the matrices to work with into blocks which are
+# temporarily saved on the harddisk. Only one block is active in the RAM
+# which reliably prevents memory overload. This feature enables to produce
+# poster-quality plots in a few minutes. It also dramatically saves time
+# by parallel computing
+# Previous versions used the package imager for displaying images. This turned
+# out not necessary for the purpose of this package. These versions did not
+# include parallel computing.
+#
+#           date     version
+#
+#     12. 1.2020  0.0.0.9005
+#      1. 1.2020  0.0.0.9004
+#      1. 1.2020  0.0.0.9003
+#     30.12.2019  0.0.0.9002
+#     29.12.2019  0.0.0.9001
+# 24./25.12.2019  0.0.0.9000
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+# How to make a package:
+# http://r-pkgs.had.co.nz/namespace.html
+# http://tinyheero.github.io/jekyll/update/2015/07/26/making-your-first-R-package.html
+
+# About memory usage
+# http://adv-r.had.co.nz/memory.html
+
+# plot raster data in R
+# https://www.neonscience.org/dc-plot-raster-data-r
+
+# Unregistering foreach clusters
+# https://stackoverflow.com/questions/25097729/un-register-a-doparallel-cluster
+
+# library(foreach)
+# library(doParallel)
+
+#' @importFrom grDevices  as.raster hsv
+#' @importFrom graphics   par plot rasterImage abline polypath text points
+#' @importFrom stats      runif
+#' @importFrom parallel   detectCores
+#' @importFrom doParallel registerDoParallel
+#' @importFrom foreach    foreach
+#' @importFrom foreach    getDoParWorkers
+#' @importFrom foreach    registerDoSEQ
+#' @importFrom foreach    %dopar%
+#' @importFrom Rdpack     reprompt
+
+# in order to avoid package build warning for # the i iterator
+# in the foreach loops
+utils::globalVariables("i")
+
+# -------------------------------------------------------------------------------
+# Pointer emulation after
+# https://www.stat.berkeley.edu/~paciorek/computingTips/Pointers_passing_reference_.html
+
+newPointer <- function(inputValue) {
+    object        <- new.env(parent = globalenv())
+    object$value  <- inputValue
+    class(object) <- "pointer"
+    return(object)
+} # newPointer
+
+# -------------------------------------------------------------------------------
+# Function phaseColhsv
+# hsv color array for a mere phase portrait (colors for the argument, i.e. angle)
+
+# The checks for NaN values (obtained at definition gaps other than Inf,
+# i.e. result NaN) are important in order to ensure proper execution of hsv.
+# The color for NaN values is hsvNaN.
+# Default is a neutral grey (h = 0, s = 0, v = 0.5).
+
+phaseColhsv <- function(pCompArr, pHsvCol, stdSaturation = 0.8, hsvNaN = c(0, 0, 0.5)) {
+
+  browser()
+
+  names(hsvNaN) <- c("h", "s", "v")
+  dims    <- dim(pCompArr$value)
+  h       <- Arg(pCompArr$value)
+  h       <- ifelse(is.nan(h), hsvNaN["h"], ifelse(h < 0, h + 2*pi, h) / (2*pi))
+  v       <- ifelse(is.nan(pCompArr$value), hsvNaN["v"], 1)
+  s       <- ifelse(is.nan(pCompArr$value), hsvNaN["s"], stdSaturation)
+
+  pHsvCol$value <- array(hsv(h = h, v = v, s = s), dims)
+
+  return(pHsvCol)
+
+} # phaseColhsv
+
+# -----------------------------------------------------------------------------
+# Function phaseAngColhsv
+# Displays phase colors and phase contour lines
+
+phaseAngColhsv <- function(pCompArr, pHsvCol, lambda = 7, pi2Div = 24,
+                           argOffset = 0, stdSaturation = 0.8, darkestShade = 0.1,
+                           hsvNaN = c(0, 0, 0.5)) {
+
+  names(hsvNaN) <- c("h", "s", "v")
+  dims    <- dim(pCompArr$value)
+  argmt   <- Arg(pCompArr$value)
+  h       <- ifelse(is.nan(argmt), hsvNaN["h"], ifelse(argmt < 0, argmt + 2*pi, argmt)/ (2*pi))
+  v       <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
+                    darkestShade + (1 - darkestShade) * (((argmt - argOffset)/ (2 * pi / pi2Div)) %% 1)^(1/lambda))
+  s       <- ifelse(is.nan(pCompArr$value), hsvNaN["s"], stdSaturation)
+
+  pHsvCol$value <- array(hsv(h = h, v = v, s = s), dims)
+
+  return(pHsvCol)
+
+} # phaseAngColhsv
+
+# -----------------------------------------------------------------------------
+# Function phaseModColhsv
+# Not only colors for the arguments (angles), but also shading for the modulus
+
+# The checks for NaN values (obtained at definition gaps other than Inf,
+# i.e. result NaN) are important in order to ensure proper execution of hsv.
+# The color for Nan values is hsvNaN.
+# Default is a neutral grey (h = 0, s = 0, v = 0.5).
+# Complex numbers with infinite modulus have a valid argument, so infinite
+# modulus gets no shading at all (v = 1).
+
+phaseModColhsv <- function(pCompArr, pHsvCol, lambda = 7, logBase = 2,
+                           stdSaturation = 0.8, darkestShade = 0.1,
+                           hsvNaN = c(0, 0, 0.5)) {
+
+  names(hsvNaN) <- c("h", "s", "v")
+  dims    <- dim(pCompArr$value)
+  h       <- Arg(pCompArr$value)
+  h       <- ifelse(is.nan(h), hsvNaN["h"], ifelse(h < 0, h + 2*pi, h)/ (2*pi))
+  v       <- Mod(pCompArr$value)
+  v       <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
+                    ifelse(is.infinite(v), 1,
+                           ifelse(v == 0, darkestShade,
+                                  darkestShade + (1 - darkestShade)*(log(v, logBase) %% 1)^(1/lambda))))
+  s       <- ifelse(is.nan(pCompArr$value), hsvNaN["s"], stdSaturation)
+
+  pHsvCol$value <- array(hsv(h = h, v = v, s = s), dims)
+
+  return(pHsvCol)
+
+} # phaseModColhsv
+
+# -------------------------------------------------------------------------------
+# Function phaseModAngColhsv
+# Not only colors for the arguments (angles) and shading for the modulus but
+# also shading for the angles.
+
+# The checks for NaN values (obtained at definition gaps other than Inf,
+# i.e. result NaN) are important in order to ensure proper execution of hsv.
+# The color for NaN values is hsvNaN.
+# Default is a neutral grey (h = 0, s = 0, v = 0.5).
+# Complex numbers with infinite modulus have a valid argument, so infinite
+# modulus gets no shading (v = 1) for modulus. But shading for argument (angle)
+# can still occur.
+# For shading: pi2Div == 24 means 15 steps.
+
+phaseModAngColhsv <- function(pCompArr, pHsvCol, lambda = 7, gamma = 9/10, logBase = 2,
+                              pi2Div = 24, argOffset = 0, stdSaturation = 0.8,
+                              darkestShade = 0.1, hsvNaN = c(0, 0, 0.5)) {
+
+  names(hsvNaN) <- c("h", "s", "v")
+  dims    <- dim(pCompArr$value)
+  argmt   <- Arg(pCompArr$value)
+  h       <- ifelse(is.nan(argmt), hsvNaN["h"],
+                    ifelse(argmt < 0, argmt + 2*pi, argmt)/(2 * pi))
+
+  vMod    <- Mod(pCompArr$value)
+  vMod    <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
+                    ifelse(is.infinite(vMod), 1,
+                           ifelse(vMod == 0, 0, (log(vMod, logBase) %% 1)^(1/lambda))))
+  vAng    <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
+                    (((argmt - argOffset)/ (2 * pi / pi2Div)) %% 1)^(1/lambda))
+  v       <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
+                    darkestShade + (1 - darkestShade) * (gamma * vMod * vAng  + (1 - gamma) * (1 - (1 - vMod) * (1 - vAng))))
+
+  s       <- ifelse(is.nan(pCompArr$value), hsvNaN["s"], stdSaturation)
+
+  pHsvCol$value <- array(hsv(h = h, v = v, s = s), dims)
+
+  return(pHsvCol)
+
+} # phaseModAngColhsv
+
+# -----------------------------------------------------------------------------
+# Function buildArray
+# Build an array of complex numbers which represents the complex plane
+# on a pixel representation that can be directly converted into an image.
+
+# Computing times for 10x10 inch? x 150x150 pixel = 2250000 have been
+# ok so far. Thus, we divide the matrix vertically into blocks of similar time
+# and save them in a temporary folder. We give back the file names as a
+# character vector in the order they have to be processed.
+
+buildArray <- function(widthPx, heightPx, xlim, ylim, blockSizePx = 2250000,
+                       tempDir = getwd()) {
+
+  linesPerBlock  <- blockSizePx %/% widthPx
+  nBlocks        <- heightPx    %/% linesPerBlock
+  linesRest      <- heightPx    %%  linesPerBlock
+  nBlocks        <- nBlocks + 1 * (linesRest > 0); cat("\n.making", nBlocks, "blocks ... ")
+  iBlocks        <- c(1:nBlocks)
+  lower          <- 1 + (iBlocks - 1) * linesPerBlock
+  upper          <- iBlocks * linesPerBlock
+  if(linesRest != 0) upper[nBlocks] <- lower[nBlocks] - 1 + linesRest
+  uplow          <- cbind(lower, upper)
+  rndCode        <- substr(format(round(runif(1), 10), nsmall = 10), 3, 12) # Random Code for all files of this run
+
+  # Define z-Values of the Pixels
+  xPxValVec <- (xlim[2] - xlim[1])/(widthPx  - 1) * c(0:(widthPx  - 1)) + xlim[1]
+  yPxValVec <- (ylim[2] - ylim[1])/(heightPx - 1) * c((heightPx - 1):0) + ylim[1]
+
+  # Find the xlim and ylim values for each Block, combine all meta information about the blocks
+  # into one data.frame (metaZ). Only this data.frame will be given back.
+  fileNames      <- paste(formatC(lower, width = trunc(log10(lower[nBlocks])) + 1, flag = "0"),
+                          "zmat", rndCode, ".RData", sep = "")
+
+  # Define data.frame with meta information
+  metaZ          <- cbind(data.frame(fileNames = fileNames),
+                          uplow,
+                          xlim1 = xPxValVec[1],                 ylim1 = yPxValVec[upper],
+                          xlim2 = xPxValVec[length(xPxValVec)], ylim2 = yPxValVec[lower])
+
+  # Check for temporary directory, create if it does not exist
+  if(!dir.exists(tempDir)) { dir.create(tempDir, recursive = TRUE) }
+
+  # Parallel loop
+  cat("parallel loop starting ... ")
+  foreach(i = iBlocks) %dopar% {
+    yPxValVecBlock <- rep(yPxValVec[c(metaZ[i,"lower"]:metaZ[i,"upper"])], widthPx)
+    xPxValVecBlock <- rep(xPxValVec, each = metaZ[i,"upper"] - metaZ[i,"lower"] + 1)
+    compVec        <- complex(real = xPxValVecBlock, imaginary = yPxValVecBlock)
+    compArr        <- array(compVec, dim = c(metaZ[i,"upper"] - metaZ[i,"lower"] + 1, widthPx))
+    save(compArr, file = paste(tempDir, metaZ[i,"fileNames"], sep = "/"))
+    rm(list = c("compArr", "compVec", "xPxValVecBlock", "yPxValVecBlock"))
+  } # foreach i
+  cat("done.")
+
+  metaBack <- list(tempDir = tempDir, rndCode = rndCode, metaZ = metaZ)
+
+  return(metaBack)
+
+} # function buildArray
+
+# -----------------------------------------------------------------------------
+# rbindArraysbyPointer
+
+# Takes a list of pointers to arrays of the same width (and same type), rbinds
+# the arrays in order and gives back the pointer to the combined array
+# while deleting all others. For reasons of convenience this one return value is a
+# one-element list.
+
+rbindArraysbyPointer <- function(pArray) {
+
+  nn <- length(pArray)
+  if(nn > 1) {
+    for(i in (2:nn)) {
+      pArray[[1]]$value <- rbind(pArray[[1]]$value, pArray[[2]]$value) # Always the next one
+      pArray[[2]]$value <- NULL
+      pArray[[2]]       <- NULL # i.e. remove from list. Next element becomes #2.
+    } # for i
+  } # if length(nn > 1)
+
+  return(pArray[[1]]) # Useful though looking strange
+
+} # function rbindArraysbyPointer
+
+# -----------------------------------------------------------------------------
+# verticalSplitIndex
+# Returns the row indexes for splitting an array for parallel processing
+# with nnCores cores.
+
+verticalSplitIndex <- function(nnRows, nnCores) {
+
+  nProcss        <- min(nnRows, nnCores) # Number of processes to be parallelized;
+  nRowsPerChunk  <- nnRows %/% nProcss
+  nRest          <- nnRows %%  nProcss
+  iProcss        <- c(1:nProcss)
+  iPerChunk      <- c(1:nRowsPerChunk)
+  lower          <- 1 + nRowsPerChunk * (iProcss - 1)
+  upper          <- nRowsPerChunk * (iProcss)
+  upper[nProcss] <- upper[nProcss] + nRest
+  uplow          <- asplit(cbind(lower, upper), MARGIN = 1)
+
+  return(uplow)
+
+} # function verticalSplitIndex
+
+# -----------------------------------------------------------------------------
+# Function complexArrayPlot
+
+# Displays an array of complex numbers in an existing plot
+# Since version 0.0.0.9005 avoids hard disk access in parallel processes
+# by reading all w-files serially but split them for serial processing,
+# i.e. transforming them into a color raster.
+
+complexArrayPlot <- function(zMetaInfrm, xlim, ylim, pType = "pma", invertFlip = FALSE,
+                             lambda = 7, gamma = 9/10, pi2Div = 9, logBase = exp(2*pi/pi2Div),
+                             argOffset = 0, stdSaturation = 0.8, darkestShade = 0.1,
+                             hsvNaN = c(0, 0, 0.5),
+                             asp = 1, xlab = "", ylab = "", ...) {
+
+  # If user choses invertFlip (for North half-Riemann-sphere), the axes require re-labeling
+  # in case the user wanted axes.
+  if(invertFlip) {
+    plot(NULL, xlim = xlim, ylim = ylim, asp = asp, xlab = xlab, ylab = ylab, xaxt = "n", yaxt = "n", ...)
+  }
+  else {
+    plot(NULL, xlim = xlim, ylim = ylim, asp = asp, xlab = xlab, ylab = ylab, ...)
+  }
+
+  # if(invertFlip) {
+  #   axis(1, labels = 1/axTicks(1), at = axTicks(1))
+  # }
+
+  # dims   <- dim(compArr) # Zweidimensional, erst vertikal, dann horizontal
+  colCmd <- switch(pType, "p"   = "phaseColhsv(pCompArr, pHsvCol, stdSaturation = stdSaturation, hsvNaN = hsvNaN)",
+                          "pm"  = "phaseModColhsv(pCompArr, pHsvCol, lambda = lambda, logBase = logBase,
+                                                  stdSaturation = stdSaturation, darkestShade = darkestShade,
+                                                  hsvNaN = hsvNaN)",
+                          "pa"  = "phaseAngColhsv(pCompArr, pHsvCol, lambda = lambda, pi2Div = pi2Div,
+                                              argOffset = argOffset,
+                                              stdSaturation = stdSaturation, darkestShade = darkestShade,
+                                              hsvNaN = hsvNaN)",
+                          "pma" = "phaseModAngColhsv(pCompArr, pHsvCol, lambda = lambda, gamma = gamma,
+                                                     pi2Div = pi2Div, logBase = logBase,
+                                                     argOffset = argOffset,
+                                                     stdSaturation = stdSaturation, darkestShade = darkestShade,
+                                                     hsvNaN = hsvNaN)"
+  ) # switch
+
+
+  zMetaInfrm$metaZ$wFileNames <- paste(zMetaInfrm$tempDir, zMetaInfrm$metaZ$wFileNames, sep = "/")
+
+  pHsvCol <- lapply(c(1:nrow(zMetaInfrm$metaZ)), function(i, zMetaInfrm, colCmd) {
+
+      cat("\n.transforming block", i, "... ")
+      # load a block (will soon become a list of pointers, therefore the name)
+      pListCompArr  <- get(load(zMetaInfrm$metaZ[i,]$wFileNames))
+      # split it
+      nCores   <- getDoParWorkers()
+      uplow    <- verticalSplitIndex(nrow(pListCompArr), nCores)
+
+      # - here's the actual splitting, cCompArr becomes a list of pointers;
+      #   that's why the name
+      pListCompArr  <- lapply(uplow, FUN = function(uplow, pListCompArr) {
+        nwPtr <- newPointer(pListCompArr[c(uplow[1]:uplow[2]),])
+        # if the split result has only one line, it is not an array but a vector,
+        # while functions coming later require it as a two-dimensional array.
+        # This is made sure here.
+        if(uplow[1] == uplow[2]) {
+          dim(nwPtr$value) <- c(1, length(nwPtr$value))
+        }
+        return(nwPtr)
+      }, pListCompArr = pListCompArr)
+
+      # Parallel loop transforming the chunks into a color raster each; giving back
+      # a list of pointers to the rasters
+      cat("parallel loop starting ... ")
+      pHsvCol <- foreach(i = c(1:length(pListCompArr)),
+                         .export  = c("phaseColhsv", "phaseModColhsv", "phaseModAngColhsv",
+                                      "logBase", "lambda", "gamma", "pi2Div","stdSaturation",
+                                      "darkestShade", "hsvNaN", "newPointer", "argOffset"), .combine = c) %dopar% {
+
+        pCompArr <- pListCompArr[[i]]
+        pHsvCol  <- newPointer(NULL)
+        eval(parse(text = colCmd))  # Does not require a return value, changes color array via pointer
+        pCompArr                <- NULL
+        rm(pCompArr)
+        pListCompArr[[i]]$value <- NULL # To be reduced here, but removed after the foreach loop
+        return(pHsvCol)
+      } # foreach
+      cat("done.")
+
+      # Remove pListCompArr
+      rm(pListCompArr)
+
+      # Combine the color arrays in the value of the first pointer. Free the others.
+      if(length(pHsvCol) == 1) pHsvCol <- list(pHsvCol)   # Enforce (one-element-) list in case there is only one value (single-core in action)
+      pHsvCol <- rbindArraysbyPointer(pHsvCol)
+
+      return(pHsvCol)
+    }, # function in lapply
+    zMetaInfrm = zMetaInfrm, colCmd = colCmd
+  ) # lapply
+
+  # Combine a second time
+  cat("\nCombine colour rasters ... ")
+  pHsvCol <- rbindArraysbyPointer(pHsvCol)
+  cat("done.\n")
+
+  cat("Plotting raster image ... ")
+  rasterImage(as.raster(pHsvCol$value), xlim[1], ylim[1], xlim[2], ylim[2])
+  cat("done.\n")
+
+  pHsvCol$value <- NULL
+  rm(pHsvCol)
+
+  return(NULL)
+
+} # complexArrayPlot
+
+# -----------------------------------------------------------------------------
+#' complexFunctionPlot
+#'
+#' This function is just a wrapper for \code{phasePortrait} in order to
+#' guarantee compatibility with earlier versions. Don't use
+#' \code{complexFunctionPlot} when you are writing new scripts. It is
+#' called with exactly the same parameters as \code{\link{phasePortrait}}
+#'
+#' @param ... All parameters \code{\link{phasePortrait}} can be called with,
+#'   using exactly the same definitions.
+#'
+#' @export
+#'
+
+complexFunctionPlot <- function(...) {
+  phasePortrait(...)
+} # function complexFunctionPlot
+
+# -----------------------------------------------------------------------------
+#' Create phase portraits of complex functions
+#'
+#' \code{phasePortrait} makes phase portraits of functions in the complex number
+#' plane. It uses a technique often (but not quite correctly) called
+#' \emph{domain coloring} (\url{https://en.wikipedia.org/wiki/Domain_coloring}).
+#' While many varieties of this technique exist, this book relates closely to
+#' the standards proposed by E. Wegert in his book \emph{Visual Complex
+#' Functions} \insertCite{wegert_visualcpx_2012}{viscomplexr}. In a nutshell,
+#' the argument (\code{\link{Arg}}) of any complex function value is displayed
+#' as a color from the chromatic circle. The fundamental colours red, green, and
+#' blue relate to the arguments (angles) of 0, 2/3pi, and 4/3pi (with smooth
+#' color transitions inbetween), respectively. Options for displaying the
+#' modulus (\code{\link{Mod}}) of the complex values and addtional reference
+#' lines for the argument are available. This function is designed for being
+#' used inside the framework of R base graphics. It makes use of parallel
+#' computing, and depending on the desired resolution it may create extensive
+#' sets of large temporary files (see Details and Examples).
+#'
+#' This function is intended to be used inside the framework of R base graphics.
+#' It plots into the active open graphics device where it will display the phase
+#' plot of a user defined function as a raster image. If no graphics device is
+#' open when called, the function will plot into the default graphics device.
+#' This principle allows to utilize the full functionality of R base graphics.
+#' All graphics parameters (\code{\link{par}}) can be freely set and the
+#' function \code{phasePortrait} accepts all parameters that can be passed to
+#' the \code{\link{plot.default}} function. This allows all kinds of plots -
+#' from scientific representations with annotated axes and auxiliary lines,
+#' notation, etc. to poster-like artistic pictures.\cr
+#'
+#' \describe{
+#'   \item{Mode of operation}{After being called, \code{phasePortrait} gets the
+#'   size in inch of the plot region of the graphics device it is plotting into.
+#'   With the parameter \code{res} which is the desired plot resolution in dpi,
+#'   the horizontal and vertical number of pixels is known. As \code{xlim} and
+#'   \code{ylim} are provided by the user, each pixel can be attributed a
+#'   complex number z from the complex plane. In that way a two-dimensional
+#'   array is built, where each cell represents a point of the complex plane,
+#'   containing the corresponding complex number z. This array is set up in
+#'   horizontal strips (i.e. split along the imaginary axis), each strip
+#'   containing approximately \code{blockSizePx} pixels. In a parallel computing
+#'   loop, the strips are constructed, saved as temporary files and immediately
+#'   deleted from the RAM in order to avoid memory overflow. After that, the
+#'   strips are sequentially loaded and subdivided into a number of chunks that
+#'   corresponds to the number of registered parallel workers (parameter
+#'   \code{nCores}). By parallely processing each chunk, the function
+#'   \code{f(z)} defined by the user in \code{exprText} is applied to each cell
+#'   of the strip. This results in an array of function values that has exactly
+#'   the same size as the original strip. The new array is saved as a temporary
+#'   file, the RAM is cleared, and the next strip is loaded. This continues
+#'   until all strips are processed. In a similar way, all strips containing the
+#'   function values are loaded sequentially, and in a parallel process the
+#'   complex values are translated into colors which are stored in a raster
+#'   object. While the strips are deleted from the RAM after processing, the
+#'   color values obtained from each new strip are appended to the color raster.
+#'   After all strips are processed, the raster is plotted into the plot region
+#'   of the graphics device. If not explicitly defined otherwise by the user,
+#'   all temporary files are deleted after that.
+#'   }
+#'   \item{Temporary file system}{By default, the above-mentioned temporary
+#'   files are deleted after use. This will not happen, if the parameter
+#'   \code{deleteTempFiles} is set to \code{FALSE} or if \code{phasePortrait}
+#'   does not terminate properly. In both cases, you will find the files in the
+#'   directory specified with the parameter \code{tempDir}. These files are
+#'   \code{.RData} files, each one contains a two-dimensional array of complex
+#'   numbers. The file names follow a strict convention, see the following
+#'   examples:\cr\cr
+#'   \code{0001zmat2238046385.RData}\cr
+#'   \code{0001wmat2238046385.RData}\cr\cr
+#'   Both names begin with '0001', indicating that the array's top line is the
+#'   first line of the whole clipping of the complex number plane where the
+#'   phase portrait relates to. The array which follows below can e.g. begin
+#'   with a number like '0470', indicating that its first line is line number
+#'   470 of the whole clipping. The number of digits for these line numbers is
+#'   not fixed. It is determined by the greatest number required. Numbers with
+#'   less digits are zero-padded. The second part of the file name is either
+#'   \code{zmat} or \code{wmat}. The former indicates an array whose cells
+#'   contain untransformed numbers of the complex number plane. The latter
+#'   contains the values obtained from applying the function of interest to the
+#'   first array. Thus, cells at the same position in both arrays exactly relate
+#'   to each other. The third part of the file names is a ten-digit integer.
+#'   This is a random number which all temporary files stemming from the same
+#'   call of \code{phasePortrait} have in common. This guarantees that no
+#'   temporary files will be confounded by the function, even if undeleted
+#'   temporary files from previous runs are still present.
+#'   }
+#'   \item{HSV colour model}{For colour-coding the argument of a complex number,
+#'   \code{phasePortrait} uses the \code{\link{hsv}} (hue, saturation, value)
+#'   color model. Hereby, the arugument is mapped to a position on the chromatic
+#'   circle, where the fundamental colours red, green, and blue relate to the
+#'   arguments (angles) of 0, 2/3pi, and 4/3pi, respectively. This affects only
+#'   the hue component of the color model. The value component is used for
+#'   shading modulus and/or argument zones. The saturation component for all
+#'   colours can be defined with the parameter \code{stdSaturation}.
+#'   }
+#'   \item{Zone definitions and shading}{In addition to displaying colors for
+#'   the arguments of complex numbers, zones for the modulus and/or the argument
+#'   are shaded for \code{pType} other than "p". The modulus zones are defined
+#'   in a way that each zone covers moduli whose logarithms to the base
+#'   \code{logBase} have the same integer part. Thus, from the lower edge of one
+#'   modulus zone to its upper edge, the modulus multiplies with the value of
+#'   \code{logBase}. The shading of a modulus zone depends on the fractional
+#'   parts \code{x} of the above-mentioned logarithms, which cover the interval
+#'   \code{[0, 1[}.
+#'   This translates into the value component \code{v} of the \code{\link{hsv}}
+#'   color model as follows:\cr\cr
+#'   \code{v = darkestShade + (1 - darkestShade) * x^(1/lambda)}\cr\cr
+#'   where \code{darkestShade} and \code{lambda} are parameters that can be
+#'   defined by the user. Modifying the parameters \code{lambda} and
+#'   \code{darkestShade} is useful for adjusting contrasts in the phase
+#'   portraits. The argument zone definition is somewhat simpler: Each zone
+#'   covers an angle domain of \code{2*pi / pi2Div}, the "zero reference" for
+#'   all zones being \code{argOffset}. The angle domain of one zone is linearly
+#'   mapped to a value \code{x} from the range \code{[0, 1[}.
+#'   The value component of the colour to be displayed is calculated as a
+#'   function of \code{x} with the same equation as shown above. In case the
+#'   user has chosen \code{pType = "pma"}, x-values \code{xMod} and \code{xArg}
+#'   are calculated separately for the modulus and the argument, respectively.
+#'   They are transformed into preliminary v-values as follows:\cr\cr
+#'   \code{vMod = xMod^(1/lambda)} and {vArg = xArg^(1/lambda)}\cr\cr
+#'   From these, the final v value results as\cr\cr
+#'   \code{v = darkestShade + (1-darkestShade) * (gamma * vMod * vArg +
+#'   (1-gamma) * (1 - (1-vMod) * (1-vArg)))}\cr\cr
+#'   The parameter \code{gamma} (range \code{[0, 1]}) determines they way how
+#'   vMod and vArg are combined. The closer \code{gamma} is to one, the more
+#'   the smaller of both values will dominate the outcome and vice versa.
+#'   }
+#'   \item{Defining more complicated functions with \code{\link{vapply}}}{You
+#'   might want to write and use functions which require more code than a single
+#'   statement like \code{(z-3)^2+1i*z}. In such cases, \code{\link{vapply}} can
+#'   be used for wrapping your code. This is probably not the use of
+#'   \code{\link{vapply}} intended by the developers, but it works nicely. The
+#'   argument \code{exprText} must be a character string also here, but if has
+#'   to have the follwing structure "vapply(z, function(z, \emph{other arguments
+#'   if required}) \{\emph{define function code in here}\}, \emph{define other
+#'   arguments here}, FUN.VALUE = complex(1))". See examples.
+#'   }
+#' }
+#'
+#'
+#' @param exprText The function to be visualized. It must be provided as a
+#'   character string containing an expression R can interpret as a function of
+#'   a complex number z. Examples: "sin(z)", "(z^2 - 1i)/(tan(z))", "1/4*z^2 -
+#'   10*z/(z^4+4)". You can even define your own functions e.g. for performing
+#'   iterative calculations. In this case, you need to use \code{\link{vapply}}
+#'   in exprText (see Details).
+#'
+#' @param xlim The x limits (x1, x2) of the plot as a two-element numeric
+#'   vector. Follows exactly the same definition as in
+#'   \code{\link{plot.default}}. Here, \code{xlim} has to be interpreted as the
+#'   plot limits on the real axis.
+#'
+#' @param ylim The y limits of the plot (y1, y2) to be used in the same way as
+#'   \code{xlim}. Evidently, \code{ylim} indicates the plot limits on the
+#'   imaginary axis.
+#'
+#' @param invertFlip If \code{TRUE}, the function is mapped over a z plane,
+#'   which has been transformed to \code{1/z * exp(1i*pi)}. This is the
+#'   projection required to plot the north Riemann hemisphere in the way
+#'   proposed by \insertCite{wegert_visualcpx_2012;textual}{viscomplexr}, p. 41.
+#'   Defaults to \code{FALSE}. If this option is chosen, the axis ticks and
+#'   labels are suppressed (\code{xaxt = "n"}), because they do not make sense
+#'   in this setting.
+#'
+#' @param res Desired resolution of the plot in dots per inch (dpi). Default is
+#'   150 dpi. All other things being equal, \code{res} has a strong influence on
+#'   computing times (double \code{res} means fourfold number of pixels to
+#'   compute). A good approach could be to make a plot with low resolution (e.g.
+#'   the default 150 dpi) first, adjust whatever required, and plot into a
+#'   graphics file with high resolution after that.
+#'
+#' @param blockSizePx Number of pixels and corresponding complex values to be
+#'   processed at the same time (see Details). Default is 2250000. This value
+#'   gave good performance on older systems as well as on a high-end gaming
+#'   machine, but some tweaking for your individual system might even improve
+#'   things.
+#'
+#' @param tempDir The name of the directory where the temporary files are stored
+#'   as a character string. Defaults to the current working directory. If
+#'   another directory is specified, it will be created if it does not exist (if
+#'   this is possible). It is advisable to locate this directory on a drive with
+#'   ample free space, especially when the purpose is to produce large high
+#'   resolution images. After completing the plot all temporary files are
+#'   deleted, but \code{tempDir} remains alive even if had been created by
+#'   \code{complexFunctionPlot}.
+#'
+#' @param nCores Number of processor cores to be used in the parallel computing
+#'   tasks. Defaults to the maximum number of cores available. Any number
+#'   between 1 (serial computation) and the maximum number of cores available as
+#'   indicated by \code{parallel::detectCores} is acepted.
+#'
+#' @param pType One of the three options for plotting "p", "pa", "pm", and "pma"
+#'   as a character string. Defaults to "pma". Option "p" produces a mere phase
+#'   plot, i.e. contains only colours for the complex numbers' arguments, but no
+#'   reference lines at all. the option "pa" introduces shading zones that
+#'   emphasize the arguments. These zones each cover an angle defined by
+#'   \code{2*pi/pi2Div}, where p2Div is another parameter of this function (see
+#'   there). These zones are shaded darkest at the lowest angle (counter
+#'   clockwise). Option "pm" displays the modulus by indicating zones, where the
+#'   moduli at the higher edge of each zone are in a constant ratio with the
+#'   moduli at the lower edge of the zone. Default is a ratio of almost exactly
+#'   2 (see parameter \code{logBase}) for details. At the lower edge, color
+#'   saturation is lowest and highest at the higher edge (see parameters
+#'   \code{darkestShade}, and \code{stdSaturation}). Option "pma" (default)
+#'   includes both shading schemes.
+#'
+#' @param pi2Div Angle distance for the argument reference zones added for
+#'   \code{pType == "pma"}. The value has to be given as an integer (reasonably)
+#'   fraction of 2*pi (i.e. 360 degrees). the default is 9; thus, reference
+#'   zones are delineated by default in distances of 2*pi/9, i.e. (40 degrees),
+#'   starting with 0, i.e. the color red if not defined otherwise with the
+#'   parameter \code{argOffset}. In contrast to the borders delimiting the
+#'   modulus zones, the borders of the reference zones for the argument always
+#'   follow the same colour (by definition).
+#'
+#' @param logBase Modulus ratio between the edges of the modulus reference zones
+#'   in \code{pType} \code{"pm"} and \code{"pma"}. As recommended by
+#'   \insertCite{wegert_visualcpx_2012;textual}{viscomplexr}, the default
+#'   setting is \code{logBase = exp(2*pi/pi2Div)}. This relation between the
+#'   parameters \code{logBase} and \code{pi2Div} ensures an analogue scaling of
+#'   the modulus and argument reference zones (see Details). Conveniently, for
+#'   the default \code{pi2Div == 9}, we obtain \code{logBase == 2.0099...},
+#'   which is very close to 2. Thus, the modulus at the higher edge of a given
+#'   zone is almost exactly two times the value at the lower edge.
+#'
+#' @param argOffset The (complex number) argument in radians counterclockwise,
+#'   at which the argument reference zones are fixed. Default is 0, i.e. all
+#'   argument reference zones align to the centre of the red area.
+#'
+#' @param darkestShade Darkest possible shading of modulus and angle reference
+#'   zones for \code{pType} \code{"pm"} and \code{"pma"}. It corresponds to the
+#'   value "v" in the \code{\link{hsv}} color model. \code{darkestShade == 0}
+#'   means no brightness at all, i.e. black, while \code{darkestShade == 1}
+#'   indicates maximum brightness. Defaults to 0.1, i.e. very dark, but hue
+#'   still discernible.
+#'
+#' @param lambda Parameter steering the shading interpolation between the higher
+#'   and the lower edges of the the modulus and argument reference zones in
+#'   \code{pType} \code{"pm"} and \code{"pm"}. Should be > 0, default and
+#'   reference is \code{lambda == 7}. Values < 7 increase the contrast at the
+#'   zone borders, values > 7 weaken the contrast.
+#'
+#' @param gamma Parameter for adjusting the combined shading of modulus and
+#'   argument reference zones in \code{pType} \code{"pma"}. Should be in the
+#'   interval \code{[0, 1]}. Default is 0.9. The higher the value, the more the
+#'   smaller of both shading values will dominate the outcome and vice versa.
+#'
+#' @param stdSaturation Saturation value for unshaded hues which applies to the
+#'   whole plot in \code{pType} \code{"p"} and to the (almost) unshaded zones in
+#'   \code{pType} \code{"pm"} and \code{"p"}. This corresponds to the value "s"
+#'   in the \code{\link{hsv}} color model. Must be between 0 and 1, where 1
+#'   indicates full saturation and 0 indicates a neutral grey. Defaults to 0.8.
+#'
+#' @param hsvNaN \code{\link{hsv}} coded color for being used in areas where the
+#'   function to be plotted is not defined. Must be given as a numeric vector
+#'   with containing the values h, s, and v in this order. Defaults to
+#'   \code{c(0, 0, 0.5)} which is a neutral grey.
+#'
+#' @param asp Aspect ratio y/x as defined in \code{\link{plot.window}}. Default
+#'   is 1, ensuring an accurate representation of distances between points on
+#'   the screen.
+#'
+#' @param deleteTempFiles If TRUE (default), all temporary files are deleted
+#'   after the plot is completed. Set it on FALSE only, if you know exactly what
+#'   you are doing - the temporary files can occupy large amounts of hard disk
+#'   space (see details).
+#'
+#' @param ... All parameters accepted by the \code{\link{plot.default}}
+#'   function.
+#'
+#'
+#' @references
+#'   \insertAllCited{}
+#'
+#' @examples
+#' # Map the complex plane on itself
+#' \dontrun{
+#' x11(width = 8, height = 8)
+#' phasePortrait("z", xlim = c(-2, 2), ylim = c(-2, 2),
+#' xlab = "real", ylab = "imaginary")}
+#'
+#'
+#' # A rational function
+#' \dontrun{
+#' x11(width = 10, height = 8)
+#' phasePortrait("(2-z)^2*(-1i+z)^3*(4-3i-z)/((2+2i+z)^4)",
+#'               xlim = c(-8, 8), ylim = c(-6.3, 4.3),
+#'               xlab = "real", ylab = "imaginary")}
+#'
+#'
+#' # Different pType options by exanple of the sine function
+#' \dontrun{
+#' x11(width = 9, height = 9)
+#' op <- par(mfrow = c(2, 2), mar = c(2.1, 2.1, 2.1, 2.1))
+#' phasePortrait("sin(z)", xlim = c(-pi, pi), ylim = c(-pi, pi),
+#'               pType = "p",   main = "pType = 'p'",   axes = FALSE)
+#' phasePortrait("sin(z)", xlim = c(-pi, pi), ylim = c(-pi, pi),
+#'               pType = "pm",  main = "pType = 'pm'",  axes = FALSE)
+#' phasePortrait("sin(z)", xlim = c(-pi, pi), ylim = c(-pi, pi),
+#'               pType = "pa",  main = "pType = 'pa'",  axes = FALSE)
+#' phasePortrait("sin(z)", xlim = c(-pi, pi), ylim = c(-pi, pi),
+#'               pType = "pma", main = "pType = 'pma'", axes = FALSE)
+#' par(op)}
+#'
+#'
+#' # I called this one 'nuclear fusion'
+#' \dontrun{
+#' x11(width = 16/9*8, height = 8)
+#' op <- par(mar = c(0, 0, 0, 0), omi = c(0.2, 0.2, 0.2, 0.2), bg = "black")
+#' phasePortrait("cos((z + 1/z)/(1i/2 * (z-1)^10))",
+#'               xlim = 16/9*c(-2, 2), ylim = c(-2, 2),
+#'               axes = FALSE, xaxs = "i", yaxs = "i")
+#' par(op)}
+#'
+#'
+#' # Using vapply for defining functions that require more code.
+#' # This is a Blaschke product with a sequence a of twenty numbers.
+#' # See the documentation of the function vector2String for a more
+#' # convenient space-saving definition of a.
+#' \dontrun{
+#' x11(width = 10, height = 8)
+#' phasePortrait("vapply(z, function(z, a){
+#'                return(prod(abs(a)/a * (a-z)/(1-Conj(a)*z)))
+#'               }, a = c(0.12152611+0.06171533i,  0.53730315+0.32797530i,
+#'                        0.35269601-0.53259644i, -0.57862039+0.33328986i,
+#'                       -0.94623221+0.06869166i, -0.02392968-0.21993132i,
+#'                        0.04060671+0.05644165i,  0.15534449-0.14559097i,
+#'                        0.32884452-0.19524764i,  0.58631745+0.05218419i,
+#'                        0.02562213+0.36822933i, -0.80418478+0.58621875i,
+#'                       -0.15296208-0.94175193i, -0.02942663+0.38039250i,
+#'                       -0.35184130-0.24438324i, -0.09048155+0.18131963i,
+#'                        0.63791697+0.47284679i,  0.25651928-0.46341192i,
+#'                        0.04353117-0.73472528i, -0.04606189+0.76068461i),
+#'              FUN.VALUE = complex(1))",
+#'              pType = "p",
+#'              xlim = c(-4, 2), ylim = c(-2, 2),
+#'              xlab = "real", ylab = "imaginary")}
+#'
+#'
+#' # Interesting reunion with Benoit Mandelbrot. Another example
+#' # for using vapply.
+#' \dontrun{
+#' x11(width = 11.7, height = 9/16*11.7)
+#' op <- par(mar = c(0, 0, 0, 0), bg = "black")
+#' phasePortrait(exprText = "vapply(z, FUN = ff <- function(z, n) {
+#'                 c  <- z
+#'                 zz <- 0
+#'                 for(i in c(1:n)) {
+#'                   zz <- zz^2 + c
+#'                 }
+#'                 return(zz)
+#'               }, n = 52,
+#'               FUN.VALUE = complex(1))",
+#'               xlim = c(-0.847, -0.403), ylim = c(0.25, 0.50),
+#'               axes = TRUE, pType = "pma",
+#'               hsvNaN = c(0, 0, 0), xaxs = "i", yaxs = "i")
+#' par(op)}
+#'
+#'
+#' @export
+
+phasePortrait <- function(exprText, xlim, ylim,
+                          invertFlip = FALSE,
+                          res = 150,
+                          blockSizePx = 2250000, tempDir = getwd(),
+                          nCores = detectCores(),
+                          pType = "pma", pi2Div = 9,
+                          logBase = exp(2*pi/pi2Div),
+                          argOffset = 0, darkestShade = 0.1,
+                          lambda = 7, gamma = 0.9,
+                          stdSaturation = 0.8,
+                          hsvNaN = c(0, 0, 0.5),
+                          asp = 1,
+                          deleteTempFiles = TRUE, ...) {
+
+  # Calculate matrix size from plot region size in inch and
+  # definition range for function
+  regionPi  <- par("pin")              # plot region size in inch; first is horizontal
+  xRange    <- abs(xlim[2] - xlim[1])
+  yRange    <- abs(ylim[2] - ylim[1])
+
+  yxRangeRatio <- yRange      / xRange
+  yxPinchRatio <- regionPi[1] / regionPi[2]
+
+  if(yxRangeRatio < yxPinchRatio) { # height is limiting
+    heightPx <- res * regionPi[2]
+    widthPx  <- res * regionPi[2] / yxRangeRatio
+  } # if
+  else { # width is limiting
+    widthPx  <- res * regionPi[1]
+    heightPx <- res * regionPi[1] * yxRangeRatio
+  } #else
+
+  widthPx  <- round(widthPx)
+  heightPx <- round(heightPx)
+
+  # In case of invertFlip == TRUE swap xlim
+  if(invertFlip) {
+    xlim  <- c(xlim[2], xlim[1])
+  } # if invertFlip
+
+  # Register parallel Cluster if required or change number of workers
+  nWorkers   <- getDoParWorkers() # number registered
+  availCores <- detectCores()     # number available
+  nCores     <- min(max(nCores, 1), availCores) # register at least 1 :) and not more than available
+  if (nWorkers != nCores) {
+    cat("Registering parallel workers ... ")
+    registerDoSEQ() # Unregister parallel for the sake of safety before registering with different no. of cores
+    registerDoParallel(cores = nCores)
+    cat(nCores, "parallel workers registered ...")
+  } # check number of parallel workers
+  else {
+    cat(nCores, "parallel workers previously registered ...")
+  } # more workers than 1 already registered
+
+  # Make pixelwise array of z-Values (input values to function)
+  cat("\nBuilding z plane array ...")
+  zMetaInfrm <- buildArray(widthPx, heightPx, xlim, ylim, blockSizePx, tempDir)
+
+  # A few functions need to be built for the following parallel evaluation
+
+  # Build the function given in exprText (user-provided complex function), call it compFun.
+  # In case the user has chosen invertFlip = TRUE, the z-plane has to be transformed
+  # before feeding it to the function.
+  if(invertFlip) {
+    exprText <- paste("function(z) { z <- Conj(1/z); ", exprText, " }", sep = "")
+  }
+  else {
+    exprText <- paste("function(z) ", exprText, sep = "")
+  }
+  compFun  <- eval(parse(text = exprText))
+
+  # Define function for applying compFun on a (sub-) array
+  applyCompFun <- function(z) {
+    if(length(dim(z)) < 2) dims <- c(1, length(z)) # One-line arrays can become vectors mysteriously ...
+    else                   dims <- dim(z)
+    w    <- array(vapply(z, compFun, complex(1)), dim = dims)
+    return(w)
+  } # applyCompFun
+
+  # This is where it really happens
+  cat("\nEvaluation loop starting ... ")
+  zMetaInfrm$metaZ$wFileNames <- vapply(c(1:nrow(zMetaInfrm$metaZ)), function(i, zMetaInfrm, compFun, applyCompFun) {
+
+       cat("\n.processing block", i, "... ")
+       fileName       <- paste(zMetaInfrm$tempDir, zMetaInfrm$metaZ[i,]$fileName, sep = "/")
+       z              <- get(load(fileName))
+
+       # Split z vertically (by rows) into nCores chunks to be processed parallely
+       # - here's some pre-work
+       uplow <- verticalSplitIndex(dim(z)[1], nCores)
+
+       # - here's the actual splitting, z becomes a list
+       z <- lapply(uplow, FUN = function(uplow, z) {
+          return(z[c(uplow[1]:uplow[2]),])
+       }, z = z)
+
+       # Run the evaluation parallely on each core and put it together again
+       cat("parallel loop starting ... ")
+       w <- foreach(i = c(1:length(z)), .combine = rbind) %dopar% {
+          return(applyCompFun(z[[i]]))
+       } # foreach i
+       cat("done.")
+
+       rm(z)            # discard z array
+
+       wFileName <- paste(formatC(zMetaInfrm$metaZ[i,]$lower,
+                          width = trunc(log10(zMetaInfrm$metaZ$lower[nrow(zMetaInfrm$metaZ)])) + 1, flag = "0"),
+                          "wmat", zMetaInfrm$rndCode, ".RData", sep = "")
+
+       save(w, file = paste(zMetaInfrm$tempDir, wFileName, sep = "/"))
+       rm(w)
+
+       return(wFileName)
+    }, # function FUN
+
+    FUN.VALUE = character(1),
+    zMetaInfrm = zMetaInfrm, compFun = compFun, applyCompFun = applyCompFun
+  ) # vapply
+
+  # Transform and plot it
+  cat("\nTransforming function values into colours ...")
+
+  complexArrayPlot(zMetaInfrm, xlim, ylim, pType, invertFlip,
+                   lambda, gamma, pi2Div, logBase,
+                   argOffset, stdSaturation, darkestShade,
+                   hsvNaN, ...)
+
+  # Delete all temporary files ... or not
+  if(deleteTempFiles) {
+    cat("Deleting temporary files ... ")
+    filesToDelete <- paste(zMetaInfrm$tempDir, c(as.character(zMetaInfrm$metaZ$fileNames),
+                                                 as.character(zMetaInfrm$metaZ$wFileNames)), sep = "/")
+    unlink(filesToDelete)
+    cat("done.\n")
+  } else {
+    cat("Temporary files are NOT deleted (explicit wish of the user).\n")
+  } # else (temp files ore not deleted)
+
+  cat("\nParallel backend with", nCores, "cores remains registered for convenience.")
+  cat("\nCan be de-registered with 'foreach::registerDoSEQ()'.\n")
+
+} # phasePortrait
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
