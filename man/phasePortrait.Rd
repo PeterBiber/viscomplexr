@@ -5,7 +5,8 @@
 \title{Create phase portraits of complex functions}
 \usage{
 phasePortrait(
-  exprText,
+  FUN,
+  moreArgs = NULL,
   xlim,
   ylim,
   invertFlip = FALSE,
@@ -28,12 +29,39 @@ phasePortrait(
 )
 }
 \arguments{
-\item{exprText}{The function to be visualized. It must be provided as a
+\item{FUN}{The function to be visualized. There are two possibilities to
+provide it, a simple character string, or an item that can be interpreted
+by \code{\link{match.fun}}.
+\describe{
+\item{Simple character string}{ A function can be provided as a
 character string containing an expression R can interpret as a function of
 a complex number z. Examples: "sin(z)", "(z^2 - 1i)/(tan(z))", "1/4*z^2 -
 10*z/(z^4+4)". You can even define your own functions e.g. for performing
 iterative calculations. In this case, you need to use \code{\link{vapply}}
-in exprText (see Details).}
+in exprText (see Details). Such constructions even allow to provide
+additional input variables as a part of the character string (hereby, the
+function \code{\link{vector2String}}) can be useful. While we observed
+slightly better performance with this solution, we recommend to provide
+additional input variables by way of the parameter \code{moreArgs.}}
+\item{\code{\link{match.fun}} compatible item}{ This option is convenient
+for providing functions that are defined outside the call to
+\code{phasePortrait}. This is especially useful for functions whose
+definition comprises extensive code. Copied from the help page of
+\code{\link{match.fun}}: \emph{"Item to match as function: a function,
+symbol or character string. If FUN is a function, it is returned. If it is
+a symbol (for example, enclosed in backquotes) or a character vector of
+length one, it will be looked up using get in the environment of the parent
+of the caller. If it is of any other mode, it is attempted first to get the
+argument to the caller as a symbol (using substitute twice), and if that
+fails, an error is declared."} When executing \code{phasePortrait},
+\code{FUN} is first tried to be evaluated with \code{\link{match.fun}}. If
+this is not successful, an attempt to interpret \code{FUN} as a simple
+character string (see above) will be made. If this fails,
+\code{phasePortrait} terminates with an error.}
+}}
+
+\item{moreArgs}{A named list of other arguments to FUN. The names must match
+the names of the arguments in FUN's definition.}
 
 \item{xlim}{The x limits (x1, x2) of the plot as a two-element numeric
 vector. Follows exactly the same definition as in
@@ -312,7 +340,9 @@ phasePortrait("(2-z)^2*(-1i+z)^3*(4-3i-z)/((2+2i+z)^4)",
               xlab = "real", ylab = "imaginary")}
 
 
-# Different pType options by exanple of the sine function
+# Different pType options by example of the sine function.
+# Note the different equivalent definitions of the sine
+# function in the calls to phasePortrait
 \dontrun{
 x11(width = 9, height = 9)
 op <- par(mfrow = c(2, 2), mar = c(2.1, 2.1, 2.1, 2.1))
@@ -320,9 +350,9 @@ phasePortrait("sin(z)", xlim = c(-pi, pi), ylim = c(-pi, pi),
               pType = "p",   main = "pType = 'p'",   axes = FALSE)
 phasePortrait("sin(z)", xlim = c(-pi, pi), ylim = c(-pi, pi),
               pType = "pm",  main = "pType = 'pm'",  axes = FALSE)
-phasePortrait("sin(z)", xlim = c(-pi, pi), ylim = c(-pi, pi),
+phasePortrait("sin",    xlim = c(-pi, pi), ylim = c(-pi, pi),
               pType = "pa",  main = "pType = 'pa'",  axes = FALSE)
-phasePortrait("sin(z)", xlim = c(-pi, pi), ylim = c(-pi, pi),
+phasePortrait(sin,      xlim = c(-pi, pi), ylim = c(-pi, pi),
               pType = "pma", main = "pType = 'pma'", axes = FALSE)
 par(op)}
 
@@ -334,6 +364,26 @@ op <- par(mar = c(0, 0, 0, 0), omi = c(0.2, 0.2, 0.2, 0.2), bg = "black")
 phasePortrait("cos((z + 1/z)/(1i/2 * (z-1)^10))",
               xlim = 16/9*c(-2, 2), ylim = c(-2, 2),
               axes = FALSE, xaxs = "i", yaxs = "i")
+par(op)}
+
+
+# Simple match.fun compatible FUN definition:
+# Two mathematical celebrities - Riemann's zeta function
+# and the gamma function, both from the package pracma.
+# R's built-in gamma is not useful, as it does not work
+# with complex input values.
+\dontrun{
+library(pracma)
+x11(width = 16, height = 8)
+op <- par(mfrow = c(1, 2))
+phasePortrait(zeta,  xlim = c(-35, 15), ylim = c(-25, 25),
+              xlab = "real", ylab = "imaginary",
+              main = expression(zeta(z)),
+              cex.main = 2)
+phasePortrait(gammaz, xlim = c(-10, 10), ylim = c(-10, 10),
+              xlab = "real", ylab = "imaginary",
+              main = expression(Gamma(z)),
+              cex.main = 2)
 par(op)}
 
 
@@ -361,12 +411,42 @@ phasePortrait("vapply(z, function(z, a){
              xlab = "real", ylab = "imaginary")}
 
 
+# Much more elegant: Define the function outside.
+# Here comes a Blaschke product with 200 random points.
+\dontrun{
+# define function for calculating blaschke products
+blaschke <- function(z, a) prod(abs(a)/a * (a-z)/(1-Conj(a)*z))
+# define 200 random numbers inside the unit circle
+n <- 200
+a <- complex(modulus = runif(n), argument = runif(n)*2*pi)
+# Plot it
+x11(width = 10, height = 8)
+phasePortrait(blaschke,
+moreArgs = list(a = a),
+pType = "p",
+xlim = c(-2.5, 2.5), ylim = c(-1.7, 1.7),
+xlab = "real", ylab = "imaginary")}
+
+
+# A hybrid solution: Provide the body of the function as
+# a character string, but the additional argument with moreArgs
+\dontrun{
+n <- 73
+a <- complex(modulus = runif(n), argument = runif(n)*2*pi)
+x11(width = 10, height = 8)
+phasePortrait("prod(abs(a)/a * (a-z)/(1-Conj(a)*z))",
+moreArgs = list(a = a),
+pType = "p",
+xlim = c(-2.5, 2.5), ylim = c(-1.7, 1.7),
+xlab = "real", ylab = "imaginary")}
+
+
 # Interesting reunion with Benoit Mandelbrot. Another example
 # for using vapply.
 \dontrun{
 x11(width = 11.7, height = 9/16*11.7)
 op <- par(mar = c(0, 0, 0, 0), bg = "black")
-phasePortrait(exprText = "vapply(z, FUN = ff <- function(z, n) {
+phasePortrait("vapply(z, FUN = ff <- function(z, n) {
                 c  <- z
                 zz <- 0
                 for(i in c(1:n)) {
@@ -378,6 +458,26 @@ phasePortrait(exprText = "vapply(z, FUN = ff <- function(z, n) {
               xlim = c(-0.847, -0.403), ylim = c(0.25, 0.50),
               axes = TRUE, pType = "pma",
               hsvNaN = c(0, 0, 0), xaxs = "i", yaxs = "i")
+par(op)}
+
+
+# But we can also define a Mandelbrot function outside:
+\dontrun{
+# iteration depth
+itDepth <- 52
+# Mandelbrot function
+mandelbrot <- function(z, n) {
+  c  <- z
+  zz <- 0
+  for(i in c(1:n)) zz <- zz^2 + c
+  zz
+}
+# plot it
+x11(width = 12, height = 8)
+op <- par(mar = c(0, 0, 0, 0), bg = "black")
+phasePortrait(mandelbrot, moreArgs = list(n = itDepth),
+  xlim = c(-2, 1), ylim = c(-1, 1), axes = FALSE,
+  pType = "pma", hsvNaN = c(0, 0, 0))
 par(op)}
 
 

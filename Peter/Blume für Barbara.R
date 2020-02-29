@@ -91,6 +91,28 @@ phasePortrait("zeta(z)", xlim = c(-35, 35), res = res,
 dev.off()
 
 
+# Simple match.fun compatible FUN definition:
+# Two mathematical celebrities - Riemann's zeta function
+# and the gamma function, both from the package pracma.
+# R's built-in gamma is not useful, as it does not work
+# with complex input values.
+library(pracma)
+x11(width = 16, height = 8)
+op <- par(mfrow = c(1, 2))
+phasePortrait(zeta, xlim = c(-35, 15), res = res,
+              ylim = c(-25, 25), tempDir = tempDir,
+              xlab = "real", ylab = "imaginary",
+              main = expression(zeta(z)),
+              cex.main = 1.5)
+phasePortrait(gammaz, xlim = c(-10, 10), res = res,
+              ylim = c(-10, 10), tempDir = tempDir,
+              xlab = "real", ylab = "imaginary",
+              main = expression(Gamma(z)),
+              cex.main = 1.5)
+par(op)
+
+
+
 # Jetzt noch einen Riemann-Spären-Plot
 x11(width = 16, height = 8); res <- 150
 op <- par(mfrow = c(1, 2))
