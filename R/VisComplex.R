@@ -102,8 +102,6 @@ newPointer <- function(inputValue) {
 
 phaseColhsv <- function(pCompArr, pHsvCol, stdSaturation = 0.8, hsvNaN = c(0, 0, 0.5)) {
 
-  browser()
-
   names(hsvNaN) <- c("h", "s", "v")
   dims    <- dim(pCompArr$value)
   h       <- Arg(pCompArr$value)
@@ -438,31 +436,34 @@ complexArrayPlot <- function(zMetaInfrm, xlim, ylim, pType = "pma", invertFlip =
 
 makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 
-  compFun <- NULL
   # If there is a match, give back the function. If not, return NULL
-  compFun <- tryCatch(match.fun(FUN), error = function(err) NULL)
+  testFun <- tryCatch(match.fun(FUN), error = function(err) NULL)
 
   # If this does not work, maybe we have a useful character string
-  if(is.null(compFun) & mode(FUN) == "character") {
-    # Arbitrary number for testing the function below
-    testNum <- complex(real = runif(1), imaginary = runif(1))
+  if(is.null(testFun) & mode(FUN) == "character") {
     if(!is.null(moreArgs)) {
       moreArgString <- paste(",", names(moreArgs), collapse = "")
-      testArgs      <- c(testNum, moreArgs)
     }
     else {
       moreArgString <- ""
-      testArgs      <- list(testNum)
     }
     exprText <- paste("function(z", moreArgString, ") ", FUN, sep = "")
     testFun  <- eval(parse(text = exprText))
-    testOut  <- tryCatch(do.call(testFun, testArgs),
-                         error = function(err) NULL)
-    if(!is.null(testOut)) compFun <- testFun
-    else                  compFun <- NULL
   } # if character
 
-  return(compFun)
+  # Test the function if something has been done
+  if(!is.null(testFun)) {
+    # Arbitrary number for testing the function
+    testNum <- complex(real = runif(1), imaginary = runif(1))
+    if(!is.null(moreArgs)) testArgs      <- c(testNum, moreArgs)
+    else                   testArgs      <- list(testNum)
+    # if NULL comes back from this call, the function does not work
+    testOut <- tryCatch(do.call(testFun, testArgs),
+                        error = function(err) NULL)
+    if(is.null(testOut)) testFun <- NULL
+  } # if(!is.null(compFun))
+
+  return(testFun)
 
 } # makeFunctionFromInput
 
@@ -1086,6 +1087,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
   cat("\nParallel backend with", nCores, "cores remains registered for convenience.")
   cat("\nCan be de-registered with 'foreach::registerDoSEQ()'.\n")
 
+  invisible(TRUE) # For test purposes
 } # phasePortrait
 
 # -----------------------------------------------------------------------------
