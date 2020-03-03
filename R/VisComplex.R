@@ -1035,7 +1035,13 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
          else                        dims <- dim(z[[i]])
          if(invertFlip) z[[i]]            <- Conj(1 / z[[i]])
          if(is.null(moreArgs)) {
-           array(do.call(compFun, list(z[[i]])), dim = dims)
+           array(
+             vapply(z[[i]], function(z, compFun) {
+               do.call(compFun, list(z))
+             },
+             FUN.VALUE = complex(1),
+             compFun = compFun),
+           dim = dims)
          }
          else {
            array(
@@ -1049,7 +1055,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
        } # foreach i
        cat("done.")
 
-       rm(z)            # discard z array
+       rm(z) # discard z array
 
        wFileName <- paste(formatC(zMetaInfrm$metaZ[i,]$lower,
          width = trunc(log10(zMetaInfrm$metaZ$lower[nrow(zMetaInfrm$metaZ)])) + 1, flag = "0"),
