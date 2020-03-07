@@ -1008,7 +1008,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
   if (nWorkers != nCores) {
     cat("\nRegistering parallel workers ... ")
     registerDoSEQ() # Unregister parallel for the sake of safety before
-                    # re-registering
+                    # registering with different number of cores
     if(nCores > 1) registerDoParallel(cores = nCores)
     cat(nCores, "parallel workers registered ...")
   } # check number of parallel workers
