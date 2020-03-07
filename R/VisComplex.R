@@ -779,6 +779,13 @@ complexFunctionPlot <- function(...) {
 #'   you are doing - the temporary files can occupy large amounts of hard disk
 #'   space (see details).
 #'
+#' @param noScreenDevice Suppresses any graphical output if TRUE. This is only
+#'   intended for test purposes and makes probably only sense together with
+#'   \code{deleteTempFiles == FALSE}. For dimensioning purposes,
+#'   \code{phasePortrait} will use a 1 x 1 inch pseudo graphics device in this
+#'   case. The default for this parameter is \code{FALSE}, and you should change
+#'   it only if you really know what you are doing.
+#'
 #' @param ... All parameters accepted by the \code{\link{plot.default}}
 #'   function.
 #'
@@ -957,15 +964,20 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
                           stdSaturation = 0.8,
                           hsvNaN = c(0, 0, 0.5),
                           asp = 1,
-                          deleteTempFiles = TRUE, ...) {
+                          deleteTempFiles = TRUE,
+                          noScreenDevice = FALSE, ...) {
 
   # Bring the user's function definition in workable form
   compFun <- makeFunctionFromInput(FUN, moreArgs)
-  if(is.null(compFun)) stop("FUN cannot be interpreted.")
+  if(is.null(compFun)) stop("\nFUN cannot be interpreted.")
 
   # Calculate matrix size from plot region size in inch and
   # definition range for function
-  regionPi  <- par("pin")              # plot region size in inch; first is horizontal
+  ## plot region size in inch; first is horizontal
+  ## if noScreenDevice, region is set to 1 x 1 inch
+  if(!noScreenDevice) regionPi  <- par("pin")
+  else                regionPi  <- c(1, 1)
+
   xRange    <- abs(xlim[2] - xlim[1])
   yRange    <- abs(ylim[2] - ylim[1])
 
@@ -994,9 +1006,10 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
   availCores <- detectCores()     # number available
   nCores     <- min(max(nCores, 1), availCores) # register at least 1 :) and not more than available
   if (nWorkers != nCores) {
-    cat("Registering parallel workers ... ")
-    registerDoSEQ() # Unregister parallel for the sake of safety before registering with different no. of cores
-    registerDoParallel(cores = nCores)
+    cat("\nRegistering parallel workers ... ")
+    registerDoSEQ() # Unregister parallel for the sake of safety before
+                    # re-registering
+    if(nCores > 1) registerDoParallel(cores = nCores)
     cat(nCores, "parallel workers registered ...")
   } # check number of parallel workers
   else {
@@ -1072,12 +1085,14 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
   ) # vapply
 
   # Transform and plot it
-  cat("\nTransforming function values into colours ...")
-
-  complexArrayPlot(zMetaInfrm, xlim, ylim, pType, invertFlip,
-                   lambda, gamma, pi2Div, logBase,
-                   argOffset, stdSaturation, darkestShade,
-                   hsvNaN, ...)
+  if(!noScreenDevice) {
+    cat("\nTransforming function values into colours ...")
+    complexArrayPlot(zMetaInfrm, xlim, ylim, pType, invertFlip,
+                     lambda, gamma, pi2Div, logBase,
+                     argOffset, stdSaturation, darkestShade,
+                     hsvNaN, ...)
+  } # if(!noScreenDevice)
+  else cat("\nNo plot is made (explicit wish of the user) ...")
 
   # Delete all temporary files ... or not
   if(deleteTempFiles) {
@@ -1087,7 +1102,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
     unlink(filesToDelete)
     cat("done.\n")
   } else {
-    cat("Temporary files are NOT deleted (explicit wish of the user).\n")
+    cat("\nTemporary files are NOT deleted (explicit wish of the user).\n")
   } # else (temp files ore not deleted)
 
   cat("\nParallel backend with", nCores, "cores remains registered for convenience.")

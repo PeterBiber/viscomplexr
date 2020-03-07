@@ -4,20 +4,18 @@
 
 # Test case 1
 tempDir <- "tests/testthat"
-x11(width = 4, height = 4)
 phasePortrait("(2-z)^2*(-1i+z)^3*(4-3i-z)/((2+2i+z)^4)",
               xlim = c(-4, 4), ylim = c(-4, 4), invertFlip = FALSE,
-              tempDir = tempDir, deleteTempFiles = FALSE)
-dev.off()
+              tempDir = tempDir, deleteTempFiles = FALSE,
+              noScreenDevice = TRUE)
 
 
 # Test case 2 as above but with invertFlip = TRUE
 tempDir <- "tests/testthat"
-x11(width = 4, height = 4)
 phasePortrait("(2-z)^2*(-1i+z)^3*(4-3i-z)/((2+2i+z)^4)",
               xlim = c(-4, 4), ylim = c(-4, 4), invertFlip = TRUE,
-              tempDir = tempDir, deleteTempFiles = FALSE)
-dev.off()
+              tempDir = tempDir, deleteTempFiles = FALSE,
+              noScreenDevice = TRUE)
 
 
 # Test case 3
@@ -29,25 +27,21 @@ jacobiTheta <- function(z, tau = 1i, nIter = 30) {
   g <- exp(2*pi*1i*z)
   return(1 + sum(q^(k^2)*g^k + q^(k^2)*(1/g)^k))
 }
-
 tempDir <- "tests/testthat"
-x11(width = 4, height = 4)
 phasePortrait("jacobiTheta",
               xlim = c(-2, 2), ylim = c(-2, 2), invertFlip = FALSE,
-              tempDir = tempDir, deleteTempFiles = FALSE)
-dev.off()
-
+              tempDir = tempDir, deleteTempFiles = FALSE,
+              noScreenDevice = TRUE)
 
 
 # Test case 4
 # User function with additional default arguments which _are_ specified
 # in the call to phasePortrait
 tempDir <- "tests/testthat"
-x11(width = 4, height = 4)
 phasePortrait("jacobiTheta", moreArgs = list(tau = 1i/2 - 1/4, nIter = 30),
               xlim = c(-2, 2), ylim = c(-2, 2), invertFlip = FALSE,
-              tempDir = tempDir, deleteTempFiles = FALSE)
-dev.off()
+              tempDir = tempDir, deleteTempFiles = FALSE,
+              noScreenDevice = TRUE)
 
 
 

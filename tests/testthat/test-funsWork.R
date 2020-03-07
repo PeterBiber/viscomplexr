@@ -34,12 +34,12 @@ loadNonRef <- function(refFileNames) {
 # A rational function given as single string
 testCase1 <- function(refFileNames) {
   cleanUp(refFileNames)
-  x11(width = 4, height = 4)
   phasePortrait("(2-z)^2*(-1i+z)^3*(4-3i-z)/((2+2i+z)^4)",
                 xlim = c(-4, 4), ylim = c(-4, 4),
                 invertFlip = FALSE, res = 150,
-                deleteTempFiles = FALSE)
-  dev.off()
+                deleteTempFiles = FALSE,
+                noScreenDevice = TRUE,
+                nCores = 1)
   referenceWmat <- get(load("1wmatCase001.RData"))
   actualWmat    <- loadNonRef(refFileNames)
   cleanUp(refFileNames)
@@ -53,12 +53,12 @@ testCase1 <- function(refFileNames) {
 # A rational function given as single string, but with invertFlip = TRUE
 testCase2 <- function(refFileNames) {
   cleanUp(refFileNames)
-  x11(width = 4, height = 4)
   phasePortrait("(2-z)^2*(-1i+z)^3*(4-3i-z)/((2+2i+z)^4)",
                 xlim = c(-4, 4), ylim = c(-4, 4),
                 invertFlip = TRUE, res = 150,
-                deleteTempFiles = FALSE)
-  dev.off()
+                deleteTempFiles = FALSE,
+                noScreenDevice = TRUE,
+                nCores = 1)
   referenceWmat <- get(load("1wmatCase002.RData"))
   actualWmat    <- loadNonRef(refFileNames)
   cleanUp(refFileNames)
@@ -81,12 +81,12 @@ testCase3 <- function(refFileNames) {
   }
 
   cleanUp(refFileNames)
-  x11(width = 4, height = 4)
   phasePortrait(jacobiTheta,
                 xlim = c(-2, 2), ylim = c(-2, 2),
                 invertFlip = FALSE, res = 150,
-                deleteTempFiles = FALSE)
-  dev.off()
+                deleteTempFiles = FALSE,
+                noScreenDevice = TRUE,
+                nCores = 1)
   referenceWmat <- get(load("1wmatCase003.RData"))
   actualWmat    <- loadNonRef(refFileNames)
   cleanUp(refFileNames)
@@ -109,13 +109,13 @@ testCase4 <- function(refFileNames) {
   }
 
   cleanUp(refFileNames)
-  x11(width = 4, height = 4)
   phasePortrait(jacobiTheta,
                 moreArgs = list(tau = 1i/2 - 1/4, nIter = 30),
                 xlim = c(-2, 2), ylim = c(-2, 2),
                 invertFlip = FALSE, res = 150,
-                deleteTempFiles = FALSE)
-  dev.off()
+                deleteTempFiles = FALSE,
+                noScreenDevice = TRUE,
+                nCores = 1)
   referenceWmat <- get(load("1wmatCase004.RData"))
   actualWmat    <- loadNonRef(refFileNames)
   cleanUp(refFileNames)

@@ -25,6 +25,7 @@ phasePortrait(
   hsvNaN = c(0, 0, 0.5),
   asp = 1,
   deleteTempFiles = TRUE,
+  noScreenDevice = FALSE,
   ...
 )
 }
@@ -182,6 +183,13 @@ the screen.}
 after the plot is completed. Set it on FALSE only, if you know exactly what
 you are doing - the temporary files can occupy large amounts of hard disk
 space (see details).}
+
+\item{noScreenDevice}{Suppresses any graphical output if TRUE. This is only
+intended for test purposes and makes probably only sense together with
+\code{deleteTempFiles == FALSE}. For dimensioning purposes,
+\code{phasePortrait} will use a 1 x 1 inch pseudo graphics device in this
+case. The default for this parameter is \code{FALSE}, and you should change
+it only if you really know what you are doing.}
 
 \item{...}{All parameters accepted by the \code{\link{plot.default}}
 function.}
