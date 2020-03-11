@@ -1,7 +1,10 @@
 ---
 title: "Phase Portraits of Complex Valued Functions with the R Package *viscomplexr*"
 author: "Peter Biber & Veronika Biber"
+header-includes:
+  - \usepackage{amsmath}
 output: rmarkdown::html_vignette
+bibliography: REFERENCES.bib
 vignette: >
   %\VignetteIndexEntry{viscomplex-vignette}
   %\VignetteEngine{knitr::rmarkdown}
@@ -15,6 +18,38 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, echo = FALSE}
 library(viscomplexr)
 ```
+
+## Introduction
+The R package *viscomplexr* has been written as a visualisation tool for complex valued functions. More precisely, it provides functionality for making *phase portraits* of such functions, following the conventions described by Wegert in his book *Visual Complex Functions* [@wegert_visualcpx_2012]. Conceptually, the package is intended for being used inside the framework of R's base graphics, i.e. the users of this package can freely utilize all features of base graphics for obtaining an optimum result, be it for scientific or artistic purposes. This vignette is not at all an introduction to function theory; its purpose is in fact to make the reader acquainted with the features the package provides in a step-by-step process.
+
+## Basics
+The package does not contain many functions, but provides a very versatile workhorse called *phasePortrait*. We will explore some of its key features now. Let us first consider a function that maps a complex number $z \in \mathbb{C}$ on itself, i.e. $f(z)=z$. After attaching the package with `library(viscomplexr)`, a phase portrait of this function is obtained very easily with:
+
+```{r, fig.width = 6.7, fig.height = 6.7, results = 'hide', out.height = '70%', out.width = '70%', fig.align='center', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=z$ in the window $\\left|\\Re(z)\\right| < 8.2$ and $\\left|\\Im(z)\\right| < 8.2$.'}
+phasePortrait("z", xlim = c(-8.2, 8.2), ylim = c(-8.2, 8.2),
+              xlab = "real", ylab = "imaginary")
+```
+
+Such a phase portrait relies on the polar representation of complex numbers. Any complex number z can be written as $z=r\cdot\mathrm{e}^{\mathrm{i}\varphi}$, whereby $r$ is the *modulus* and the angle $\varphi$ is the *argument*. The argument, also called the *phase angle*, is the angle in the origin of the complex number plane between the real axis and the position vector of the number in counter-clockwise orientation. The mean feature of a phase portrait is to translate the argument into a colour. In addition, there are options for visualising the modulus or, more precisely, its relative change.
+
+
+
+## Riemann sphere plots
+
+
+
+
+## Advanced features
+
+### More complex user defined functions
+
+### Defining image quality
+
+### Hints for artistic applications
+
+
+## References
+
