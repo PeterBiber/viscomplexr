@@ -24,7 +24,7 @@ RdMacros:
     Rdpack
 Depends:
     R (>= 3.6),
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Suggests: 
     knitr,
     rmarkdown,
