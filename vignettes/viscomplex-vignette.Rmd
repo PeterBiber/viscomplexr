@@ -28,19 +28,41 @@ The R package *viscomplexr* has been written as a visualisation tool for complex
 ## Basics
 The package does not contain many functions, but provides a very versatile workhorse called *phasePortrait*. We will explore some of its key features now. Let us first consider a function that maps a complex number $z \in \mathbb{C}$ on itself, i.e. $f(z)=z$. After attaching the package with `library(viscomplexr)`, a phase portrait of this function is obtained very easily with:
 
-```{r, fig.width = 6.7, fig.height = 6.7, results = 'hide', out.height = '70%', out.width = '70%', fig.align='center', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=z$ in the window $\\left|\\Re(z)\\right| < 8.2$ and $\\left|\\Im(z)\\right| < 8.2$.'}
-phasePortrait("z", xlim = c(-8.2, 8.2), ylim = c(-8.2, 8.2),
+```{r, figure1, fig.width = 6.7, fig.height = 6.7, results = 'hide', out.height = '70%', out.width = '70%', fig.align='center', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=z$ in the window $\\left|\\Re(z)\\right| < 8.3$ and $\\left|\\Im(z)\\right| < 8.3$.'}
+phasePortrait("z", xlim = c(-8.3, 8.3), ylim = c(-8.3, 8.3),
               xlab = "real", ylab = "imaginary")
 ```
 
-Such a phase portrait relies on the polar representation of complex numbers. Any complex number z can be written as $z=r\cdot\mathrm{e}^{\mathrm{i}\varphi}$, whereby $r$ is the *modulus* and the angle $\varphi$ is the *argument*. The argument, also called the *phase angle*, is the angle in the origin of the complex number plane between the real axis and the position vector of the number in counter-clockwise orientation. The mean feature of a phase portrait is to translate the argument into a colour. In addition, there are options for visualising the modulus or, more precisely, its relative change.
+Such a phase portrait relies on the polar representation of complex numbers. Any complex number $z$ can be written as $z=r\cdot\mathrm{e}^{\mathrm{i}\varphi}$ or equivalently $z=r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)$, whereby $r$ is the *modulus* and the angle $\varphi$ is the *argument*. The argument, also called the *phase angle*, is the angle in the origin of the complex number plane between the real axis and the position vector of the number in counter-clockwise orientation. The main feature of a phase portrait is to translate the argument into a colour. In addition, there are options for visualising the modulus or, more precisely, its relative change.
+
+The translation of the phase angle $\varphi$ into a colour follows the [hsv colour model](https://en.wikipedia.org/wiki/HSL_and_HSV), where radians values of $\varphi=0+k\cdot2\pi$, $\varphi=\frac{2\pi}{3}+k\cdot2\pi$, and $\varphi=\frac{4\pi}{3}+k\cdot2\pi$ with $k\in\mathbb{Z}$ translate into the colors red, green, and blue, respectively, with a continuous transition of colours with values between. As all numbers with the same argument $\varphi$ obtain the same colour, the numbers of the complex plane as visualized in the Figure above are coloured along the chromatic cycle. In order to add visual structure, argument values of $\varphi=\frac{2\pi}{9}$, i.e. $40°$ and their integer multiples are emphasized by black lines. Note that each of these lines follows exactly one colour. Moreover, the zones between two neighbouring arguments $\varphi_1=k\cdot\frac{2\pi}{9}$ and $\varphi_2=(k+1)\cdot\frac{2\pi}{9}$ with $k\in\mathbb{Z}$ are shaded in a way that the brightness of the colors inside one such zone increases with increasing $\varphi$, i.e. in counterclockwise sense of rotation.
+
+The other lines visible in the figure above relate to the modulus $r$. One such line follows the same value of $r$; it is thus obvious that each of these iso-modulus lines must form a concentric circle on the complex number plane (see the figure above). The distance between neighbouring iso-modulus lines is chosen so, that it always indicates the same relative change. For reasons to talk about later [see also @wegert_visualcpx_2012], the default setting of the function *phasePortrait* is a relative change of $b=\mathrm{e}^{2\pi/9}$ which is very close to $2$. Thus, with a grain of salt, the modulus of the complex numbers doubles or halves when moving from one iso-modulus line to the other. In the phase portrait, the zones between two adjacent iso-modulus lines are shaded in a way that the colours inside such a zone become brighter in the direction of increasing modulus. The lines themselves are located at the moduli $b^k$, with $k\in\mathbb{Z}$. This is nicely visible in the phase portrait above, where the outmost circular iso-modulus line indicates (almost exactly) $r=2^3=8$. Moving inwards, the following iso-modulus lines are at $r=2^2=4$, $r=2^1=2$, $r=2^0=1$, $r=2^{-1}=\frac{1}{2}$, $r=2^{-2}=\frac{1}{4}$, etc. Obviously, as the modulus of the numbers on the complex  plane is their distance from the origin, the width of the concentric rings formed by adjacent iso-modulus lines doubles from ring to ring when moving outwards.
+
+When working with the function *phasePortrait*, it might not always be desirable to display all of these reference lines and zonings. The argument `ptype` allows four different options as illustrated in the next example:
+
+```{r figure2, fig.width=7, fig.height=7, results="hide", fig.align='center', fig.show='hold', cache=TRUE, fig.cap= "Different options for including reference lines with the argument `pType`."}
+# first, divide graphics device into four regions and adjust figure margins 
+op <- par(mfrow = c(2, 2), mar = c(1.1, 1.1, 2.1, 1.1)) 
+# plot four phase portraits with different choices of pType
+phasePortrait("z", xlim = c(-8.3, 8.3), ylim = c(-8.3, 8.3), pType = "p",
+              main = "pType = 'p'",   axes = FALSE)
+phasePortrait("z", xlim = c(-8.3, 8.3), ylim = c(-8.3, 8.3), pType = "pa",
+              main = "pType = 'pa'",  axes = FALSE)
+phasePortrait("z", xlim = c(-8.3, 8.3), ylim = c(-8.3, 8.3), pType = "pm",
+              main = "pType = 'pm'",  axes = FALSE)
+phasePortrait("z", xlim = c(-8.3, 8.3), ylim = c(-8.3, 8.3), pType = "pma",
+              main = "pType = 'pma'", axes = FALSE)
+par(op) # reset the graphics parameters to their previous values
+```
+
+As evident from the figure above, setting `ptype` to 'p' displays a phase portrait in the literal sense, i.e. the phase of the comples numbers is displayed and nothing else. The option 'pa' adds reference lines for the argument, the option 'pm' adds iso-modulus lines, and the (default) option 'pma' adds both. In addition to these options, the example shows *phasePortrait* in combination with R's base graphics. The first and the last line of the code chunk set and reset global graphics parameters, and inside the calls to *phasePortrait*, we use the arguments `main` (diagram title) and `axes` which are generic plot arguments. 
+
+
 
 
 
 ## Riemann sphere plots
-
-
-
 
 ## Advanced features
 
