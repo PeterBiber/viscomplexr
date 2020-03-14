@@ -124,13 +124,13 @@ saturation is lowest and highest at the higher edge (see parameters
 includes both shading schemes.}
 
 \item{pi2Div}{Angle distance for the argument reference zones added for
-\code{pType == "pma"}. The value has to be given as an integer (reasonably)
-fraction of 2*pi (i.e. 360 degrees). the default is 9; thus, reference
-zones are delineated by default in distances of 2*pi/9, i.e. (40 degrees),
-starting with 0, i.e. the color red if not defined otherwise with the
-parameter \code{argOffset}. In contrast to the borders delimiting the
-modulus zones, the borders of the reference zones for the argument always
-follow the same colour (by definition).}
+\code{pType = "pma"} or \code{pType = "pa"}. The value has to be given as
+an integer (reasonably) fraction of 2*pi (i.e. 360 degrees). the default is
+9; thus, reference zones are delineated by default in distances of 2*pi/9,
+i.e. (40 degrees), starting with 0, i.e. the color red if not defined
+otherwise with the parameter \code{argOffset}. In contrast to the borders
+delimiting the modulus zones, the borders of the reference zones for the
+argument always follow the same colour (by definition).}
 
 \item{logBase}{Modulus ratio between the edges of the modulus reference zones
 in \code{pType} \code{"pm"} and \code{"pma"}. As recommended by
@@ -138,7 +138,7 @@ in \code{pType} \code{"pm"} and \code{"pma"}. As recommended by
 setting is \code{logBase = exp(2*pi/pi2Div)}. This relation between the
 parameters \code{logBase} and \code{pi2Div} ensures an analogue scaling of
 the modulus and argument reference zones (see Details). Conveniently, for
-the default \code{pi2Div == 9}, we obtain \code{logBase == 2.0099...},
+the default \code{pi2Div = 9}, we obtain \code{logBase == 2.0099...},
 which is very close to 2. Thus, the modulus at the higher edge of a given
 zone is almost exactly two times the value at the lower edge.}
 
@@ -148,15 +148,15 @@ argument reference zones align to the centre of the red area.}
 
 \item{darkestShade}{Darkest possible shading of modulus and angle reference
 zones for \code{pType} \code{"pm"} and \code{"pma"}. It corresponds to the
-value "v" in the \code{\link{hsv}} color model. \code{darkestShade == 0}
-means no brightness at all, i.e. black, while \code{darkestShade == 1}
+value "v" in the \code{\link{hsv}} color model. \code{darkestShade = 0}
+means no brightness at all, i.e. black, while \code{darkestShade = 1}
 indicates maximum brightness. Defaults to 0.1, i.e. very dark, but hue
 still discernible.}
 
 \item{lambda}{Parameter steering the shading interpolation between the higher
 and the lower edges of the the modulus and argument reference zones in
 \code{pType} \code{"pm"} and \code{"pm"}. Should be > 0, default and
-reference is \code{lambda == 7}. Values < 7 increase the contrast at the
+reference is \code{lambda = 7}. Values < 7 increase the contrast at the
 zone borders, values > 7 weaken the contrast.}
 
 \item{gamma}{Parameter for adjusting the combined shading of modulus and

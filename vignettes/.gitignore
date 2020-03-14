@@ -1,3 +1,4 @@
 *.html
 *.R
 viscomplex-vignette_cache/
+viscomplex-vignette.log

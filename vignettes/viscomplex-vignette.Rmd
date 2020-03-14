@@ -3,7 +3,7 @@ title: "Phase Portraits of Complex Valued Functions with the R Package *viscompl
 author: "Peter Biber & Veronika Biber"
 header-includes:
   - \usepackage{amsmath}
-output: rmarkdown::html_vignette
+output: rmarkdown::html_vignette    
 bibliography: REFERENCES.bib
 vignette: >
   %\VignetteIndexEntry{viscomplex-vignette}
@@ -23,13 +23,14 @@ library(viscomplexr)
 ```
 
 ## Introduction
-The R package *viscomplexr* has been written as a visualisation tool for complex valued functions. More precisely, it provides functionality for making *phase portraits* of such functions, following the conventions described by Wegert in his book *Visual Complex Functions* [@wegert_visualcpx_2012]. Conceptually, the package is intended for being used inside the framework of R's base graphics, i.e. the users of this package can freely utilize all features of base graphics for obtaining an optimum result, be it for scientific or artistic purposes. This vignette is not at all an introduction to function theory; its purpose is in fact to make the reader acquainted with the features the package provides in a step-by-step process.
+The **R** package *viscomplexr* has been written as a visualisation tool for complex valued functions. More precisely, it provides functionality for making *phase portraits* of such functions, following the conventions described by Wegert in his book *Visual Complex Functions* [@wegert_visualcpx_2012]. Conceptually, the package is intended for being used inside the framework of **R**'s base graphics, i.e. users of this package can freely utilize all features of base graphics for obtaining an optimum result, be it for scientific or artistic purposes. This vignette is not at all an introduction to function theory or an exhaustive treatment of what can be done with phase portraits, we recommend Wegert's book for an ideal combination of both; our purpose with this vignette is in fact to make the reader acquainted with the technical features the package provides in a step-by-step process.
 
 ## Basics
+### Visualizing the complex plane
 The package does not contain many functions, but provides a very versatile workhorse called *phasePortrait*. We will explore some of its key features now. Let us first consider a function that maps a complex number $z \in \mathbb{C}$ on itself, i.e. $f(z)=z$. After attaching the package with `library(viscomplexr)`, a phase portrait of this function is obtained very easily with:
 
-```{r, figure1, fig.width = 6.7, fig.height = 6.7, results = 'hide', out.height = '70%', out.width = '70%', fig.align='center', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=z$ in the window $\\left|\\Re(z)\\right| < 8.3$ and $\\left|\\Im(z)\\right| < 8.3$.'}
-phasePortrait("z", xlim = c(-8.3, 8.3), ylim = c(-8.3, 8.3),
+```{r, figure1, fig.width = 7, fig.height = 7, results = 'hide', fig.align='center', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
+phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
               xlab = "real", ylab = "imaginary")
 ```
 
@@ -37,29 +38,114 @@ Such a phase portrait relies on the polar representation of complex numbers. Any
 
 The translation of the phase angle $\varphi$ into a colour follows the [hsv colour model](https://en.wikipedia.org/wiki/HSL_and_HSV), where radians values of $\varphi=0+k\cdot2\pi$, $\varphi=\frac{2\pi}{3}+k\cdot2\pi$, and $\varphi=\frac{4\pi}{3}+k\cdot2\pi$ with $k\in\mathbb{Z}$ translate into the colors red, green, and blue, respectively, with a continuous transition of colours with values between. As all numbers with the same argument $\varphi$ obtain the same colour, the numbers of the complex plane as visualized in the Figure above are coloured along the chromatic cycle. In order to add visual structure, argument values of $\varphi=\frac{2\pi}{9}$, i.e. $40°$ and their integer multiples are emphasized by black lines. Note that each of these lines follows exactly one colour. Moreover, the zones between two neighbouring arguments $\varphi_1=k\cdot\frac{2\pi}{9}$ and $\varphi_2=(k+1)\cdot\frac{2\pi}{9}$ with $k\in\mathbb{Z}$ are shaded in a way that the brightness of the colors inside one such zone increases with increasing $\varphi$, i.e. in counterclockwise sense of rotation.
 
-The other lines visible in the figure above relate to the modulus $r$. One such line follows the same value of $r$; it is thus obvious that each of these iso-modulus lines must form a concentric circle on the complex number plane (see the figure above). The distance between neighbouring iso-modulus lines is chosen so, that it always indicates the same relative change. For reasons to talk about later [see also @wegert_visualcpx_2012], the default setting of the function *phasePortrait* is a relative change of $b=\mathrm{e}^{2\pi/9}$ which is very close to $2$. Thus, with a grain of salt, the modulus of the complex numbers doubles or halves when moving from one iso-modulus line to the other. In the phase portrait, the zones between two adjacent iso-modulus lines are shaded in a way that the colours inside such a zone become brighter in the direction of increasing modulus. The lines themselves are located at the moduli $b^k$, with $k\in\mathbb{Z}$. This is nicely visible in the phase portrait above, where the outmost circular iso-modulus line indicates (almost exactly) $r=2^3=8$. Moving inwards, the following iso-modulus lines are at $r=2^2=4$, $r=2^1=2$, $r=2^0=1$, $r=2^{-1}=\frac{1}{2}$, $r=2^{-2}=\frac{1}{4}$, etc. Obviously, as the modulus of the numbers on the complex  plane is their distance from the origin, the width of the concentric rings formed by adjacent iso-modulus lines doubles from ring to ring when moving outwards.
+The other lines visible in the figure above relate to the modulus $r$. One such line follows the same value of $r$; it is thus obvious that each of these iso-modulus lines must form a concentric circle on the complex number plane (see the figure above). The distance between neighbouring iso-modulus lines is chosen so, that it always indicates the same relative change. For reasons to talk about later [see also @wegert_visualcpx_2012], the default setting of the function *phasePortrait* is a relative change of $b=\mathrm{e}^{2\pi/9}$ which is very close to $2$. Thus, with a grain of salt, the modulus of the complex numbers doubles or halves when moving from one iso-modulus line to the other. In the phase portrait, the zones between two adjacent iso-modulus lines are shaded in a way that the colours inside such a zone become brighter in the direction of increasing modulus. The lines themselves are located at the moduli $r=b^k$, with $k\in\mathbb{Z}$. This is nicely visible in the phase portrait above, where the outmost circular iso-modulus line indicates (almost exactly) $r=2^3=8$. Moving inwards, the following iso-modulus lines are at $r=2^2=4$, $r=2^1=2$, $r=2^0=1$, $r=2^{-1}=\frac{1}{2}$, $r=2^{-2}=\frac{1}{4}$, etc. Obviously, as the modulus of the numbers on the complex  plane is their distance from the origin, the width of the concentric rings formed by adjacent iso-modulus lines doubles from ring to ring when moving outwards.
 
+### Visual structuring - the argument *pType*
 When working with the function *phasePortrait*, it might not always be desirable to display all of these reference lines and zonings. The argument `ptype` allows four different options as illustrated in the next example:
 
 ```{r figure2, fig.width=7, fig.height=7, results="hide", fig.align='center', fig.show='hold', cache=TRUE, fig.cap= "Different options for including reference lines with the argument `pType`."}
-# first, divide graphics device into four regions and adjust figure margins 
+# divide graphics device into four regions and adjust plot margins 
 op <- par(mfrow = c(2, 2), mar = c(1.1, 1.1, 2.1, 1.1)) 
 # plot four phase portraits with different choices of pType
-phasePortrait("z", xlim = c(-8.3, 8.3), ylim = c(-8.3, 8.3), pType = "p",
+phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "p",
               main = "pType = 'p'",   axes = FALSE)
-phasePortrait("z", xlim = c(-8.3, 8.3), ylim = c(-8.3, 8.3), pType = "pa",
+phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "pa",
               main = "pType = 'pa'",  axes = FALSE)
-phasePortrait("z", xlim = c(-8.3, 8.3), ylim = c(-8.3, 8.3), pType = "pm",
+phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "pm",
               main = "pType = 'pm'",  axes = FALSE)
-phasePortrait("z", xlim = c(-8.3, 8.3), ylim = c(-8.3, 8.3), pType = "pma",
+phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "pma",
               main = "pType = 'pma'", axes = FALSE)
 par(op) # reset the graphics parameters to their previous values
 ```
 
 As evident from the figure above, setting `ptype` to 'p' displays a phase portrait in the literal sense, i.e. the phase of the comples numbers is displayed and nothing else. The option 'pa' adds reference lines for the argument, the option 'pm' adds iso-modulus lines, and the (default) option 'pma' adds both. In addition to these options, the example shows *phasePortrait* in combination with R's base graphics. The first and the last line of the code chunk set and reset global graphics parameters, and inside the calls to *phasePortrait*, we use the arguments `main` (diagram title) and `axes` which are generic plot arguments. 
 
+### Visual structuring - the arguments *pi2Div* and *logBase*
+For demonstrating options to adjust the density of the argument and modulus reference lines, we use the rational function
+$$
+f(z)=\frac{(3+2\mathrm{i}+z)(-5+5\mathrm{i}+z)}{(-2-2\mathrm{i}+z)^2}
+$$
+Evidently, this function has two zeroes, $z_1=-3-2\mathrm{i}$, and $z_2=5-5\mathrm{i}$. It also has a second order pole at $z_3=2+2\mathrm{i}$. We make a phase portrait of this function over exactly the same clipout of the complex plane as we did in the figures above. When calling *phasePortrait* with such simple functions, it is most convenient to define them as as a quoted character string in **R** syntax containing the variable `z`.  
 
+```{r figure 3, fig.width=7, fig.height=7, results='hide', fig.align='center', cache=TRUE, fig.cap='Phase portrait of the function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
+phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
+              xlab = "real", ylab = "imaginary")
 
+```
+
+The resulting figure nicely displays the function's two zeroes and the pole. Note that all colors meet in zeroes and poles. Around zeroes, the colours cycle counterclockwise in the order red, green, blue, while this order is reversed around poles. For $n$<sup>th</sup> order ($n\in\mathbb{N}$) zeroes and poles, the cyle is passed through $n$ times. We recommend to check this out with examples of your own.
+
+Now, suppose we want to change the density of the reference lines for the phase angle $\varphi$. This can be done by way of the argument `pi2Div`. For usual applications, `pi2Div` should be a natural number $n\:(n\in\mathbb{N})$. It defines the angle $\Delta\varphi$ between two adjacent reference lines as a fraction of the round angle, i.e. $\Delta\varphi=\frac{2\pi}{n}$. The default value of `pi2Div` is 9, i.e. $\Delta\varphi=\frac{2\pi}{9}=40°$. Let's plot our function in three flavours of `pi2Div`, namely, 6, 9 (the default), and 18, resulting in $\Delta\varphi$ values of $\frac{\pi}{3}=60°$, $\frac{2\pi}{9}=40°$, and $\frac{\pi}{9}=20°$.
+
+```{r figure 4, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ portrayed with three different settings of `pi2Div` and `pType = "pa"`.'}
+# divide graphics device into three regions and adjust plot margins 
+op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
+for(n in c(6, 9, 18)) {
+  phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
+                pi2Div = n, pType = "pa", axes = FALSE)
+  # separate title call (R base graphics) for nicer line adjustment, just cosmetics
+  title(paste("pi2Div =", n), line = -1.2) 
+}
+par(op) # reset graphics parameters to previous values
+```
+
+So far, this is exactly, what had to be expected. But see what happens if we choose the default `pType`, `"pma"` which also adds modulus reference lines:
+
+```{r figure 5, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ portrayed with three different settings of `pi2Div` and `pType = "pma"`.'}
+# divide graphics device into three regions and adjust plot margins 
+op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
+for(n in c(6, 9, 18)) {
+  phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
+                pi2Div = n, pType = "pma", axes = FALSE)
+  # separate title call (R base graphics) for nicer line adjustment, just cosmetics
+  title(paste("pi2Div =", n), line = -1.2) 
+}
+par(op) # reset graphics parameters to previous values
+```
+
+Evidently, our choice of `pi2Div` has influenced the density of the iso-modulus lines. This is because, by default, the parameter `logBase`, which controls how dense the iso-modulus lines are arranged, is linked to `pi2Div`. As stated above, `pi2Div` is usally a natural number $n\:(n \in\mathbb{N})$, and `logBase` is the real number $b\:(b\in\mathbb{R})$ which defines the moduli $r=b^k\:(k\in\mathbb{Z})$ where the reference lines are drawn. When $n$ is given, the default definition of $b$ is $b=\mathrm{e}^{2\pi/n}$. In the default case, $n=9$, this results in $b\approx2.009994$. Thus, by default, moving from one iso-modulus line to the adjacent one means almost exactly doubling or halving the modulus, depending on the direction. For the other two cases $n=6$ and $n=18$, the resulting values for $b$ are $b\approx2.85$ and $b\approx1.42$, the latter obviously being the square root of $\mathrm{e}^{2\pi/9}$. For $n=18$, the modulus (approximately) doubles or halves when traversing two adjacent iso-modulus lines. 
+
+Before we demonstrate the special property of this linkage between $n$ and $b$, i.e. between `pi2Div` and `logBase`, we shortly show, that they can be decoupled in *phasePortrait* without any complication. In the following example, we want to define the density of the iso-modulus lines in a way that the modulus triples when traversing three zones in the direction of ascending moduli. Clearly, this requires to define `logBase` as $b=\sqrt[3]{3}\approx1.44$. Thus, when moving from one iso-modulus line to the next higher one, the modulus has increased by a factor of about $1.4$. One line further, it has about doubled (${\sqrt[3]{3}}^{2}\approx2.08$), and another line further it has exactly tripled. While varying `pi2Div` exactly as in the previous example, we now keep `logBase` constant at $\sqrt[3]{3}$.
+
+```{r figure 6, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ portrayed with decoupled settings of `pi2Div` and `logBase`.'}
+# divide graphics device into three regions and adjust plot margins 
+op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
+for(n in c(6, 9, 18)) {
+  phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
+                pi2Div = n, logBase = sqrt(3), pType = "pma", axes = FALSE)
+  # separate title call (R base graphics) for nicer line adjustment, just cosmetics
+  title(paste("pi2Div = ", n, ", logBase = 3^(1/3)", sep = ""), line = -1.2) 
+}
+par(op) # reset graphics parameters to previous values
+```
+
+In order to understand why by default the parameters `pi2Div` and `logBase` are linked as described above, we consider the exponential function $f(z)=\mathrm{e}^z$. We can write $z=r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)$ and thus $f(z)=\mathrm{e}^{r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)}$ or $w=f(z)=\mathrm{e}^{r\cdot\cos\varphi}\cdot\mathrm{e}^{\mathrm{i}\cdot r\cdot\sin\varphi}$. The modulus of $w$ is $\mathrm{e}^{r\cdot\cos\varphi}$ and its argument is $r\cdot\sin\varphi$ with $\Re(z)=r\cdot\cos\varphi$ and $\Im(z)=r\cdot \sin\varphi$. So, the modulus and the argument of $w=\mathrm{e}^z$ depend solely on the real and the imaginary part of $z$, respectively. This can be easily verified with a phase portrait of $f(z)=\mathrm{e}^z$. Note that in the call to *phasePortrait* we hand over the `exp` function directly. Alternatively, the quoted string `"exp(z)"` can be used as well. 
+
+```{r, figure7, fig.width = 7, fig.height = 7, results = 'hide', fig.align='center', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=\\mathrm{e}^z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
+phasePortrait(exp, xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "p",
+              xlab = "real", ylab = "imaginary")
+```
+
+If we now define the argument `pi2Div` as a number $n\:(n\in\mathbb{N})$ and use it for determining the angular difference $\Delta\varphi$ between two subsequent phase angle reference lines $\Delta\varphi=\frac{2\pi}{n}$, our default link between `pi2Div` and `logBase` (which is the ratio $b$ of the moduli at two subsequent iso-modulus lines) establishes $b=\mathrm{e}^{\Delta\varphi}$. This means, if we add $\Delta\varphi$ to the argument of any $w=\mathrm{e}^z\:(z\in\mathbb{C})$ or increase its modulus by the factor $\mathrm{e}^{\Delta\varphi}$, both are equidistant reference line steps in a plot of $f(z)=\mathrm{e}^z$. We visualize this with the following **R** code:
+
+```{r figure 8, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\mathrm{e}^z$ portrayed with the default coupling of `pi2Div` and `logBase` as implemented in *phasePortrait*.'}
+# divide graphics device into three regions and adjust plot margins 
+op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
+for(n in c(6, 9, 18)) {
+  phasePortrait("exp(z)", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
+                pi2Div = n, pType = "pma", axes = FALSE)
+  # separate title call (R base graphics) for nicer line adjustment, just cosmetics
+  title(paste("pi2Div = ", n, ", logBase = exp(2*pi/pi2Div)", sep = ""), 
+        line = -1.2, cex.main = 0.9) 
+}
+par(op) # reset graphics parameters to previous values
+```
+
+As expected, the default coupling of both arguments produces square patterns when applied to a phase portrait of the exponential function which can, insofar, serve as a visual reference. Recall, that equidistant modulus reference lines (in ascending order) indicate an exponentially growing modulus. In the middle phasePortrait one such steps means doubling the modulus. From the left to the right, the plot covers 24 of these steps, indicating a total increase of the modulus by factor $2^{24}$ which amounts to almost 17 millions.
+
+### Fine tuning shading and contrast
+
+### Be aware of branch cuts
 
 
 ## Riemann sphere plots
@@ -71,6 +157,10 @@ As evident from the figure above, setting `ptype` to 'p' displays a phase portra
 ### Defining image quality
 
 ### Hints for artistic applications
+
+### Beware of the temporary files
+
+### Parallel processing
 
 
 ## References
