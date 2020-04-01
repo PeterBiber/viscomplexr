@@ -141,12 +141,16 @@ par(op) # reset graphics parameters to previous values
 As expected, the default coupling of both arguments produces square patterns when applied to a phase portrait of the exponential function which can, insofar, serve as a visual reference. Recall, that equidistant modulus reference lines (in ascending order) indicate an exponentially growing modulus. In the middle phasePortrait one such steps means doubling the modulus. From the left to the right, the plot covers 24 of these steps, indicating a total increase of the modulus by factor $2^{24}$ which amounts to almost 17 millions.
 
 ### Fine tuning shading and contrast
+For optimizing visualization in a technical sense, as well as for aesthetic purposes, it may be useful to adjust shading and contrast of the argument and modulus reference zones mentioned above. This is done by modifying the parameters `darkestShade` ($s$) and `lambda` ($\lambda$) when calling `phasePortrait`. These two parameters can be used to steer the transition from the lower to the uper edge of a reference zone. They address the v-value of the [hsv colour model](https://en.wikipedia.org/wiki/HSL_and_HSV), which can take values between 0 and 1, indicating maximum darkness (black), and no shading at all, respectively. Hereby, $s$ gives the v-value at the lower edge of a reference zone, and $\lambda$ determines the interpolation from there to the upper edge, where no shading is applied. The intended use is $\lambda > 0$ where small values sharpen the contrast between shaded and non-shaded zones and vice versa. Exactly, the shading value $v$ is calculated as:
+$$
+v = s + (1-s)\cdot x^{1/\lambda}
+$$
+For modulus zone shading at a point $z$ in the complex plane when portraying a function $f(z)$, $x$ is the fractional part of $\log_b{f(z)}$, with the base $b$ being the parameter `logBase` that defines the modulus reference zoning (see above). For shading argument reference zones, $x$ is simply the difference between the upper and the lower angle of an argument reference zone, linearly mapped to the range $[0, 1[$. The following code generates a $3\times3$ matrix of phase portraits of $f(z)=\tan{z^2}$ with $\lambda$ and $s$ changing along the rows and columns, respectively.
 
-
-```{r figure9, fig.width=7, fig.height=7, fig.show='hold', results='hide', cache=TRUE}
-op <- par(mfrow = c(3, 3), mar = c(0.2, 0.2, 0.2, 0.2), oma = c(0, 2.1, 2.1, 0))
-for(lb in c(1, 4, 9)) {
-  for(dS in c(0, 0.2, 0.6)) {
+```{r figure9, fig.width=7, fig.height=7, fig.show='hold', results='hide', cache=TRUE, fig.cap='Tuning reference zone contrast with the parameters `darkestShade` (column-wise, 0, 0.2, 0.4), and `lambda` (row-wise, 0.1, 1, 10).'}
+op <- par(mfrow = c(3, 3), mar = c(0.2, 0.2, 0.2, 0.2), oma = c(0, 0, 0, 0))
+for(lb in c(0.1, 1, 10)) {
+  for(dS in c(0, 0.2, 0.4)) {
     phasePortrait("tan(z^2)", xlim = c(-1.7, 1.7), ylim = c(-1.7, 1.7), 
                   pType = "pm", darkestShade = dS, lambda = lb, 
                   axes = FALSE, xaxs = "i", yaxs = "i")
