@@ -125,7 +125,7 @@ phasePortrait(exp, xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "p",
 
 If we now define the argument `pi2Div` as a number $n\:(n\in\mathbb{N})$ and use it for determining the angular difference $\Delta\varphi$ between two subsequent phase angle reference lines $\Delta\varphi=\frac{2\pi}{n}$, our default link between `pi2Div` and `logBase` (which is the ratio $b$ of the moduli at two subsequent iso-modulus lines) establishes $b=\mathrm{e}^{\Delta\varphi}$. This means, if we add $\Delta\varphi$ to the argument of any $w=\mathrm{e}^z\:(z\in\mathbb{C})$ or increase its modulus by the factor $\mathrm{e}^{\Delta\varphi}$, both are equidistant reference line steps in a plot of $f(z)=\mathrm{e}^z$. We visualize this with the following **R** code:
 
-```{r figure 8, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\mathrm{e}^z$ portrayed with the default coupling of `pi2Div` and `logBase` as implemented in *phasePortrait*.'}
+```{r figure8, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\mathrm{e}^z$ portrayed with the default coupling of `pi2Div` and `logBase` as implemented in *phasePortrait*.'}
 # divide graphics device into three regions and adjust plot margins 
 op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
 for(n in c(6, 9, 18)) {
@@ -141,6 +141,23 @@ par(op) # reset graphics parameters to previous values
 As expected, the default coupling of both arguments produces square patterns when applied to a phase portrait of the exponential function which can, insofar, serve as a visual reference. Recall, that equidistant modulus reference lines (in ascending order) indicate an exponentially growing modulus. In the middle phasePortrait one such steps means doubling the modulus. From the left to the right, the plot covers 24 of these steps, indicating a total increase of the modulus by factor $2^{24}$ which amounts to almost 17 millions.
 
 ### Fine tuning shading and contrast
+
+
+```{r figure9, fig.width=7, fig.height=7, fig.show='hold', results='hide', cache=TRUE}
+op <- par(mfrow = c(3, 3), mar = c(0.2, 0.2, 0.2, 0.2), oma = c(0, 2.1, 2.1, 0))
+for(lb in c(1, 4, 9)) {
+  for(dS in c(0, 0.2, 0.6)) {
+    phasePortrait("tan(z^2)", xlim = c(-1.7, 1.7), ylim = c(-1.7, 1.7), 
+                  pType = "pm", darkestShade = dS, lambda = lb, 
+                  axes = FALSE, xaxs = "i", yaxs = "i")
+  }
+}
+par(op)
+```
+
+
+
+
 
 ### Be aware of branch cuts
 
