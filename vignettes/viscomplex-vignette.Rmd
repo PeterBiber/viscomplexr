@@ -1,14 +1,11 @@
 ---
 title: "Phase Portraits of Complex Valued Functions with the R Package *viscomplexr*"
 author: "Peter Biber & Veronika Biber"
-header-includes:
-  - \usepackage{amsmath}
-output: rmarkdown::html_vignette    
+output: rmarkdown::html_vignette
+header-includes: \usepackage{amsmath}
 bibliography: REFERENCES.bib
-vignette: >
-  %\VignetteIndexEntry{viscomplex-vignette}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+vignette: |
+  %\VignetteIndexEntry{viscomplex-vignette} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
