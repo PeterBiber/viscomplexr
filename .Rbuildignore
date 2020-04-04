@@ -1,3 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^CreateTestCases$
+^vignettes/viscomplexr-vignette_cache$
+^doc$
+^Meta$

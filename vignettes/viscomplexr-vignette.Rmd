@@ -5,7 +5,9 @@ output: rmarkdown::html_vignette
 header-includes: \usepackage{amsmath}
 bibliography: REFERENCES.bib
 vignette: |
-  %\VignetteIndexEntry{viscomplex-vignette} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{viscomplexr-vignette} 
+  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -26,9 +28,15 @@ The **R** package *viscomplexr* has been written as a visualisation tool for com
 ### Visualizing the complex plane
 The package does not contain many functions, but provides a very versatile workhorse called *phasePortrait*. We will explore some of its key features now. Let us first consider a function that maps a complex number $z \in \mathbb{C}$ on itself, i.e. $f(z)=z$. After attaching the package with `library(viscomplexr)`, a phase portrait of this function is obtained very easily with:
 
-```{r, figure1, fig.width = 7, fig.height = 7, results = 'hide', fig.align='center', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
+```{r, figure1, fig.width = 7, fig.height = 7, results = 'hide', fig.align='center', cache = FALSE, fig.show = 'hold', fig.cap = 'Phase portrait of the function $f(z)=z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
 phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
-              xlab = "real", ylab = "imaginary")
+              xlab = "real", ylab = "imaginary", nCores = 2)
+
+# Note the argument 'nCores' which determines the number of parallel processes to
+# be used. Setting nCores = 2 has been done here and in all subsequent 
+# examples as CRAN checks do not allow more parallel processes. 
+# For normal work, we recommend not to define nCores at all which will make 
+# phasePortrait use all available cores on your machine.
 ```
 
 Such a phase portrait relies on the polar representation of complex numbers. Any complex number $z$ can be written as $z=r\cdot\mathrm{e}^{\mathrm{i}\varphi}$ or equivalently $z=r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)$, whereby $r$ is the *modulus* and the angle $\varphi$ is the *argument*. The argument, also called the *phase angle*, is the angle in the origin of the complex number plane between the real axis and the position vector of the number in counter-clockwise orientation. The main feature of a phase portrait is to translate the argument into a colour. In addition, there are options for visualising the modulus or, more precisely, its relative change.
@@ -45,13 +53,13 @@ When working with the function *phasePortrait*, it might not always be desirable
 op <- par(mfrow = c(2, 2), mar = c(1.1, 1.1, 2.1, 1.1)) 
 # plot four phase portraits with different choices of pType
 phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "p",
-              main = "pType = 'p'",   axes = FALSE)
+              main = "pType = 'p'",   axes = FALSE, nCores = 2)
 phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "pa",
-              main = "pType = 'pa'",  axes = FALSE)
+              main = "pType = 'pa'",  axes = FALSE, nCores = 2)
 phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "pm",
-              main = "pType = 'pm'",  axes = FALSE)
+              main = "pType = 'pm'",  axes = FALSE, nCores = 2)
 phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "pma",
-              main = "pType = 'pma'", axes = FALSE)
+              main = "pType = 'pma'", axes = FALSE, nCores = 2)
 par(op) # reset the graphics parameters to their previous values
 ```
 
@@ -66,7 +74,7 @@ Evidently, this function has two zeroes, $z_1=-3-2\mathrm{i}$, and $z_2=5-5\math
 
 ```{r figure 3, fig.width=7, fig.height=7, results='hide', fig.align='center', cache=TRUE, fig.cap='Phase portrait of the function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
 phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
-              xlab = "real", ylab = "imaginary")
+              xlab = "real", ylab = "imaginary", nCores = 2)
 
 ```
 
@@ -79,7 +87,7 @@ Now, suppose we want to change the density of the reference lines for the phase 
 op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
 for(n in c(6, 9, 18)) {
   phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
-                pi2Div = n, pType = "pa", axes = FALSE)
+                pi2Div = n, pType = "pa", axes = FALSE, nCores = 2)
   # separate title call (R base graphics) for nicer line adjustment, just cosmetics
   title(paste("pi2Div =", n), line = -1.2) 
 }
@@ -93,7 +101,7 @@ So far, this is exactly, what had to be expected. But see what happens if we cho
 op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
 for(n in c(6, 9, 18)) {
   phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
-                pi2Div = n, pType = "pma", axes = FALSE)
+                pi2Div = n, pType = "pma", axes = FALSE, nCores = 2)
   # separate title call (R base graphics) for nicer line adjustment, just cosmetics
   title(paste("pi2Div =", n), line = -1.2) 
 }
@@ -109,7 +117,7 @@ Before we demonstrate the special property of this linkage between $n$ and $b$, 
 op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
 for(n in c(6, 9, 18)) {
   phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
-                pi2Div = n, logBase = sqrt(3), pType = "pma", axes = FALSE)
+                pi2Div = n, logBase = sqrt(3), pType = "pma", axes = FALSE, nCores = 2)
   # separate title call (R base graphics) for nicer line adjustment, just cosmetics
   title(paste("pi2Div = ", n, ", logBase = 3^(1/3)", sep = ""), line = -1.2) 
 }
@@ -120,7 +128,7 @@ In order to understand why by default the parameters `pi2Div` and `logBase` are 
 
 ```{r, figure7, fig.width = 7, fig.height = 7, results = 'hide', fig.align='center', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=\\mathrm{e}^z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
 phasePortrait(exp, xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "p",
-              xlab = "real", ylab = "imaginary")
+              xlab = "real", ylab = "imaginary", nCores = 2)
 ```
 
 If we now define the argument `pi2Div` as a number $n\:(n\in\mathbb{N})$ and use it for determining the angular difference $\Delta\varphi$ between two subsequent phase angle reference lines $\Delta\varphi=\frac{2\pi}{n}$, our default link between `pi2Div` and `logBase` (which is the ratio $b$ of the moduli at two subsequent iso-modulus lines) establishes $b=\mathrm{e}^{\Delta\varphi}$. This means, if we add $\Delta\varphi$ to the argument of any $w=\mathrm{e}^z\:(z\in\mathbb{C})$ or increase its modulus by the factor $\mathrm{e}^{\Delta\varphi}$, both are equidistant reference line steps in a plot of $f(z)=\mathrm{e}^z$. We visualize this with the following **R** code:
@@ -130,7 +138,7 @@ If we now define the argument `pi2Div` as a number $n\:(n\in\mathbb{N})$ and use
 op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
 for(n in c(6, 9, 18)) {
   phasePortrait("exp(z)", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
-                pi2Div = n, pType = "pma", axes = FALSE)
+                pi2Div = n, pType = "pma", axes = FALSE, nCores = 2)
   # separate title call (R base graphics) for nicer line adjustment, just cosmetics
   title(paste("pi2Div = ", n, ", logBase = exp(2*pi/pi2Div)", sep = ""), 
         line = -1.2, cex.main = 0.9) 
@@ -153,7 +161,7 @@ for(lb in c(0.1, 1, 10)) {
   for(dS in c(0, 0.2, 0.4)) {
     phasePortrait("tan(z^2)", xlim = c(-1.7, 1.7), ylim = c(-1.7, 1.7), 
                   pType = "pm", darkestShade = dS, lambda = lb, 
-                  axes = FALSE, xaxs = "i", yaxs = "i")
+                  axes = FALSE, xaxs = "i", yaxs = "i", nCores = 2)
   }
 }
 par(op)
