@@ -178,7 +178,7 @@ op <- par(mfrow = c(1, 3), mar = c(0.4, 0.2, 0.2, 0.2))
 for(k in 0:2) {
   phasePortrait("z^(1/3) * exp(1i * k * 2*pi/3)", 
                 xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5), pi2Div = 12, 
-                axes = FALSE)
+                axes = FALSE, nCores = 2)
   title(sub = paste0("k = ", k), line = -1)
   segments(-1.5, 0, 0, 0, lwd = 2, lty = "dashed") # emphasize branch cut
   # draw coloured arrows
@@ -192,12 +192,25 @@ for(k in 0:2) {
 par(op)
 ```
 
-First, have a look at the leftmost diagram. Note that the argument reference lines have been adjusted to represent angle distances of $30°$, i.e. `pi2Div` = 12. Most noticeable is the abrupt colour change from yellow to magenta along the negative real axis (emphasized with a dashed line). This is what is called a *branch cut*, and it suggests that our picture of the function $f(z)=z^{1/3}$ is not complete. As the three third roots of any complex number $z=r\cdot\mathrm{e}^{i\varphi}, z\in\mathbb{C}\setminus\lbrace0\rbrace$ are $r^{1/3}\cdot\mathrm{e}^{i\cdot(\varphi+k\cdot2\pi/3)}, k=0,1,2$, we require three different phase portraits, one for each $k$, as shown in the figure above. As the argument reference line distance is $30°$, it is easy to see that each phase portrait covers a total argument range of $120°$, i.e. $2\pi/3$.
+First, have a look at the leftmost diagram. Note that the argument reference lines have been adjusted to represent angle distances of $30°$, i.e. `pi2Div` = 12. Most noticeable is the abrupt colour change from yellow to magenta along the negative real axis (emphasized with a dashed line). This is what is called a *branch cut*, and it suggests that our picture of the function $f(z)=z^{1/3}$ is not complete. As the three third roots of any complex number $z=r\cdot\mathrm{e}^{\mathrm{i}\varphi}, z\in\mathbb{C}\setminus\lbrace0\rbrace$ are $r^{1/3}\cdot\mathrm{e}^{\mathrm{i}\cdot(\varphi+k\cdot2\pi/3)}; k=0,1,2; \varphi\in\left[0,2\pi\right[$, we require three different phase portraits, one for each $k$, as shown in the figure above. With the argument reference line distance being $30°$, it is easy to see that each phase portrait covers a total argument range of $120°$, i.e. $2\pi/3$.
 
 Obviously, each of the three portraits has a branch cut along the negative real axis, and the colours at the branch cuts show, where the transitions between the phase portraits have to happen. In the figure, we have illustrated this by arrows pointing to the branch cuts. Same-coloured arrows in different phase portraits indicate the transitions. Thus, the first phase portrait ($k = 0$) links to the second ($k = 1$) in their yellow zones (black arrows); the second links to the third ($k = 2$) in their blue zones (red arrows), and the third links back to the first in their magenta zones (green arrows). Actually, one could imagine to stack the three face portraits in ascending order, cut them at the dashed line, and glue the branch cuts together according to the correct transitions. The resulting object is a Riemann surface with each phase portrait being a 'sheet'. See more about this fascinating concept in @wegert_visualcpx_2012, Chapter7.
 
+While the function $f(z)=z^{1/3}$ could be fully covered with three phase portraits, $f(z)=\log z$ has an infinite number of branches. As the (natural) logarithm of any complex number $z=r\cdot\mathrm{e}^{i\cdot\varphi}, r>0$ is $\log z=\log r+\mathrm{i}\cdot\varphi$, it is evident that the imaginary part of $\log z$ increases linearly with the argument of $z$, $\varphi$. In terms of phase portraits, this means an infinite number of stacked 'sheets' in either direction, clockwise and counterclockwise. Neighbouring sheets connect at a branch cut. We illustrate this below with a phase portrait of $\log z=\log r+\mathrm{i}\cdot(\varphi+k\cdot2\pi), r > 0, \varphi\in\left[0,2\pi\right[$ for $k=-1, 0, 1$.
 
-Natural log.
+```{r figure 11, fig.width=7, fig.height=2.7, results='hide', fig.align='center', fig.show='hold', cache=TRUE, fig.cap='Three branches of $\\log z=\\log r+\\mathrm{i}\\cdot(\\varphi + k\\cdot2\\pi), r>0, \\varphi\\in\\left[0,2\\pi\\right[$, with $k=-1,0,1$. The branch cuts are marked with dashed white lines.'}
+
+op <- par(mfrow = c(1, 3), mar = c(0.4, 0.2, 0.2, 0.2))
+for(k in -1:1) {
+  phasePortrait("log(Mod(z)) + 1i * (Arg(z) + 2 * pi * k)", pi2Div = 36,
+                xlim = c(-2, 2), ylim = c(-2, 2), axes = FALSE, nCores = 2)
+  segments(-2, 0, 0, 0, col = "white", lwd = 1, lty = "dashed")
+  title(sub = paste0("k = ", k), line = -1)
+}  
+par(op)
+```
+
+
 
 
 ## Riemann sphere plots
