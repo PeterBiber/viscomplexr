@@ -19,14 +19,17 @@ Imports:
     parallel,
     scales,
     plotrix,
-    Rdpack
+    Rdpack,
+    Rcpp
 RdMacros:
     Rdpack
 Depends:
-    R (>= 3.6),
-RoxygenNote: 7.1.0
+    R (>= 4.0),
+RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown,
     testthat (>= 2.1.0)
 VignetteBuilder: knitr
+LinkingTo: 
+    Rcpp

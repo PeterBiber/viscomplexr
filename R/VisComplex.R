@@ -80,6 +80,19 @@
 # in the foreach loops
 utils::globalVariables("i")
 
+# For including Rcpp
+
+## usethis namespace: start
+#' @useDynLib viscomplexr, .registration = TRUE
+## usethis namespace: end
+NULL
+
+## usethis namespace: start
+#' @importFrom Rcpp sourceCpp
+## usethis namespace: end
+NULL
+
+
 # -------------------------------------------------------------------------------
 # Pointer emulation after
 # https://www.stat.berkeley.edu/~paciorek/computingTips/Pointers_passing_reference_.html
