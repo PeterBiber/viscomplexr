@@ -84,11 +84,8 @@ utils::globalVariables("i")
 
 ## usethis namespace: start
 #' @useDynLib viscomplexr, .registration = TRUE
-## usethis namespace: end
-NULL
-
-## usethis namespace: start
 #' @importFrom Rcpp sourceCpp
+#' @exportPattern "^[[:alpha:]]+"
 ## usethis namespace: end
 NULL
 
