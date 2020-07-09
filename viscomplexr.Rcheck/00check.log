@@ -1,9 +1,0 @@
-* using log directory 'E:/Peter/Projekte/viscomplexr/viscomplexr.Rcheck'
-* using R version 4.0.2 (2020-06-22)
-* using platform: x86_64-w64-mingw32 (64-bit)
-* using session charset: ISO8859-1
-* checking for file 'viscomplexr/DESCRIPTION' ... ERROR
-Benötigte Felder fehlen oder sind leer:
-  'Author' 'Maintainer'
-* DONE
-Status: 1 ERROR
