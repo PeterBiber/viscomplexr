@@ -108,7 +108,7 @@ for(n in c(6, 9, 18)) {
 par(op) # reset graphics parameters to previous values
 ```
 
-Evidently, our choice of `pi2Div` has influenced the density of the iso-modulus lines. This is because, by default, the parameter `logBase`, which controls how dense the iso-modulus lines are arranged, is linked to `pi2Div`. As stated above, `pi2Div` is usally a natural number $n\:(n \in\mathbb{N})$, and `logBase` is the real number $b\:(b\in\mathbb{R})$ which defines the moduli $r=b^k\:(k\in\mathbb{Z})$ where the reference lines are drawn. When $n$ is given, the default definition of $b$ is $b=\mathrm{e}^{2\pi/n}$. In the default case, $n=9$, this results in $b\approx2.009994$. Thus, by default, moving from one iso-modulus line to the adjacent one means almost exactly doubling or halving the modulus, depending on the direction. For the other two cases $n=6$ and $n=18$, the resulting values for $b$ are $b\approx2.85$ and $b\approx1.42$, the latter obviously being the square root of $\mathrm{e}^{2\pi/9}$. For $n=18$, the modulus (approximately) doubles or halves when traversing two adjacent iso-modulus lines. 
+Evidently, our choice of `pi2Div` has influenced the density of the iso-modulus lines. This is because, by default, the parameter `logBase`, which controls how dense the iso-modulus lines are arranged, is linked to `pi2Div`. As stated above, `pi2Div` is usally a natural number $n\:(n \in\mathbb{N})$, and `logBase` is the real number $b\:(b\in\mathbb{R})$ which defines the moduli $r=b^k\:(k\in\mathbb{Z})$ where the reference lines are drawn. When $n$ is given, the default definition of $b$ is $b=\mathrm{e}^{2\pi/n}$. In the default case, $n=9$, this results in $b\approx2.009994$. Thus, by default, moving from one iso-modulus line to the adjacent one means almost exactly doubling or halving the modulus, depending on the direction. For the other two cases $n=6$ and $n=18$, the resulting values for $b$ are $b\approx2.85$ and $b\approx1.42$, the latter obviously being the square root of $\mathrm{e}^{2\pi/9}$. For $n=9$, the modulus (approximately) doubles or halves when traversing two adjacent iso-modulus lines. 
 
 Before we demonstrate the special property of this linkage between $n$ and $b$, i.e. between `pi2Div` and `logBase`, we shortly show, that they can be decoupled in *phasePortrait* without any complication. In the following example, we want to define the density of the iso-modulus lines in a way that the modulus triples when traversing three zones in the direction of ascending moduli. Clearly, this requires to define `logBase` as $b=\sqrt[3]{3}\approx1.44$. Thus, when moving from one iso-modulus line to the next higher one, the modulus has increased by a factor of about $1.4$. One line further, it has about doubled (${\sqrt[3]{3}}^{2}\approx2.08$), and another line further it has exactly tripled. While varying `pi2Div` exactly as in the previous example, we now keep `logBase` constant at $\sqrt[3]{3}$.
 
@@ -210,10 +210,61 @@ for(k in -1:1) {
 par(op)
 ```
 
-
-
-
 ## Riemann sphere plots
+A convenient way to visualize the whole complex number plane is based on a stereographic projection suggested by Bernhard Riemann (see @wegert_visualcpx_2012, p. 20 ff. and p. 39 ff.). The *Riemann Sphere* is a sphere with radius 1, cut into an upper (northern) and lower (southern) half by the complex plane. It is centered around the origin of the complex plane. By connecting any point on the complex plane to the north pole with a straight line, the line's intersection with the sphere's surface marks the location on the sphere where the point is projected onto. Thus, all points inside the unit disk on the complex plane are projected onto the southern hemisphere, the origin being represented by the south pole. In contrast, all points outside the unit disk are projected onto the northern hemisphere, the north pole representing the *point at infinity*. For visualising both hemispheres as 2D phase portraits, they have to be projected onto a flat surface in turn.
+
+If we perform a stereographic projection of the southern hemisphere from the north pole to the upper (northern) side of a flat surface attached to the complex plane, this obviously results in a phase portrait on the untransformed complex plane as were all examples shown so far in this text. We can perform an analogue procedure for the northern hemisphere, projecting it from the south pole to the lower (southern) side of a flat surface attached to the complex plane. If, in a 'normal' visualisation of the complex plane (orthogonal real and imaginary axes), a point at any location represents a complex number $z$, a point at the same location is mapped into $1/z$ in that projection. The origin is mapped into the point at infinity. This mapping can be easily achieved when calling the function `phasePortrait` by setting the flag `invertFlip = TRUE` (default is `FALSE`). The resulting map is, in addition, rotated counter-clockwise around the point at infinity by an angle of $\pi$. As @wegert_visualcpx_2012 argues, this has a convenient visual effect when two phase portraits of the same function, one made with `invertFlip = FALSE` and the other one with `invertFlip = TRUE` are shown side by side. This can be imagined as a view into a Riemann sphere that has been cut open along the equator and swung open along a hinge in the line $\Re(z)=1$ (if the southern hemisphere is at the left side) or $\Re(z)=-1$ (if the northern hemisphere is at the left side). In order to highlight the Riemann sphere in Phase Portraits if desired, we provide the function `riemannMask`. Let's first demonstrate this for the function $f(z)=z$.
+
+```{r figure_12, fig.width=7, fig.height=3.5, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Mapping the complex number plane on the Riemann sphere. Left: lower (southern) hemisphere; right upper (northern hemisphere). Folding both figures face to face along a vertical line in the middle between them can be imagined as closing the Riemann sphere.'}
+op <- par(mfrow = c(1, 2), mar = rep(0.1, 4))
+# Southern hemisphere
+phasePortrait("z", xlim = c(-1.4, 1.4), ylim = c(-1.4, 1.4), 
+              pi2Div = 12, axes = FALSE, nCores = 2)
+riemannMask(annotSouth = TRUE)
+# Northern hemisphere
+phasePortrait("z", xlim = c(-1.4, 1.4), ylim = c(-1.4, 1.4), 
+              pi2Div = 12, axes = FALSE, invertFlip = TRUE, nCores = 2)
+riemannMask(annotNorth = TRUE)
+par(op)
+```
+
+The function `riemannMask` provides several options, among others adjusting the mask's transparency or adding annotations to landmark points (see the documentation). In the next example, we will use it without any such features. Consider the following function:
+$$
+f(z)=\frac{(z^{2}+\frac{1}{\sqrt{2}}+\frac{\mathrm{i}}{\sqrt{2}})\cdot(z+\frac{1}{2}+\frac{\mathrm{i}}{2})}{z-1}
+$$
+This function has two zeroes exactly located on the unit circle, $z_1=\mathrm{e}^{\mathrm{i}\frac{5\pi}{8}}$, and $z_2=\mathrm{e}^{\mathrm{i}\frac{13\pi}{8}}$. Moreover, it has another zero inside the unit circle, $z_3=\frac{1}{\sqrt{2}}\cdot\mathrm{e}^{\mathrm{i}\frac{5\pi}{4}}$. Equally obvious, it has a pole exactly on the unit circle, $z_4=1$. Less obvious, it has a double pole, $z_5$, at the point at infinity. The code required for producing the following figure looks somewhat bulky, but most lines are required for annotating the zeroes and poles. Note that the real axis coordinates of the northern hemisphere's annotation do not have to be multiplied with $-1$ in order to take into account the rotation of the inverted complex plane. By calling `phasePortrait` with `invertFlip = TRUE` the coordinate system of the plot is already set up correctly and will remain so for subsequent operations.
+
+```{r figure_13, fig.width=7, fig.height=3.7, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Riemann sphere plot of the function $f(z)=\\frac{(z^{2}+\\frac{1}{\\sqrt{2}}+\\frac{\\mathrm{i}}{\\sqrt{2}})\\cdot(z+\\frac{1}{2}+\\frac{\\mathrm{i}}{2})}{z-1}$. Annotated are the zeroes $z_1$, $z_2$, $z_3$, and the poles $z_4$, $z_5$.'}
+op <- par(mfrow = c(1, 2), mar = c(0.1, 0.1, 1.4, 0.1))
+# Define function
+FUNstring <- "(z^2 + 1/sqrt(2) * (1 + 1i)) * (z + 1/2*(1 + 1i)) / (z - 1)"
+# Southern hemisphere
+phasePortrait(FUNstring, xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2), 
+              pi2Div = 12, axes = FALSE, nCores = 2)
+riemannMask()
+title("Southern Hemisphere", line = 0)
+# - annotate zeroes and poles
+text(c(cos(5/8*pi), cos(13/8*pi), cos(5/4*pi)/sqrt(2), 1),
+     c(sin(5/8*pi), sin(13/8*pi), sin(5/4*pi)/sqrt(2), 0), 
+     c(expression(z[1]), expression(z[2]), expression(z[3]), expression(z[4])), 
+     pos = c(1, 2, 4, 2), offset = 1, col = "white")
+# Northern hemisphere
+phasePortrait(FUNstring, xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2), 
+              pi2Div = 12, axes = FALSE, invertFlip = TRUE, nCores = 2)
+riemannMask()
+title("Northern Hemisphere", line = 0)
+# - annotate zeroes and poles
+text(c(cos(5/8*pi), cos(13/8*pi), cos(5/4*pi)*sqrt(2), 1, 0),
+     c(sin(5/8*pi), sin(13/8*pi), sin(5/4*pi)*sqrt(2), 0, 0), 
+     c(expression(z[1]), expression(z[2]), expression(z[3]), 
+       expression(z[4]), expression(z[5])), 
+     pos = c(1, 4, 3, 4, 4), offset = 1, 
+     col = c("white", "white", "black", "white", "white"))
+par(op)
+```
+
+With some consideration it becomes quite easy to see that both phase portraits are kind of everted versions of each other. What is inside the unit disk in the left phase portrait is outside in the right one, and vice versa. If you mentally visualize both unit disks touching in, e.g., point $z_4$ and one disk rolling along the edge of the other, you will see immediately how one disk continues the picture shown in the other. Having the 'Riemann Mask' somewhat transparent is helpful for orientation. Note, how the zeroes $z_{1, 2}$ and the pole $z_4$ which are located exactly on the unit circle continue outside the unit disk on 'their own' plane and in the other unit disk. Note also, that on both hemispheres zeroes and poles can be identified by the same sequence of colours: When circling counter-clockwise around the point of interest, a zero will always exhibit the colour sequence red, yellow, green, blue, magenta, red ..., while this order will always be reverted for a pole. As the pole at the point at infinity ($z_5$) is a double pole, the colour sequence is run through twice during one turn around the pole. As the zero $z_3$ is inside the unit disk representing the southern hemisphere, it lies outside the northern hemisphere disk, but it is still visible on the continuation of the inverted (and rotated) complex plane (belonging to the northern hemisphere) outside the unit disk. Observe, how the grid lines in the vicinity of $z_3$ merge when passing from one unit disk to the other.
+
 
 ## Advanced features
 
@@ -226,6 +277,8 @@ par(op)
 - stdSaturation
 - gamma
 - black background
+- white text (axes)
+- white circle in Riemann Mask
 
 ### Beware of the temporary files
 
