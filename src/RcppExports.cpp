@@ -41,11 +41,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// mandel_4
+std::complex<double> mandel_4(std::complex<double> z, int itDepth);
+RcppExport SEXP _viscomplexr_mandel_4(SEXP zSEXP, SEXP itDepthSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::complex<double> >::type z(zSEXP);
+    Rcpp::traits::input_parameter< int >::type itDepth(itDepthSEXP);
+    rcpp_result_gen = Rcpp::wrap(mandel_4(z, itDepth));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_viscomplexr_mandel_1", (DL_FUNC) &_viscomplexr_mandel_1, 2},
     {"_viscomplexr_mandel_2", (DL_FUNC) &_viscomplexr_mandel_2, 2},
     {"_viscomplexr_mandel_3", (DL_FUNC) &_viscomplexr_mandel_3, 2},
+    {"_viscomplexr_mandel_4", (DL_FUNC) &_viscomplexr_mandel_4, 2},
     {NULL, NULL, 0}
 };
 

@@ -16,3 +16,8 @@ mandel_3 <- function(z, itDepth = 52L) {
     .Call(`_viscomplexr_mandel_3`, z, itDepth)
 }
 
+#' @export
+mandel_4 <- function(z, itDepth = 52L) {
+    .Call(`_viscomplexr_mandel_4`, z, itDepth)
+}
+
