@@ -2,22 +2,12 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' @export
-mandel_1 <- function(z, itDepth = 52L) {
-    .Call(`_viscomplexr_mandel_1`, z, itDepth)
+mandelbrot <- function(z, itDepth = 500L) {
+    .Call(`_viscomplexr_mandelbrot`, z, itDepth)
 }
 
 #' @export
-mandel_2 <- function(z, itDepth = 52L) {
-    .Call(`_viscomplexr_mandel_2`, z, itDepth)
-}
-
-#' @export
-mandel_3 <- function(z, itDepth = 52L) {
-    .Call(`_viscomplexr_mandel_3`, z, itDepth)
-}
-
-#' @export
-mandel_4 <- function(z, itDepth = 52L) {
-    .Call(`_viscomplexr_mandel_4`, z, itDepth)
+juliaNormal <- function(z, c, R_esc, itDepth = 500L) {
+    .Call(`_viscomplexr_juliaNormal`, z, c, R_esc, itDepth)
 }
 

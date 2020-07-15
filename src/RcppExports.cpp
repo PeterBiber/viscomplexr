@@ -5,60 +5,36 @@
 
 using namespace Rcpp;
 
-// mandel_1
-std::complex<double> mandel_1(std::complex<double> z, int itDepth);
-RcppExport SEXP _viscomplexr_mandel_1(SEXP zSEXP, SEXP itDepthSEXP) {
+// mandelbrot
+std::complex<double> mandelbrot(std::complex<double> z, int itDepth);
+RcppExport SEXP _viscomplexr_mandelbrot(SEXP zSEXP, SEXP itDepthSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::complex<double> >::type z(zSEXP);
     Rcpp::traits::input_parameter< int >::type itDepth(itDepthSEXP);
-    rcpp_result_gen = Rcpp::wrap(mandel_1(z, itDepth));
+    rcpp_result_gen = Rcpp::wrap(mandelbrot(z, itDepth));
     return rcpp_result_gen;
 END_RCPP
 }
-// mandel_2
-std::complex<double> mandel_2(std::complex<double> z, int itDepth);
-RcppExport SEXP _viscomplexr_mandel_2(SEXP zSEXP, SEXP itDepthSEXP) {
+// juliaNormal
+std::complex<double> juliaNormal(std::complex<double> z, std::complex<double> c, double R_esc, int itDepth);
+RcppExport SEXP _viscomplexr_juliaNormal(SEXP zSEXP, SEXP cSEXP, SEXP R_escSEXP, SEXP itDepthSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::complex<double> >::type z(zSEXP);
+    Rcpp::traits::input_parameter< std::complex<double> >::type c(cSEXP);
+    Rcpp::traits::input_parameter< double >::type R_esc(R_escSEXP);
     Rcpp::traits::input_parameter< int >::type itDepth(itDepthSEXP);
-    rcpp_result_gen = Rcpp::wrap(mandel_2(z, itDepth));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mandel_3
-std::complex<double> mandel_3(std::complex<double> z, int itDepth);
-RcppExport SEXP _viscomplexr_mandel_3(SEXP zSEXP, SEXP itDepthSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::complex<double> >::type z(zSEXP);
-    Rcpp::traits::input_parameter< int >::type itDepth(itDepthSEXP);
-    rcpp_result_gen = Rcpp::wrap(mandel_3(z, itDepth));
-    return rcpp_result_gen;
-END_RCPP
-}
-// mandel_4
-std::complex<double> mandel_4(std::complex<double> z, int itDepth);
-RcppExport SEXP _viscomplexr_mandel_4(SEXP zSEXP, SEXP itDepthSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::complex<double> >::type z(zSEXP);
-    Rcpp::traits::input_parameter< int >::type itDepth(itDepthSEXP);
-    rcpp_result_gen = Rcpp::wrap(mandel_4(z, itDepth));
+    rcpp_result_gen = Rcpp::wrap(juliaNormal(z, c, R_esc, itDepth));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_viscomplexr_mandel_1", (DL_FUNC) &_viscomplexr_mandel_1, 2},
-    {"_viscomplexr_mandel_2", (DL_FUNC) &_viscomplexr_mandel_2, 2},
-    {"_viscomplexr_mandel_3", (DL_FUNC) &_viscomplexr_mandel_3, 2},
-    {"_viscomplexr_mandel_4", (DL_FUNC) &_viscomplexr_mandel_4, 2},
+    {"_viscomplexr_mandelbrot", (DL_FUNC) &_viscomplexr_mandelbrot, 2},
+    {"_viscomplexr_juliaNormal", (DL_FUNC) &_viscomplexr_juliaNormal, 4},
     {NULL, NULL, 0}
 };
 
