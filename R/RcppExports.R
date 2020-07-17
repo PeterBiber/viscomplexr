@@ -11,3 +11,8 @@ juliaNormal <- function(z, c, R_esc, itDepth = 500L) {
     .Call(`_viscomplexr_juliaNormal`, z, c, R_esc, itDepth)
 }
 
+#' @export
+blaschkeProd <- function(z, a) {
+    .Call(`_viscomplexr_blaschkeProd`, z, a)
+}
+

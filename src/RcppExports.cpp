@@ -31,10 +31,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// blaschkeProd
+std::complex<double> blaschkeProd(std::complex<double> z, std::vector<std::complex<double>> a);
+RcppExport SEXP _viscomplexr_blaschkeProd(SEXP zSEXP, SEXP aSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::complex<double> >::type z(zSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::complex<double>> >::type a(aSEXP);
+    rcpp_result_gen = Rcpp::wrap(blaschkeProd(z, a));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_viscomplexr_mandelbrot", (DL_FUNC) &_viscomplexr_mandelbrot, 2},
     {"_viscomplexr_juliaNormal", (DL_FUNC) &_viscomplexr_juliaNormal, 4},
+    {"_viscomplexr_blaschkeProd", (DL_FUNC) &_viscomplexr_blaschkeProd, 2},
     {NULL, NULL, 0}
 };
 

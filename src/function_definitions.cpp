@@ -30,8 +30,6 @@ std::complex<double> juliaNormal(std::complex<double> z,
                                  double R_esc,
                                  int itDepth = 500) {
 
-  double re_c   = real(c);
-  double im_c   = imag(c);
   // squared escape radius
   // double Rq     = pow(1/2 * (1 + sqrt(1 + 4 * std::abs(c))), 2);
   double Rq     = pow(R_esc, 2);
@@ -43,6 +41,23 @@ std::complex<double> juliaNormal(std::complex<double> z,
       zz = NAN;
       break;
     }
+  }
+  return zz;
+}
+
+
+
+//' @export
+// [[Rcpp::export]]
+std::complex<double> blaschkeProd(std::complex<double> z,
+                                  std::vector<std::complex<double>> a) {
+  int n = a.size();
+  std::complex<double> zz  = 1;
+  std::complex<double> one = 1;
+
+  for(int i = 0; i < n; ++i) {
+    zz = zz * std::abs(a[i]) / a[i]
+            * (a[i] - z) / (one - z * std::conj(a[i]));
   }
   return zz;
 }
