@@ -6,7 +6,7 @@
 #' useful for feeding a series of constant numeric values to
 #' \code{\link{phasePortrait}}.
 #'
-#' @param vec The (usually real or complex valued) vectior to be converted.
+#' @param vec The (usually real or complex valued) vector to be converted.
 #'
 #' @return A string, where the former vector elements are separated by commas,
 #'   enclosed between "c(" and ")".

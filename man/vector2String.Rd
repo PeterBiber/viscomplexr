@@ -7,7 +7,7 @@
 vector2String(vec)
 }
 \arguments{
-\item{vec}{The (usually real or complex valued) vectior to be converted.}
+\item{vec}{The (usually real or complex valued) vector to be converted.}
 }
 \value{
 A string, where the former vector elements are separated by commas,
