@@ -11,7 +11,7 @@ mandelbrot(z, itDepth = 500L)
 of the function is mapped}
 
 \item{itDepth}{An integer which defines the depth of the iteration, i.e. the
-maximum number of iteration.}
+maximum number of iteration (default: \code{itDepth =  500})}
 }
 \value{
 Either \code{NaN+NaNi} or the complex number obtained after
@@ -23,7 +23,7 @@ This function is provided as a basis for visualizing the Mandelbrot set with
 \emph{outside} the Mandelbrot set dependent on the velocity of divergence,
 this function produces the information required for coloring the Mandelbrot
 set itself. For numbers that can be identified as not being elements of the
-Mandelbrot set set obtain a \code{NaN+NaNi} value; for all other numbers,
+Mandelbrot set, we obtain a \code{NaN+NaNi} value; for all other numbers,
 the function gives back the value after a user-defined number of iterations.
 The function has been implemented in C++; it runs fairly fast.
 }
