@@ -324,21 +324,88 @@ funString <- "vapply(z, FUN = function(z, fct) {
 phasePortrait(funString, xlim = c(-2, 2), ylim = c(-2, 2))
 ```
 
-Probably, the most useful application of this concept is when the `vapply` construct is pasted together at runtime with values for the additional arguments depending on what happened earlier.
+Probably, the most useful application of this concept is when the `vapply` construct is pasted together at runtime with values for the additional arguments depending on what happened earlier. However, defining the function directly as a function first, and then simply passing its name to *phasePortrait* leads to a more readable code:
 
+```{r, eval = FALSE}
+# Define function
+tryThisOne <- function(z, fct, n) {
+  k <- z^(fct * c(1:n))
+  rslt <- prod(cos(k))
+  return(rslt)
+}
 
+# Call function by its name only, provide additional arguments via "moreArgs"
+phasePortrait("tryThisOne", moreArgs = list(fct = 1, n = 5),
+  xlim = c(-2.5, 2.5), ylim = c(-2, 2))
+```
 
-
-+++ Bruchstück: Wenn vordefinierte Funktionen +++
-It is better to use *phasePortrait's* argument `moreArgs` instead. `moreArgs` must be a named list (names must match the names of the required arguments), where the argument values are assigned:
-
+As the function in the example above requires two additional arguments beside $z$, we hand them over to *phasePortrait* via the argument `moreArgs`, which must be (even in case of only one additional argument) a named list (names must match the names of the required arguments), where the argument values are assigned.
 
 #### Function objects
-+++ Prüfe: kann man auch direkt im Aufruf Funktion definieren? +++
+Besides character strings as shown above, the argument `FUN` can also directly take function objects. The simplest case is an anonymous function definition: 
 
+```{r, eval = FALSE}
+# Use argument "hsvNaN = c(0, 0, 0)" if you want the grey area black
+phasePortrait(function(z) { 
+    for(j in 1:20) {
+      z <- z * sin(z) - 1 + 1/2i
+    }
+    return(z)
+  },
+  xlim = c(-3, 3), ylim = c(-2, 2)) 
+```
+
+Evidently, this can be used with `moreArgs` as well:
+
+```{r, eval = FALSE}
+# Use argument "hsvNaN = c(0, 0, 0)" if you want the grey area black
+phasePortrait(function(z, n) { 
+    for(j in 1:n) {
+      z <- z * cos(z)
+    }
+    return(z)
+  },
+  moreArgs = list(n = 27),
+  xlim = c(-3, 3), ylim = c(-2, 2)) 
+```
+
+Any function object that is known by name to R, be it user-defined or contained in a package will work in the same way. Just hand over the function object itself:
+
+```{r, eval = FALSE}
+# atan from package base
+phasePortrait(atan, xlim = c(-pi, pi), ylim = c(-pi, pi))
+
+# gammaz from package pracma (the package must be installed on your machine
+# if you want it work)
+phasePortrait(pracma::gammaz, xlim = c(-9, 9), ylim = c(-5, 5))
+
+# blaschkeProd from this package (moreArgs example)
+#  make random vector of zeroes
+n <- 12
+a <- complex(modulus = runif(n), argument = 2 * pi * runif(n))
+#  plot the actual phase portrait
+phasePortrait(blaschkeProd, moreArgs = list(a = a), 
+              xlim = c(-1.3, 1.3), ylim = c(-1.3, 1.3))
+
+# User function example
+tryThisOneToo <- function(z, n, r) {
+  for(j in 1:n) {
+    z <- r * (z + z^2)
+  } 
+  return(z)
+} 
+# Use argument "hsvNaN = c(0, 0, 0)" if you want the grey areas black
+phasePortrait(tryThisOneToo, moreArgs = list(n = 50, r = 1/2 - 1/2i),
+              xlim = c(-3, 2), ylim = c(-2.5, 2.5))
+
+```
+
+Defining own functions in C++ and using them with *phasePortrait* usually gives an enormous performance gain. This is especially true if they require operations that cannot be vectorized in R (i.e. there is now way to avoid for-loops or similar). The ideal tool for integrating C++ code in R programs is *Rcpp* [@edelbuettel_rcpp_2017], but be aware that C++ functions compiled with Rcpp::sourceCpp will not work with *phasePortrait*, as this is not compatible with parallel processing. What it takes is to provide the C++ functions as or as part of an R package which is not difficult at all. The functions of the `math` family included in this package have all been coded in C++ and integrated with *Rcpp*.
 
 
 ### Temporary files
+In order not to overload the RAM ...
++++ Nach Absturz nachschauen! Brauchen viel Speicher +++
 
 ### Parallel processing
 
