@@ -124,7 +124,7 @@ for(n in c(6, 9, 18)) {
 par(op) # reset graphics parameters to previous values
 ```
 
-In order to understand why by default the parameters `pi2Div` and `logBase` are linked as described above, we consider the exponential function $f(z)=\mathrm{e}^z$. We can write $z=r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)$ and thus $f(z)=\mathrm{e}^{r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)}$ or $w=f(z)=\mathrm{e}^{r\cdot\cos\varphi}\cdot\mathrm{e}^{\mathrm{i}\cdot r\cdot\sin\varphi}$. The modulus of $w$ is $\mathrm{e}^{r\cdot\cos\varphi}$ and its argument is $r\cdot\sin\varphi$ with $\Re(z)=r\cdot\cos\varphi$ and $\Im(z)=r\cdot \sin\varphi$. So, the modulus and the argument of $w=\mathrm{e}^z$ depend solely on the real and the imaginary part of $z$, respectively. This can be easily verified with a phase portrait of $f(z)=\mathrm{e}^z$. Note that in the call to *phasePortrait* we hand over the `exp` function directly. Alternatively, the quoted string `"exp(z)"` can be used as well. 
+In order to understand why by default the parameters `pi2Div` and `logBase` are linked as described above, we consider the exponential function $f(z)=\mathrm{e}^z$. We can write $z=r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)$ and thus $f(z)=\mathrm{e}^{r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)}$ or $w=f(z)=\mathrm{e}^{r\cdot\cos\varphi}\cdot\mathrm{e}^{\mathrm{i}\cdot r\cdot\sin\varphi}$. The modulus of $w$ is $\mathrm{e}^{r\cdot\cos\varphi}$ and its argument is $r\cdot\sin\varphi$ with $\Re(z)=r\cdot\cos\varphi$ and $\Im(z)=r\cdot \sin\varphi$. So, the modulus and the argument of $w=\mathrm{e}^z$ depend solely on the real and the imaginary part of $z$, respectively. This can be easily verified with a phase portrait of $f(z)=\mathrm{e}^z$. Note that in the call to *phasePortrait* we hand over the `exp` function directly. Alternatively, the quoted strings `"exp(z)"` or `"exp"` can be used as well (see section [Ways to provide functions to *phasePortrait*](#ways_functions) below). 
 
 ```{r, figure_7, fig.width = 7, fig.height = 7, results = 'hide', fig.align='center', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=\\mathrm{e}^z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
 phasePortrait(exp, xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "p",
@@ -284,8 +284,8 @@ Not only features of this package, but useful features of R base graphics. The p
 - auch Rahmen (wie bei Heinz 70)
 
 
-## Technical moreabouts
-### Ways to provide functions to *phasePortrait*
+## Technical moreabouts {#tech_moreabouts}
+### Ways to provide functions to *phasePortrait* {#ways_functions}
 #### Quoted character strings
 Any function to be visualized with *phasePortrait* must be given as the argument `FUN`. In some cases (see below), the argument `moreArgs` can turn out useful in combination with `FUN`. Probably the easiest way of defining `FUN` is a character string which is an expression R can evaluate as a function of a complex number $z$. See some examples:
 
@@ -400,7 +400,7 @@ phasePortrait(tryThisOneToo, moreArgs = list(n = 50, r = 1/2 - 1/2i),
 
 ```
 
-Defining own functions in C++ and using them with *phasePortrait* usually gives an enormous performance gain. This is especially true if they require operations that cannot be vectorized in R (i.e. there is now way to avoid for-loops or similar). The ideal tool for integrating C++ code in R programs is *Rcpp* [@edelbuettel_rcpp_2017], but be aware that C++ functions compiled with Rcpp::sourceCpp will not work with *phasePortrait*, as this is not compatible with parallel processing. What it takes is to provide the C++ functions as or as part of an R package which is not difficult at all. The functions of the `math` family included in this package have all been coded in C++ and integrated with *Rcpp*.
+Defining own functions in C++ and using them with *phasePortrait* usually gives an enormous performance gain. This is especially true if they require operations that cannot be vectorized in R (i.e. there is now way to avoid for-loops or similar). The ideal tool for integrating C++ code in R programs is *Rcpp* [@edelbuettel_rcpp_2017], but be aware that C++ functions compiled with \code{Rcpp::sourceCpp} will not work with *phasePortrait*, as this is not compatible with parallel processing. What it takes is to provide the C++ functions as or as part of an R package which is not difficult at all. The functions of the `math` family included in this package have all been coded in C++ and integrated with *Rcpp*.
 
 
 ### Temporary files
