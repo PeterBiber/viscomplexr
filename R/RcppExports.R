@@ -30,6 +30,7 @@
 #'   \code{itDepth} iterations
 #'
 #' @family fractals
+#' @family maths
 #'
 #' @examples
 #' \dontrun{
@@ -94,6 +95,7 @@ mandelbrot <- function(z, itDepth = 500L) {
 #'   \code{itDepth} iterations
 #'
 #' @family fractals
+#' @family maths
 #'
 #' @examples
 #' \dontrun{
@@ -112,7 +114,40 @@ juliaNormal <- function(z, c, R_esc, itDepth = 500L) {
     .Call(`_viscomplexr_juliaNormal`, z, c, R_esc, itDepth)
 }
 
-#' Calculate Blaschke Products
+#' Calculate Blaschke products
+#'
+#' This function calculates Blaschke products
+#' (\url{https://en.wikipedia.org/wiki/Blaschke_product}) for a complex number
+#' \code{z} given a sequence \code{a} of complex numbers inside the unit disk,
+#' which are the zeroes of the Blaschke product.
+#'
+#' A sequence of points \code{a[n]} located inside the unit disk satisfies the
+#' Blaschke condition, if \code{sum[1:n] (1 - abs(a[n])) < Inf}. For each
+#' element \code{a != 0} of such a sequence, \code{B(a, z) = abs(a)/a * (a -
+#' z)/(1 - conj(a) * z)} can be calculated. For \code{a = 0}, \code{B(a, z) =
+#' z}. The Blaschke produkt \code{B(z)} results as \code{B(z) = prod[1:n]
+#' (B(a[n], z))}.
+#'
+#' @param z Complex number; the point in the complex plane to which the output
+#'   of the function is mapped
+#'
+#' @param a Vector of complex numbers located inside the unit disk. At each
+#'   \code{a}, the Blaschke product will have a zero.
+#'
+#' @return The value of the Blaschke product at \code{z}.
+#'
+#' @family maths
+#'
+#' @examples
+#' \dontrun{
+#' # Generate random vector of 17 zeroes inside the unit disk
+#' n <- 17
+#' a <- complex(modulus = runif(n, 0, 1), argument = runif(n, 0, 2*pi))
+#'
+#' # Portrait the Blaschke product
+#' phasePortrait(blaschkeProd, moreArgs = list(a = a),
+#'   xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2))
+#' }
 #'
 #' @export
 blaschkeProd <- function(z, a) {

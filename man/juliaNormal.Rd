@@ -67,5 +67,10 @@ phasePortrait(juliaNormal,
 \seealso{
 Other fractals: 
 \code{\link{mandelbrot}()}
+
+Other maths: 
+\code{\link{blaschkeProd}()},
+\code{\link{mandelbrot}()}
 }
 \concept{fractals}
+\concept{maths}

@@ -31,6 +31,7 @@ using namespace Rcpp;
 //'   \code{itDepth} iterations
 //'
 //' @family fractals
+//' @family maths
 //'
 //' @examples
 //' \dontrun{
@@ -106,6 +107,7 @@ std::complex<double> mandelbrot(std::complex<double> z,
 //'   \code{itDepth} iterations
 //'
 //' @family fractals
+//' @family maths
 //'
 //' @examples
 //' \dontrun{
@@ -142,19 +144,58 @@ std::complex<double> juliaNormal(std::complex<double> z,
 }
 
 
-//' Calculate Blaschke Products
+//' Calculate Blaschke products
+//'
+//' This function calculates Blaschke products
+//' (\url{https://en.wikipedia.org/wiki/Blaschke_product}) for a complex number
+//' \code{z} given a sequence \code{a} of complex numbers inside the unit disk,
+//' which are the zeroes of the Blaschke product.
+//'
+//' A sequence of points \code{a[n]} located inside the unit disk satisfies the
+//' Blaschke condition, if \code{sum[1:n] (1 - abs(a[n])) < Inf}. For each
+//' element \code{a != 0} of such a sequence, \code{B(a, z) = abs(a)/a * (a -
+//' z)/(1 - conj(a) * z)} can be calculated. For \code{a = 0}, \code{B(a, z) =
+//' z}. The Blaschke produkt \code{B(z)} results as \code{B(z) = prod[1:n]
+//' (B(a[n], z))}.
+//'
+//' @param z Complex number; the point in the complex plane to which the output
+//'   of the function is mapped
+//'
+//' @param a Vector of complex numbers located inside the unit disk. At each
+//'   \code{a}, the Blaschke product will have a zero.
+//'
+//' @return The value of the Blaschke product at \code{z}.
+//'
+//' @family maths
+//'
+//' @examples
+//' \dontrun{
+//' # Generate random vector of 17 zeroes inside the unit disk
+//' n <- 17
+//' a <- complex(modulus = runif(n, 0, 1), argument = runif(n, 0, 2*pi))
+//'
+//' # Portrait the Blaschke product
+//' phasePortrait(blaschkeProd, moreArgs = list(a = a),
+//'   xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2))
+//' }
 //'
 //' @export
 // [[Rcpp::export]]
 std::complex<double> blaschkeProd(std::complex<double> z,
                                   std::vector<std::complex<double>> a) {
   int n = a.size();
-  std::complex<double> zz  = 1;
-  // std::complex<double> one = 1;
+  std::complex<double> zz = 1;
+  std::complex<double> fact;
 
   for(int i = 0; i < n; ++i) {
-    zz = zz * std::abs(a[i]) / a[i]
-            * (a[i] - z) / (std::complex<double>(1, 0) - z * std::conj(a[i]));
+    if(std::abs(a[i]) != 0) {
+      fact = std::abs(a[i]) / a[i] * (a[i] - z) /
+        (std::complex<double>(1, 0) - z * std::conj(a[i]));
+    }
+    else {
+      fact = z;
+    }
+    zz = zz * fact;
   }
   return zz;
 }
