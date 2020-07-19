@@ -39,7 +39,7 @@ testCase1 <- function(refFileNames) {
                 invertFlip = FALSE, res = 150,
                 deleteTempFiles = FALSE,
                 noScreenDevice = TRUE,
-                nCores = 1)
+                nCores = 2)
   referenceWmat <- get(load("1wmatCase001.RData"))
   actualWmat    <- loadNonRef(refFileNames)
   cleanUp(refFileNames)
@@ -58,7 +58,7 @@ testCase2 <- function(refFileNames) {
                 invertFlip = TRUE, res = 150,
                 deleteTempFiles = FALSE,
                 noScreenDevice = TRUE,
-                nCores = 1)
+                nCores = 2)
   referenceWmat <- get(load("1wmatCase002.RData"))
   actualWmat    <- loadNonRef(refFileNames)
   cleanUp(refFileNames)
@@ -86,7 +86,7 @@ testCase3 <- function(refFileNames) {
                 invertFlip = FALSE, res = 150,
                 deleteTempFiles = FALSE,
                 noScreenDevice = TRUE,
-                nCores = 1)
+                nCores = 2)
   referenceWmat <- get(load("1wmatCase003.RData"))
   actualWmat    <- loadNonRef(refFileNames)
   cleanUp(refFileNames)
@@ -115,7 +115,7 @@ testCase4 <- function(refFileNames) {
                 invertFlip = FALSE, res = 150,
                 deleteTempFiles = FALSE,
                 noScreenDevice = TRUE,
-                nCores = 1)
+                nCores = 2)
   referenceWmat <- get(load("1wmatCase004.RData"))
   actualWmat    <- loadNonRef(refFileNames)
   cleanUp(refFileNames)
