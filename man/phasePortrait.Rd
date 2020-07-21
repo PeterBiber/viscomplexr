@@ -31,35 +31,49 @@ phasePortrait(
 }
 \arguments{
 \item{FUN}{The function to be visualized. There are two possibilities to
-provide it, a simple character string, or an item that can be interpreted
-by \code{\link{match.fun}}.
-\describe{
-\item{Simple character string}{ A function can be provided as a
-character string containing an expression R can interpret as a function of
-a complex number z. Examples: "sin(z)", "(z^2 - 1i)/(tan(z))", "1/4*z^2 -
-10*z/(z^4+4)". You can even define your own functions e.g. for performing
-iterative calculations. In this case, you need to use \code{\link{vapply}}
-in exprText (see Details). Such constructions even allow to provide
-additional input variables as a part of the character string (hereby, the
-function \code{\link{vector2String}}) can be useful. While we observed
-slightly better performance with this solution, we recommend to provide
-additional input variables by way of the parameter \code{moreArgs.}}
-\item{\code{\link{match.fun}} compatible item}{ This option is convenient
-for providing functions that are defined outside the call to
-\code{phasePortrait}. This is especially useful for functions whose
-definition comprises extensive code. Copied from the help page of
-\code{\link{match.fun}}: \emph{"Item to match as function: a function,
-symbol or character string. If FUN is a function, it is returned. If it is
-a symbol (for example, enclosed in backquotes) or a character vector of
-length one, it will be looked up using get in the environment of the parent
-of the caller. If it is of any other mode, it is attempted first to get the
-argument to the caller as a symbol (using substitute twice), and if that
-fails, an error is declared."} When executing \code{phasePortrait},
-\code{FUN} is first tried to be evaluated with \code{\link{match.fun}}. If
-this is not successful, an attempt to interpret \code{FUN} as a simple
-character string (see above) will be made. If this fails,
-\code{phasePortrait} terminates with an error.}
-}}
+  provide it, a quoted character string, or a function object.
+  \describe{
+  \item{Quoted character string}{ A function can be provided as a quoted
+  character string containing an expression R can interpret as a function of
+  a complex number z. Examples: "sin(z)", "(z^2 - 1i)/(tan(z))", "1/4*z^2 -
+  10*z/(z^4+4)". Names of functions known in your R session can be used in a
+  standalone way, without mentioning z, e.g. "sin", "tan", "sqrt". Obviously,
+  this also works for functions you defined yourself, e.g.
+  "myIncredibleFunction" would be valid if you coded a function with this
+  name before. This is especially useful for functions which require
+  additional parameters beside the complex number they are supposed to
+  calculate with. Such arguments can be provided via the parameter
+  \code{moreArgs}.
+
+  While it is not the way we recommend for most purposes, you can even define
+  more complicated functions of your own as character strings. In this case,
+  you need to use \code{\link{vapply}} as a wrapper for your actual function
+  (see Details, and Examples). Such constructions allow to provide additional
+  input variables as a part of the character string by using the
+  \code{\link{vapply}}-mechanism (see Details and Examples). The helper
+  function \code{\link{vector2String}}) can be useful for that matter.
+  However, the parameter \code{moreArgs} is not applicable in this context.
+  Probably, the most useful application of the function-as-string concept is
+  when the user defined function, possibly including values for additional
+  arguments, is to be pasted together at runtime.}
+
+  \item{Function object}{ It is also possible
+  to directly provide function objects to \code{FUN}. This can be any
+  function known to R in the current session. Simply put, for functions like
+  sin, tan, cos, and sqrt you do not even have to quote their names when
+  passing them to \code{phasePortrait}. Same applies to functions you defined
+  yourself. It is also possible to hand over an anonymous function to
+  \code{FUN} when calling \code{phasePortrait}. In all these cases, the
+  parameter \code{moreArgs} can be used for providing additional arguments to
+  \code{FUN}. In general, providing a function as an object, and using
+  \code{moreArgs} in case additional arguments are required, is what we
+  recommend for user-defined functions.}
+  }
+
+  When executing \code{phasePortrait}, \code{FUN} is first evaluated with
+  \code{\link{match.fun}}. If this is not successful, an attempt to interpret
+  \code{FUN} as an expression will be made. If this fails,
+  \code{phasePortrait} terminates with an error.}
 
 \item{moreArgs}{A named list of other arguments to FUN. The names must match
 the names of the arguments in FUN's definition.}
@@ -320,15 +334,20 @@ notation, etc. to poster-like artistic pictures.\cr
   vMod and vArg are combined. The closer \code{gamma} is to one, the more
   the smaller of both values will dominate the outcome and vice versa.
   }
-  \item{Defining more complicated functions with \code{\link{vapply}}}{You
-  might want to write and use functions which require more code than a single
-  statement like \code{(z-3)^2+1i*z}. In such cases, \code{\link{vapply}} can
-  be used for wrapping your code. This is probably not the use of
-  \code{\link{vapply}} intended by the developers, but it works nicely. The
-  argument \code{exprText} must be a character string also here, but if has
-  to have the follwing structure "vapply(z, function(z, \emph{other arguments
-  if required}) \{\emph{define function code in here}\}, \emph{define other
-  arguments here}, FUN.VALUE = complex(1))". See examples.
+  \item{Defining more complicated functions as strings with
+  \code{\link{vapply}}}{You might want to write and use functions which
+  require more code than a single statement like \code{(z-3)^2+1i*z}. As
+  mentioned in the description of the parameter \code{FUN}, we recommend to
+  define such functions as separate objects and hand them over as such. There
+  might be, however, cases, where it is more convenient, to define a function
+  as a single long string, and pass this string to \code{FUN}.
+  In order to make this work, \code{\link{vapply}} should be be used for
+  wrapping the actual code of the function. This is probably not the use of
+  \code{\link{vapply}} intended by its developers, but it works nicely and
+  performs well. The character string has to have the following structure
+  "vapply(z, function(z, \emph{other arguments if required}) \{\emph{define
+  function code in here}\}, \emph{define other arguments here}, FUN.VALUE =
+  complex(1))". See examples.
   }
 }
 }
