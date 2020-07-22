@@ -43,7 +43,8 @@ phasePortrait(
   name before. This is especially useful for functions which require
   additional parameters beside the complex number they are supposed to
   calculate with. Such arguments can be provided via the parameter
-  \code{moreArgs}.
+  \code{moreArgs}. The latter works even if you provide only the body of the
+  function of interest as a string (see examples).
 
   While it is not the way we recommend for most purposes, you can even define
   more complicated functions of your own as character strings. In this case,
@@ -356,7 +357,7 @@ notation, etc. to poster-like artistic pictures.\cr
 \dontrun{
 x11(width = 8, height = 8)
 phasePortrait("z", xlim = c(-2, 2), ylim = c(-2, 2),
-xlab = "real", ylab = "imaginary")}
+              xlab = "real", ylab = "imaginary")}
 
 
 # A rational function
@@ -394,7 +395,7 @@ phasePortrait("cos((z + 1/z)/(1i/2 * (z-1)^10))",
 par(op)}
 
 
-# Simple match.fun compatible FUN definition:
+# Passing function objects to phasePortrait:
 # Two mathematical celebrities - Riemann's zeta function
 # and the gamma function, both from the package pracma.
 # R's built-in gamma is not useful, as it does not work
@@ -414,45 +415,53 @@ phasePortrait(gammaz, xlim = c(-10, 10), ylim = c(-10, 10),
 par(op)}
 
 
-# Using vapply for defining functions that require more code.
+# Using vapply for defining a whole function as a string.
 # This is a Blaschke product with a sequence a of twenty numbers.
 # See the documentation of the function vector2String for a more
 # convenient space-saving definition of a.
+# But note that a C++ version of the Blaschke product is available
+# in this package (function blachkeProd()).
 \dontrun{
 x11(width = 10, height = 8)
-phasePortrait("vapply(z, function(z, a){
-               return(prod(abs(a)/a * (a-z)/(1-Conj(a)*z)))
-              }, a = c(0.12152611+0.06171533i,  0.53730315+0.32797530i,
-                       0.35269601-0.53259644i, -0.57862039+0.33328986i,
-                      -0.94623221+0.06869166i, -0.02392968-0.21993132i,
-                       0.04060671+0.05644165i,  0.15534449-0.14559097i,
-                       0.32884452-0.19524764i,  0.58631745+0.05218419i,
-                       0.02562213+0.36822933i, -0.80418478+0.58621875i,
-                      -0.15296208-0.94175193i, -0.02942663+0.38039250i,
-                      -0.35184130-0.24438324i, -0.09048155+0.18131963i,
-                       0.63791697+0.47284679i,  0.25651928-0.46341192i,
-                       0.04353117-0.73472528i, -0.04606189+0.76068461i),
-             FUN.VALUE = complex(1))",
-             pType = "p",
-             xlim = c(-4, 2), ylim = c(-2, 2),
-             xlab = "real", ylab = "imaginary")}
+phasePortrait("vapply(z, function(z, a) {
+                fct <- ifelse(abs(a) != 0,
+                  abs(a)/a * (a-z)/(1-Conj(a)*z), z)
+                return(prod(fct))
+              },
+              a = c(0.12152611+0.06171533i,  0.53730315+0.32797530i,
+                    0.35269601-0.53259644i, -0.57862039+0.33328986i,
+                   -0.94623221+0.06869166i, -0.02392968-0.21993132i,
+                    0.04060671+0.05644165i,  0.15534449-0.14559097i,
+                    0.32884452-0.19524764i,  0.58631745+0.05218419i,
+                    0.02562213+0.36822933i, -0.80418478+0.58621875i,
+                   -0.15296208-0.94175193i, -0.02942663+0.38039250i,
+                   -0.35184130-0.24438324i, -0.09048155+0.18131963i,
+                    0.63791697+0.47284679i,  0.25651928-0.46341192i,
+                    0.04353117-0.73472528i, -0.04606189+0.76068461i),
+              FUN.VALUE = complex(1))",
+              pType = "p",
+              xlim = c(-4, 2), ylim = c(-2, 2),
+              xlab = "real", ylab = "imaginary")}
 
 
 # Much more elegant: Define the function outside.
 # Here comes a Blaschke product with 200 random points.
 \dontrun{
-# define function for calculating blaschke products
-blaschke <- function(z, a) prod(abs(a)/a * (a-z)/(1-Conj(a)*z))
+# define function for calculating blaschke products, even
+# possible as a one-liner
+blaschke <- function(z, a) {
+  return(prod(ifelse(abs(a) != 0, abs(a)/a * (a-z)/(1-Conj(a)*z), z)))
+}
 # define 200 random numbers inside the unit circle
 n <- 200
 a <- complex(modulus = runif(n), argument = runif(n)*2*pi)
 # Plot it
 x11(width = 10, height = 8)
 phasePortrait(blaschke,
-moreArgs = list(a = a),
-pType = "p",
-xlim = c(-2.5, 2.5), ylim = c(-1.7, 1.7),
-xlab = "real", ylab = "imaginary")}
+  moreArgs = list(a = a),
+  pType = "p",
+  xlim = c(-2.5, 2.5), ylim = c(-1.7, 1.7),
+  xlab = "real", ylab = "imaginary")}
 
 
 # A hybrid solution: Provide the body of the function as
@@ -461,50 +470,53 @@ xlab = "real", ylab = "imaginary")}
 n <- 73
 a <- complex(modulus = runif(n), argument = runif(n)*2*pi)
 x11(width = 10, height = 8)
-phasePortrait("prod(abs(a)/a * (a-z)/(1-Conj(a)*z))",
-moreArgs = list(a = a),
-pType = "p",
-xlim = c(-2.5, 2.5), ylim = c(-1.7, 1.7),
-xlab = "real", ylab = "imaginary")}
+phasePortrait("prod(ifelse(abs(a) != 0,
+  abs(a)/a * (a-z)/(1-Conj(a)*z), z))",
+  moreArgs = list(a = a),
+  pType = "p",
+  xlim = c(-2.5, 2.5), ylim = c(-1.7, 1.7),
+  xlab = "real", ylab = "imaginary")}
 
 
-# Interesting reunion with Benoit Mandelbrot. Another example
-# for using vapply.
+# Note the difference in performance when using the C++ defined
+# function blaschkeProd() provided in this package
+\dontrun{
+n <- 73
+a <- complex(modulus = runif(n), argument = runif(n)*2*pi)
+# Plot it
+x11(width = 10, height = 8)
+phasePortrait(blaschkeProd,
+  moreArgs = list(a = a),
+  pType = "p",
+  xlim = c(-2.5, 2.5), ylim = c(-1.7, 1.7),
+  xlab = "real", ylab = "imaginary")}
+
+
+# Interesting reunion with Benoit Mandelbrot.
+# The function mandelbrot() is part of this package (defined
+# in C++ for performance)
 \dontrun{
 x11(width = 11.7, height = 9/16*11.7)
 op <- par(mar = c(0, 0, 0, 0), bg = "black")
-phasePortrait("vapply(z, FUN = ff <- function(z, n) {
-                c  <- z
-                zz <- 0
-                for(i in c(1:n)) {
-                  zz <- zz^2 + c
-                }
-                return(zz)
-              }, n = 52,
-              FUN.VALUE = complex(1))",
+phasePortrait(mandelbrot,
+              moreArgs = list(itDepth = 100),
               xlim = c(-0.847, -0.403), ylim = c(0.25, 0.50),
               axes = TRUE, pType = "pma",
               hsvNaN = c(0, 0, 0), xaxs = "i", yaxs = "i")
 par(op)}
 
 
-# But we can also define a Mandelbrot function outside:
+# Here comes a Julia set.
+# The function juliaNormal() is part of this package (defined
+# in C++ for performance)
 \dontrun{
-# iteration depth
-itDepth <- 52
-# Mandelbrot function
-mandelbrot <- function(z, n) {
-  c  <- z
-  zz <- 0
-  for(i in c(1:n)) zz <- zz^2 + c
-  zz
-}
-# plot it
-x11(width = 12, height = 8)
+x11(width = 11.7, height = 9/16*11.7)
 op <- par(mar = c(0, 0, 0, 0), bg = "black")
-phasePortrait(mandelbrot, moreArgs = list(n = itDepth),
-  xlim = c(-2, 1), ylim = c(-1, 1), axes = FALSE,
-  pType = "pma", hsvNaN = c(0, 0, 0))
+phasePortrait(juliaNormal,
+  moreArgs = list(c = -0.09 - 0.649i, R_esc = 2),
+  xlim = c(-2, 2),
+  ylim = c(-1.3, 1.3),
+  hsvNaN = c(0, 0, 0))
 par(op)}
 
 
