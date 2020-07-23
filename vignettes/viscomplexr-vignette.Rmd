@@ -289,7 +289,7 @@ Not only features of this package, but useful features of R base graphics. The p
 #### Quoted character strings
 Any function to be visualized with *phasePortrait* must be given as the argument `FUN`. In some cases (see below), the argument `moreArgs` can turn out useful in combination with `FUN`. Probably the easiest way of defining `FUN` is a character string which is an expression R can evaluate as a function of a complex number $z$. See some examples:
 
-```{r eval = FALSE}
+```{r, eval = FALSE}
 # Note that 'FUN =' is not required if the argument to FUN is handed to 
 # phasePortrait in the first position
 phasePortrait(FUN = "1/(1 - z^2)", xlim = c(-5, 5), ylim = c(-5, 5))
@@ -297,7 +297,15 @@ phasePortrait("sin((z - 2)/(z + 2))", xlim = c(-5, 5), ylim = c(-5, 5))
 phasePortrait("tan(z)", xlim = c(-5, 5), ylim = c(-5, 5))
 ```
 
-While we recommend other solutions (see below), it is also possible to hand over whole user-defined functions as character strings. To make this work, however, the function must be wrapped in a `vapply` construct which guarantees the output of the function being a complex number by setting vapply's argument `FUN.VALUE` as `complex(1)`. Moreover, the first argument to `vapply` must be $z$. In such cases, it is often convenient to define the character string outside the call to *phasePortrait* and hand it over after that, as we do in the following example:
+If your expression requires arguments besides $z$ you can provide them to *phasePortrait* by means of `moreArgs`, which expects a named list containing all additional arguments:
+
+```{r, eval = FALSE}
+phasePortrait("-1 * sum(z^c(-k:k))", moreArgs = list(k = 11),
+               xlim = c(-2, 2), ylim = c(-1.5, 1.5),
+               pType = "p") 
+```
+
+While we recommend other solutions (see below), it is also possible to hand over more extensive user-defined functions as character strings. To make this work, however, the function must be wrapped in a `vapply` construct which guarantees the output of the function being a complex number by setting vapply's argument `FUN.VALUE` as `complex(1)`. Moreover, the first argument to `vapply` must be $z$. In such cases, it is often convenient to define the character string outside the call to *phasePortrait* and hand it over after that, as we do in the following example:
 
 ```{r, eval = FALSE}
 funString <- "vapply(z, FUN = function(z) {
@@ -400,7 +408,7 @@ phasePortrait(tryThisOneToo, moreArgs = list(n = 50, r = 1/2 - 1/2i),
 
 ```
 
-Defining own functions in C++ and using them with *phasePortrait* usually gives an enormous performance gain. This is especially true if they require operations that cannot be vectorized in R (i.e. there is now way to avoid for-loops or similar). The ideal tool for integrating C++ code in R programs is *Rcpp* [@edelbuettel_rcpp_2017], but be aware that C++ functions compiled with \code{Rcpp::sourceCpp} will not work with *phasePortrait*, as this is not compatible with parallel processing. What it takes is to provide the C++ functions as or as part of an R package which is not difficult at all. The functions of the `math` family included in this package have all been coded in C++ and integrated with *Rcpp*.
+Defining own functions in C++ and using them with *phasePortrait* usually gives an enormous performance gain. This is especially true if they require operations that cannot be vectorized in R (i.e. if there is now way to avoid for-loops or similar). The ideal tool for integrating C++ code in R programs is *Rcpp* [@edelbuettel_rcpp_2017], but be aware that C++ functions compiled with \code{Rcpp::sourceCpp} will not work with *phasePortrait*, as this is not compatible with parallel processing. What it takes is to provide the C++ functions as or as part of an R package which is not difficult at all. The functions of the `math` family included in this package have all been coded in C++ and integrated with *Rcpp*.
 
 
 ### Temporary files

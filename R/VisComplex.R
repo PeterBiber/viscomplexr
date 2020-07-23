@@ -652,8 +652,8 @@ complexFunctionPlot <- function(...) {
 #'   name before. This is especially useful for functions which require
 #'   additional parameters beside the complex number they are supposed to
 #'   calculate with. Such arguments can be provided via the parameter
-#'   \code{moreArgs}. The latter works even if you provide only the body of the
-#'   function of interest as a string (see examples).
+#'   \code{moreArgs}. One-liner expressions provided as strings are also
+#'   compatible with \code{moreArgs} (see examples).
 #'
 #'   While it is not the way we recommend for most purposes, you can even define
 #'   more complicated functions of your own as character strings. In this case,
@@ -942,8 +942,8 @@ complexFunctionPlot <- function(...) {
 #'   xlab = "real", ylab = "imaginary")}
 #'
 #'
-#' # A hybrid solution: Provide the body of the function as
-#' # a character string, but the additional argument with moreArgs
+#' # A hybrid solution: A one-liner expression given as a character string
+#' # can be provided additional arguments with moreArgs
 #' \dontrun{
 #' n <- 73
 #' a <- complex(modulus = runif(n), argument = runif(n)*2*pi)
