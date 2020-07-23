@@ -441,7 +441,7 @@ complexArrayPlot <- function(zMetaInfrm, xlim, ylim, pType = "pma", invertFlip =
 # Function makeFunctionFromInput
 
 # Transform an input FUN and moreArgs (a named list), both inputs to
-# phasePortrait into an executable function.
+# phasePortrait, into an executable function.
 
 makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 
@@ -815,12 +815,20 @@ complexFunctionPlot <- function(...) {
 #'   case. The default for this parameter is \code{FALSE}, and you should change
 #'   it only if you really know what you are doing.
 #'
+#' @param autoDereg if TRUE, automatically register sequential backend after the
+#'   phase portrait is completed. Default is FALSE, because registering a
+#'   parallel backend can be time consuming. Thus, if you want make several
+#'   phase portraits in succession, you should set \code{autoDereg} only for the
+#'   last one, or simply type \code{foreach::registerDoSEQ} after you are done.
+#'   In any case, you don't want to have an unused parallel backend lying about.
+#'
 #' @param ... All parameters accepted by the \code{\link{plot.default}}
 #'   function.
 #'
 #'
 #' @references
 #'   \insertAllCited{}
+#'
 #'
 #' @examples
 #' # Map the complex plane on itself
@@ -1005,7 +1013,9 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
                           hsvNaN = c(0, 0, 0.5),
                           asp = 1,
                           deleteTempFiles = TRUE,
-                          noScreenDevice = FALSE, ...) {
+                          noScreenDevice = FALSE,
+                          autoDereg = FALSE,
+                          ...) {
 
   # Bring the user's function definition in workable form
   compFun <- makeFunctionFromInput(FUN, moreArgs)
@@ -1044,17 +1054,24 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
   # Register parallel Cluster if required or change number of workers
   nWorkers   <- getDoParWorkers() # number registered
   availCores <- detectCores()     # number available
-  nCores     <- min(max(nCores, 1), availCores) # register at least 1 :) and not more than available
-  if (nWorkers != nCores) {
-    cat("\nRegistering parallel workers ... ")
-    registerDoSEQ() # Unregister parallel for the sake of safety before
-                    # registering with different number of cores
-    if(nCores > 1) registerDoParallel(cores = nCores)
-    cat(nCores, "parallel workers registered ...")
-  } # check number of parallel workers
+  nCores     <- min(max(nCores, 1), availCores) # register at least 1 :)
+                                                # and not more than available
+  if(nCores != 1) {
+    if (nWorkers != nCores) {
+      cat("\nRegistering parallel workers ... ")
+      registerDoSEQ()    # Unregister parallel for the sake of safety before
+      registerDoParallel(cores = nCores) # register with new number of cores
+      cat(nCores, "parallel workers registered ...")
+    }
+    else {
+      cat("\n", nCores, " parallel workers previously registered ...", sep = "")
+    }
+  }
+  # Only one core desired
   else {
-    cat(nCores, "parallel workers previously registered ...")
-  } # more workers than 1 already registered
+    registerDoSEQ()
+    cat("\nnCores set to 1. Parallel loops will be executed sequentially ...")
+  }
 
   # Make pixelwise array of z-Values (input values to function)
   cat("\nBuilding z plane array ...")
@@ -1145,8 +1162,19 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
     cat("\nTemporary files are NOT deleted (explicit wish of the user).\n")
   } # else (temp files ore not deleted)
 
-  cat("\nParallel backend with", nCores, "cores remains registered for convenience.")
-  cat("\nCan be de-registered with 'foreach::registerDoSEQ()'.\n")
+  # If a parallel backend has been registered, keep or register a sequential
+  # backend dependent on user settings
+  if(nCores > 1) {
+    if(!autoDereg) {
+      cat("\nParallel backend with", nCores,
+          "cores remains registered for convenience.")
+      cat("\nCan be de-registered manually with 'foreach::registerDoSEQ()'.\n")
+    }
+    else {
+      foreach::registerDoSEQ()
+      cat("\nSequential backend registered again.\n")
+    }
+  } # if nCores > 1
 
   invisible(TRUE) # For test purposes
 } # phasePortrait

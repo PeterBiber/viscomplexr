@@ -413,3 +413,9 @@ In order not to overload the RAM ...
 
 ## References
 
+```{r, include = FALSE}
+foreach::registerDoSEQ()
+```
+
+
+

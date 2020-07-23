@@ -26,6 +26,7 @@ phasePortrait(
   asp = 1,
   deleteTempFiles = TRUE,
   noScreenDevice = FALSE,
+  autoDereg = FALSE,
   ...
 )
 }
@@ -205,6 +206,13 @@ intended for test purposes and makes probably only sense together with
 \code{phasePortrait} will use a 1 x 1 inch pseudo graphics device in this
 case. The default for this parameter is \code{FALSE}, and you should change
 it only if you really know what you are doing.}
+
+\item{autoDereg}{if TRUE, automatically register sequential backend after the
+phase portrait is completed. Default is FALSE, because registering a
+parallel backend can be time consuming. Thus, if you want make several
+phase portraits in succession, you should set \code{autoDereg} only for the
+last one, or simply type \code{foreach::registerDoSEQ} after you are done.
+In any case, you don't want to have an unused parallel backend lying about.}
 
 \item{...}{All parameters accepted by the \code{\link{plot.default}}
 function.}

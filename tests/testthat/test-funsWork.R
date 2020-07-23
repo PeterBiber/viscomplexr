@@ -97,7 +97,7 @@ testCase3 <- function(refFileNames) {
 
 
 # Test case 4
-# User function with additional default arguments which are _not_ specified
+# User function with additional default arguments which are specified
 # in the call to phasePortrait
 testCase4 <- function(refFileNames) {
 
@@ -115,7 +115,9 @@ testCase4 <- function(refFileNames) {
                 invertFlip = FALSE, res = 150,
                 deleteTempFiles = FALSE,
                 noScreenDevice = TRUE,
-                nCores = 2)
+                nCores = 2,
+                autoDereg = TRUE) # Register sequential backend after
+                                  # the last phase portrait
   referenceWmat <- get(load("1wmatCase004.RData"))
   actualWmat    <- loadNonRef(refFileNames)
   cleanUp(refFileNames)
