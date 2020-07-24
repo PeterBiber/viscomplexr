@@ -1,69 +1,35 @@
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #
-# VisComplex
+# viscomplexr
 #
-# Plot phase representations of complex functions
+# Phase Portrait representations of complex functions
 #
 # Peter Biber
+# Started Christmas 2019
 #
-#
-# 18.1.2020: Bugfix - one-line arrays weren't dealt with correctly
-# when transforming funtion values into colors. Now made sure they
-# have two dimensions.
-# On Windows the new argument argOffset was not handed into the
-# parallel loop for number-color-transformation. Fixed.
-#
-#
-# Version 0.0.0.9006 (12.1.2020) incorporates a fourth shading scheme,
-# i.e. pType "pa" which displays phase colors and only phase contour lines
-# in addition.
-#
-# Version 0.0.0.9005 (12.1.2020) allows to specify if temporary
-# files are to be deleted or not.
-#
-# Version 0.0.0.9004 allows to specify the number of
-# cores for parallel processing.
-#
-# Version 0.0.0.9003  allows to adjust the level of the
-# darkest shading to be plotted.
-#
-# Version 0.0.0.9002 dissects the matrices to work with into blocks which are
-# temporarily saved on the harddisk. Only one block is active in the RAM
-# which reliably prevents memory overload. This feature enables to produce
-# poster-quality plots in a few minutes. It also dramatically saves time
-# by parallel computing
-# Previous versions used the package imager for displaying images. This turned
-# out not necessary for the purpose of this package. These versions did not
-# include parallel computing.
-#
-#           date     version
-#
-#     12. 1.2020  0.0.0.9005
-#      1. 1.2020  0.0.0.9004
-#      1. 1.2020  0.0.0.9003
-#     30.12.2019  0.0.0.9002
-#     29.12.2019  0.0.0.9001
-# 24./25.12.2019  0.0.0.9000
-#
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
-# How to make a package:
+# Useful links
+
+# Making packages
 # http://r-pkgs.had.co.nz/namespace.html
+# https://kbroman.org/pkg_primer/
 # http://tinyheero.github.io/jekyll/update/2015/07/26/making-your-first-R-package.html
 
-# About memory usage
+# Memory usage in R
 # http://adv-r.had.co.nz/memory.html
 
-# plot raster data in R
+# Plot raster data in R
 # https://www.neonscience.org/dc-plot-raster-data-r
 
 # Unregistering foreach clusters
 # https://stackoverflow.com/questions/25097729/un-register-a-doparallel-cluster
 
-# library(foreach)
-# library(doParallel)
+# Emulating pointers
+# https://www.stat.berkeley.edu/~paciorek/computingTips/Pointers_passing_reference_.html
+
+# ------------------------------------------------------------------------------
 
 #' @importFrom grDevices  as.raster hsv
 #' @importFrom graphics   par plot rasterImage abline polypath text points
@@ -76,22 +42,19 @@
 #' @importFrom foreach    %dopar%
 #' @importFrom Rdpack     reprompt
 
-# in order to avoid package build warning for # the i iterator
+# in order to avoid package build warning for the i iterator
 # in the foreach loops
 utils::globalVariables("i")
 
 # For including Rcpp
-
-## usethis namespace: start
 #' @useDynLib viscomplexr, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
-## usethis namespace: end
 NULL
-
 
 # -------------------------------------------------------------------------------
 # Pointer emulation after
-# https://www.stat.berkeley.edu/~paciorek/computingTips/Pointers_passing_reference_.html
+# https://www.stat.berkeley.edu/~paciorek/computingTips/
+#   Pointers_passing_reference_.html
 
 newPointer <- function(inputValue) {
     object        <- new.env(parent = globalenv())
@@ -102,14 +65,20 @@ newPointer <- function(inputValue) {
 
 # -------------------------------------------------------------------------------
 # Function phaseColhsv
-# hsv color array for a mere phase portrait (colors for the argument, i.e. angle)
+
+# Calculates a hsv color array based on an array of complex numbers, both arrays
+# handed over as pointers.
+
+# This function only takes into account the arguments of the complex numbers.
+# It is called from phasePortrait when pType = "p".
 
 # The checks for NaN values (obtained at definition gaps other than Inf,
 # i.e. result NaN) are important in order to ensure proper execution of hsv.
 # The color for NaN values is hsvNaN.
 # Default is a neutral grey (h = 0, s = 0, v = 0.5).
 
-phaseColhsv <- function(pCompArr, pHsvCol, stdSaturation = 0.8, hsvNaN = c(0, 0, 0.5)) {
+phaseColhsv <- function(pCompArr, pHsvCol, stdSaturation = 0.8,
+                        hsvNaN = c(0, 0, 0.5)) {
 
   names(hsvNaN) <- c("h", "s", "v")
   dims    <- dim(pCompArr$value)
@@ -124,20 +93,25 @@ phaseColhsv <- function(pCompArr, pHsvCol, stdSaturation = 0.8, hsvNaN = c(0, 0,
 
 } # phaseColhsv
 
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Function phaseAngColhsv
-# Displays phase colors and phase contour lines
+
+# Works like phaseColhsv above, but additionally provides phase contour
+# lines and shading. Called from phasePortrait when pType = "pa".
 
 phaseAngColhsv <- function(pCompArr, pHsvCol, lambda = 7, pi2Div = 24,
-                           argOffset = 0, stdSaturation = 0.8, darkestShade = 0.1,
+                           argOffset = 0, stdSaturation = 0.8,
+                           darkestShade = 0.1,
                            hsvNaN = c(0, 0, 0.5)) {
 
   names(hsvNaN) <- c("h", "s", "v")
   dims    <- dim(pCompArr$value)
   argmt   <- Arg(pCompArr$value)
-  h       <- ifelse(is.nan(argmt), hsvNaN["h"], ifelse(argmt < 0, argmt + 2*pi, argmt)/ (2*pi))
+  h       <- ifelse(is.nan(argmt), hsvNaN["h"],
+                    ifelse(argmt < 0, argmt + 2*pi, argmt)/ (2*pi))
   v       <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
-                    darkestShade + (1 - darkestShade) * (((argmt - argOffset)/ (2 * pi / pi2Div)) %% 1)^(1/lambda))
+                    darkestShade + (1 - darkestShade) *
+                      (((argmt - argOffset) / (2*pi / pi2Div)) %% 1)^(1/lambda))
   s       <- ifelse(is.nan(pCompArr$value), hsvNaN["s"], stdSaturation)
 
   pHsvCol$value <- array(hsv(h = h, v = v, s = s), dims)
@@ -146,9 +120,12 @@ phaseAngColhsv <- function(pCompArr, pHsvCol, lambda = 7, pi2Div = 24,
 
 } # phaseAngColhsv
 
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Function phaseModColhsv
-# Not only colors for the arguments (angles), but also shading for the modulus
+
+# Works like phaseColhsv above, but additionally provides contour
+# lines and shading for the modulus. Called from phasePortrait
+# when pType = "pm".
 
 # The checks for NaN values (obtained at definition gaps other than Inf,
 # i.e. result NaN) are important in order to ensure proper execution of hsv.
@@ -169,7 +146,8 @@ phaseModColhsv <- function(pCompArr, pHsvCol, lambda = 7, logBase = 2,
   v       <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
                     ifelse(is.infinite(v), 1,
                            ifelse(v == 0, darkestShade,
-                                  darkestShade + (1 - darkestShade)*(log(v, logBase) %% 1)^(1/lambda))))
+                                  darkestShade + (1 - darkestShade) *
+                                    (log(v, logBase) %% 1)^(1/lambda))))
   s       <- ifelse(is.nan(pCompArr$value), hsvNaN["s"], stdSaturation)
 
   pHsvCol$value <- array(hsv(h = h, v = v, s = s), dims)
@@ -178,23 +156,25 @@ phaseModColhsv <- function(pCompArr, pHsvCol, lambda = 7, logBase = 2,
 
 } # phaseModColhsv
 
-# -------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Function phaseModAngColhsv
-# Not only colors for the arguments (angles) and shading for the modulus but
-# also shading for the angles.
+
+# Works like phaseColhsv above, but additionally provides contour lines and
+# shading for the modulus _and_ for the argument. Called from phasePortrait
+# when pType = "pma".
 
 # The checks for NaN values (obtained at definition gaps other than Inf,
 # i.e. result NaN) are important in order to ensure proper execution of hsv.
 # The color for NaN values is hsvNaN.
 # Default is a neutral grey (h = 0, s = 0, v = 0.5).
 # Complex numbers with infinite modulus have a valid argument, so infinite
-# modulus gets no shading (v = 1) for modulus. But shading for argument (angle)
+# modulus gets no shading (v = 1) for modulus. But shading for the argument
 # can still occur.
-# For shading: pi2Div == 24 means 15 steps.
 
-phaseModAngColhsv <- function(pCompArr, pHsvCol, lambda = 7, gamma = 9/10, logBase = 2,
-                              pi2Div = 24, argOffset = 0, stdSaturation = 0.8,
-                              darkestShade = 0.1, hsvNaN = c(0, 0, 0.5)) {
+phaseModAngColhsv <- function(pCompArr, pHsvCol, lambda = 7, gamma = 9/10,
+                              logBase = 2, pi2Div = 24, argOffset = 0,
+                              stdSaturation = 0.8, darkestShade = 0.1,
+                              hsvNaN = c(0, 0, 0.5)) {
 
   names(hsvNaN) <- c("h", "s", "v")
   dims    <- dim(pCompArr$value)
@@ -205,11 +185,16 @@ phaseModAngColhsv <- function(pCompArr, pHsvCol, lambda = 7, gamma = 9/10, logBa
   vMod    <- Mod(pCompArr$value)
   vMod    <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
                     ifelse(is.infinite(vMod), 1,
-                           ifelse(vMod == 0, 0, (log(vMod, logBase) %% 1)^(1/lambda))))
+                           ifelse(vMod == 0, 0,
+                                  (log(vMod, logBase) %% 1)^(1/lambda))))
+
   vAng    <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
                     (((argmt - argOffset)/ (2 * pi / pi2Div)) %% 1)^(1/lambda))
+
   v       <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
-                    darkestShade + (1 - darkestShade) * (gamma * vMod * vAng  + (1 - gamma) * (1 - (1 - vMod) * (1 - vAng))))
+                    darkestShade + (1 - darkestShade) *
+                      (gamma * vMod * vAng  +
+                         (1 - gamma) * (1 - (1 - vMod) * (1 - vAng))))
 
   s       <- ifelse(is.nan(pCompArr$value), hsvNaN["s"], stdSaturation)
 
@@ -219,44 +204,59 @@ phaseModAngColhsv <- function(pCompArr, pHsvCol, lambda = 7, gamma = 9/10, logBa
 
 } # phaseModAngColhsv
 
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Function buildArray
-# Build an array of complex numbers which represents the complex plane
-# on a pixel representation that can be directly converted into an image.
 
-# Computing times for 10x10 inch? x 150x150 pixel = 2250000 have been
-# ok so far. Thus, we divide the matrix vertically into blocks of similar time
-# and save them in a temporary folder. We give back the file names as a
-# character vector in the order they have to be processed.
+# Build an array of complex numbers which represents the complex plane.
+# Each array cell represents a pixel and contains the complex number z
+# associated with this pixel. These are the z-values to be transformed
+# later by the function of interest.
 
-buildArray <- function(widthPx, heightPx, xlim, ylim, blockSizePx = 2250000,
+# Computing times for 10x10 inch x 150x150 pixel = 2250000 have been
+# ok so far. Thus, we compose the array as a set of vertically arranged
+# blocks of about that size. Each block is saved as a temporary file in the
+# tempDir folder. The function gives back all information required to locate,
+# identify and process the temporary files in the correct order.
+
+# The blocks are built and saved in a parallel loop.
+
+buildArray <- function(widthPx, heightPx, xlim, ylim,
+                       blockSizePx = 2250000,
                        tempDir = getwd()) {
 
+  # How many blocks to build?
   linesPerBlock  <- blockSizePx %/% widthPx
   nBlocks        <- heightPx    %/% linesPerBlock
   linesRest      <- heightPx    %%  linesPerBlock
-  nBlocks        <- nBlocks + 1 * (linesRest > 0); cat("\n.making", nBlocks, "blocks ... ")
+  nBlocks        <- nBlocks + 1 * (linesRest > 0)
+  cat("\n.making", nBlocks, "blocks ... ")
+
+  # First and last line number covered by each block
   iBlocks        <- c(1:nBlocks)
   lower          <- 1 + (iBlocks - 1) * linesPerBlock
   upper          <- iBlocks * linesPerBlock
   if(linesRest != 0) upper[nBlocks] <- lower[nBlocks] - 1 + linesRest
   uplow          <- cbind(lower, upper)
-  rndCode        <- substr(format(round(runif(1), 10), nsmall = 10), 3, 12) # Random Code for all files of this run
+
+  # Random Code for all files to be saved during this run
+  rndCode        <- substr(format(round(runif(1), 10), nsmall = 10), 3, 12)
 
   # Define z-Values of the Pixels
-  xPxValVec <- (xlim[2] - xlim[1])/(widthPx  - 1) * c(0:(widthPx  - 1)) + xlim[1]
-  yPxValVec <- (ylim[2] - ylim[1])/(heightPx - 1) * c((heightPx - 1):0) + ylim[1]
+  xPxValVec <- (xlim[2] - xlim[1])/(widthPx  - 1) *
+                  c(0:(widthPx  - 1)) + xlim[1]
+  yPxValVec <- (ylim[2] - ylim[1])/(heightPx - 1) *
+                  c((heightPx - 1):0) + ylim[1]
 
-  # Find the xlim and ylim values for each Block, combine all meta information about the blocks
-  # into one data.frame (metaZ). Only this data.frame will be given back.
-  fileNames      <- paste(formatC(lower, width = trunc(log10(lower[nBlocks])) + 1, flag = "0"),
-                          "zmat", rndCode, ".RData", sep = "")
+  # Find the xlim and ylim values for each Block, combine all meta
+  # information about the blocks into one data.frame (metaZ).
+  fileNames <- paste(formatC(lower, width = trunc(log10(lower[nBlocks])) + 1,
+                       flag = "0"), "zmat", rndCode, ".RData", sep = "")
 
   # Define data.frame with meta information
-  metaZ          <- cbind(data.frame(fileNames = fileNames),
-                          uplow,
-                          xlim1 = xPxValVec[1],                 ylim1 = yPxValVec[upper],
-                          xlim2 = xPxValVec[length(xPxValVec)], ylim2 = yPxValVec[lower])
+  metaZ <- cbind(data.frame(fileNames = fileNames),
+                 uplow,
+                 xlim1 = xPxValVec[1],                 ylim1 = yPxValVec[upper],
+                 xlim2 = xPxValVec[length(xPxValVec)], ylim2 = yPxValVec[lower])
 
   # Check for temporary directory, create if it does not exist
   if(!dir.exists(tempDir)) { dir.create(tempDir, recursive = TRUE) }
@@ -264,15 +264,19 @@ buildArray <- function(widthPx, heightPx, xlim, ylim, blockSizePx = 2250000,
   # Parallel loop
   cat("parallel loop starting ... ")
   foreach(i = iBlocks) %dopar% {
-    yPxValVecBlock <- rep(yPxValVec[c(metaZ[i,"lower"]:metaZ[i,"upper"])], widthPx)
-    xPxValVecBlock <- rep(xPxValVec, each = metaZ[i,"upper"] - metaZ[i,"lower"] + 1)
-    compVec        <- complex(real = xPxValVecBlock, imaginary = yPxValVecBlock)
-    compArr        <- array(compVec, dim = c(metaZ[i,"upper"] - metaZ[i,"lower"] + 1, widthPx))
+    yPxValVecBlock <- rep(yPxValVec[c(metaZ[i,"lower"]:metaZ[i,"upper"])],
+                          widthPx)
+    xPxValVecBlock <- rep(xPxValVec,
+                          each = metaZ[i,"upper"] - metaZ[i,"lower"] + 1)
+    compVec <- complex(real = xPxValVecBlock, imaginary = yPxValVecBlock)
+    compArr <- array(compVec, dim = c(metaZ[i,"upper"] - metaZ[i,"lower"] + 1,
+                                      widthPx))
     save(compArr, file = paste(tempDir, metaZ[i,"fileNames"], sep = "/"))
     rm(list = c("compArr", "compVec", "xPxValVecBlock", "yPxValVecBlock"))
   } # foreach i
   cat("done.")
 
+  # Arrange meta-information to be returned
   metaBack <- list(tempDir = tempDir, rndCode = rndCode, metaZ = metaZ)
 
   return(metaBack)
@@ -284,17 +288,19 @@ buildArray <- function(widthPx, heightPx, xlim, ylim, blockSizePx = 2250000,
 
 # Takes a list of pointers to arrays of the same width (and same type), rbinds
 # the arrays in order and gives back the pointer to the combined array
-# while deleting all others. For reasons of convenience this one return value is a
-# one-element list.
+# while deleting all others. For reasons of convenience this one return value
+# is a one-element list.
 
 rbindArraysbyPointer <- function(pArray) {
 
   nn <- length(pArray)
   if(nn > 1) {
     for(i in (2:nn)) {
-      pArray[[1]]$value <- rbind(pArray[[1]]$value, pArray[[2]]$value) # Always the next one
+      # Always append the next one
+      pArray[[1]]$value <- rbind(pArray[[1]]$value, pArray[[2]]$value)
+      # Remove just appended element from list. Next element becomes #2.
       pArray[[2]]$value <- NULL
-      pArray[[2]]       <- NULL # i.e. remove from list. Next element becomes #2.
+      pArray[[2]]       <- NULL
     } # for i
   } # if length(nn > 1)
 
@@ -302,14 +308,17 @@ rbindArraysbyPointer <- function(pArray) {
 
 } # function rbindArraysbyPointer
 
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # verticalSplitIndex
-# Returns the row indexes for splitting an array for parallel processing
-# with nnCores cores.
+
+# Returns the row indexes for splitting an array with nnRows as required for
+# parallel processing with nnCores cores.
+# Used in the functions complexArrayPlot and phasePortrait.
 
 verticalSplitIndex <- function(nnRows, nnCores) {
 
-  nProcss        <- min(nnRows, nnCores) # Number of processes to be parallelized;
+  # nProcss: Number of processes to be parallelized
+  nProcss        <- min(nnRows, nnCores)
   nRowsPerChunk  <- nnRows %/% nProcss
   nRest          <- nnRows %%  nProcss
   iProcss        <- c(1:nProcss)
@@ -323,7 +332,7 @@ verticalSplitIndex <- function(nnRows, nnCores) {
 
 } # function verticalSplitIndex
 
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Function complexArrayPlot
 
 # Displays an array of complex numbers in an existing plot
