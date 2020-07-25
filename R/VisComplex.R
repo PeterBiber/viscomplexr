@@ -335,94 +335,135 @@ verticalSplitIndex <- function(nnRows, nnCores) {
 # ------------------------------------------------------------------------------
 # Function complexArrayPlot
 
-# Displays an array of complex numbers in an existing plot
-# Since version 0.0.0.9005 avoids hard disk access in parallel processes
-# by reading all w-files serially but split them for serial processing,
-# i.e. transforming them into a color raster.
+# Displays an array of complex numbers in an existing plot.
+# In order to do so,the temporary files that together form the array are
+# read from disk one by one, but each one is processed in a parallel loop.
+# The resulting array of hsv color values is finally plotted as
+# a raster image.
 
-complexArrayPlot <- function(zMetaInfrm, xlim, ylim, pType = "pma", invertFlip = FALSE,
-                             lambda = 7, gamma = 9/10, pi2Div = 9, logBase = exp(2*pi/pi2Div),
-                             argOffset = 0, stdSaturation = 0.8, darkestShade = 0.1,
+complexArrayPlot <- function(zMetaInfrm, xlim, ylim,
+                             pType = "pma", invertFlip = FALSE,
+                             lambda = 7, gamma = 9/10, pi2Div = 9,
+                             logBase = exp(2*pi/pi2Div),
+                             argOffset = 0,
+                             stdSaturation = 0.8,
+                             darkestShade = 0.1,
                              hsvNaN = c(0, 0, 0.5),
-                             asp = 1, xlab = "", ylab = "", ...) {
+                             asp = 1,
+                             xlab = "", ylab = "", ...) {
 
-  # If user choses invertFlip (for North half-Riemann-sphere), the axes require re-labeling
-  # in case the user wanted axes.
+  # Set up plot
+  # If user has chosen invertFlip = TRUE (for North half-Riemann-sphere),
+  # the axes are not plotted (xaxt, yaxt = "n")
   if(invertFlip) {
-    plot(NULL, xlim = xlim, ylim = ylim, asp = asp, xlab = xlab, ylab = ylab, xaxt = "n", yaxt = "n", ...)
+    plot(NULL, xlim = xlim, ylim = ylim, asp = asp, xlab = xlab, ylab = ylab,
+         xaxt = "n", yaxt = "n", ...)
   }
   else {
-    plot(NULL, xlim = xlim, ylim = ylim, asp = asp, xlab = xlab, ylab = ylab, ...)
+    plot(NULL, xlim = xlim, ylim = ylim, asp = asp, xlab = xlab, ylab = ylab,
+         ...)
   }
 
-  # if(invertFlip) {
-  #   axis(1, labels = 1/axTicks(1), at = axTicks(1))
-  # }
+  # Define call to color transformation function depending user's
+  # choice of pType
+  colCmd <- switch(pType,
+                   "p"   = "phaseColhsv(pListCompArr[[i]],
+                                        pHsvCol,
+                                        stdSaturation = stdSaturation,
+                                        hsvNaN = hsvNaN)",
 
-  # dims   <- dim(compArr) # Zweidimensional, erst vertikal, dann horizontal
-  colCmd <- switch(pType, "p"   = "phaseColhsv(pCompArr, pHsvCol, stdSaturation = stdSaturation, hsvNaN = hsvNaN)",
-                          "pm"  = "phaseModColhsv(pCompArr, pHsvCol, lambda = lambda, logBase = logBase,
-                                                  stdSaturation = stdSaturation, darkestShade = darkestShade,
-                                                  hsvNaN = hsvNaN)",
-                          "pa"  = "phaseAngColhsv(pCompArr, pHsvCol, lambda = lambda, pi2Div = pi2Div,
+                   "pm"  = "phaseModColhsv(pListCompArr[[i]],
+                                           pHsvCol,
+                                           lambda = lambda,
+                                           logBase = logBase,
+                                           stdSaturation = stdSaturation,
+                                           darkestShade = darkestShade,
+                                           hsvNaN = hsvNaN)",
+
+                   "pa"  = "phaseAngColhsv(pListCompArr[[i]],
+                                           pHsvCol,
+                                           lambda = lambda,
+                                           pi2Div = pi2Div,
+                                           argOffset = argOffset,
+                                           stdSaturation = stdSaturation,
+                                           darkestShade = darkestShade,
+                                           hsvNaN = hsvNaN)",
+
+                   "pma" = "phaseModAngColhsv(pListCompArr[[i]],
+                                              pHsvCol,
+                                              lambda = lambda,
+                                              gamma = gamma,
+                                              pi2Div = pi2Div,
+                                              logBase = logBase,
                                               argOffset = argOffset,
-                                              stdSaturation = stdSaturation, darkestShade = darkestShade,
-                                              hsvNaN = hsvNaN)",
-                          "pma" = "phaseModAngColhsv(pCompArr, pHsvCol, lambda = lambda, gamma = gamma,
-                                                     pi2Div = pi2Div, logBase = logBase,
-                                                     argOffset = argOffset,
-                                                     stdSaturation = stdSaturation, darkestShade = darkestShade,
-                                                     hsvNaN = hsvNaN)"
+                                              stdSaturation = stdSaturation,
+                                              darkestShade = darkestShade,
+                                              hsvNaN = hsvNaN)"
   ) # switch
 
 
-  zMetaInfrm$metaZ$wFileNames <- paste(zMetaInfrm$tempDir, zMetaInfrm$metaZ$wFileNames, sep = "/")
+  # Obtain the names of the files to load and process
+  zMetaInfrm$metaZ$wFileNames <- paste(zMetaInfrm$tempDir,
+                                       zMetaInfrm$metaZ$wFileNames, sep = "/")
 
-  pHsvCol <- lapply(c(1:nrow(zMetaInfrm$metaZ)), function(i, zMetaInfrm, colCmd) {
+  # Run the color transformation function over each file
+  pHsvCol <- lapply(c(1:nrow(zMetaInfrm$metaZ)),
+                    function(i, zMetaInfrm, colCmd) {
 
       cat("\n.transforming block", i, "... ")
-      # load a block (will soon become a list of pointers, therefore the name)
+      # load a block (will soon become a list of pointers, hence the name)
       pListCompArr  <- get(load(zMetaInfrm$metaZ[i,]$wFileNames))
-      # split it
+      # split it for parallel processing
       nCores   <- getDoParWorkers()
       uplow    <- verticalSplitIndex(nrow(pListCompArr), nCores)
 
-      # - here's the actual splitting, cCompArr becomes a list of pointers;
-      #   that's why the name
+      # here's the actual splitting, cCompArr becomes a list of pointers
       pListCompArr  <- lapply(uplow, FUN = function(uplow, pListCompArr) {
         nwPtr <- newPointer(pListCompArr[c(uplow[1]:uplow[2]),])
-        # if the split result has only one line, it is not an array but a vector,
-        # while functions coming later require it as a two-dimensional array.
-        # This is made sure here.
+        # if the split result has only one line, it will automatically become a
+        # vector, which is undesired, because functions coming later require it
+        # as a two-dimensional array. This is made sure here.
         if(uplow[1] == uplow[2]) {
           dim(nwPtr$value) <- c(1, length(nwPtr$value))
         }
         return(nwPtr)
       }, pListCompArr = pListCompArr)
 
-      # Parallel loop transforming the chunks into a color raster each; giving back
-      # a list of pointers to the rasters
+      # Parallel loop transforming the chunks into a color raster each;
+      # giving back a list of pointers to the rasters
       cat("parallel loop starting ... ")
       pHsvCol <- foreach(i = c(1:length(pListCompArr)),
-                         .export  = c("phaseColhsv", "phaseModColhsv", "phaseModAngColhsv",
-                                      "logBase", "lambda", "gamma", "pi2Div","stdSaturation",
-                                      "darkestShade", "hsvNaN", "newPointer", "argOffset"), .combine = c) %dopar% {
+                         .export  = c("phaseColhsv",
+                                      "phaseModColhsv",
+                                      "phaseModAngColhsv",
+                                      "logBase",
+                                      "lambda",
+                                      "gamma",
+                                      "pi2Div",
+                                      "stdSaturation",
+                                      "darkestShade",
+                                      "hsvNaN",
+                                      "newPointer",
+                                      "argOffset"),
+                         .combine = c) %dopar% {
 
-        pCompArr <- pListCompArr[[i]]
         pHsvCol  <- newPointer(NULL)
-        eval(parse(text = colCmd))  # Does not require a return value, changes color array via pointer
-        pCompArr                <- NULL
-        rm(pCompArr)
-        pListCompArr[[i]]$value <- NULL # To be reduced here, but removed after the foreach loop
+        eval(parse(text = colCmd))      # Does not require a return value,
+                                        # changes color array via pointer
+        pListCompArr[[i]]$value <- NULL # Reduced here, but removed after
+                                        # the foreach loop
         return(pHsvCol)
       } # foreach
       cat("done.")
 
-      # Remove pListCompArr
+      # Remove the original array
       rm(pListCompArr)
 
-      # Combine the color arrays in the value of the first pointer. Free the others.
-      if(length(pHsvCol) == 1) pHsvCol <- list(pHsvCol)   # Enforce (one-element-) list in case there is only one value (single-core in action)
+      # Combine the color arrays in the value of the first pointer.
+      # Free the others (rbindArraysbyPointer).
+      #   Enforce (one-element-) list in case there is only one value
+      #   (i.e. if foreach loop was executed sequentially, one core only)
+      if(length(pHsvCol) == 1) pHsvCol <- list(pHsvCol)
       pHsvCol <- rbindArraysbyPointer(pHsvCol)
 
       return(pHsvCol)
@@ -430,11 +471,12 @@ complexArrayPlot <- function(zMetaInfrm, xlim, ylim, pType = "pma", invertFlip =
     zMetaInfrm = zMetaInfrm, colCmd = colCmd
   ) # lapply
 
-  # Combine a second time
+  # Now combine all blocks into the big raster ...
   cat("\nCombine colour rasters ... ")
   pHsvCol <- rbindArraysbyPointer(pHsvCol)
   cat("done.\n")
 
+  # ... and plot it
   cat("Plotting raster image ... ")
   rasterImage(as.raster(pHsvCol$value), xlim[1], ylim[1], xlim[2], ylim[2])
   cat("done.\n")
@@ -454,7 +496,7 @@ complexArrayPlot <- function(zMetaInfrm, xlim, ylim, pType = "pma", invertFlip =
 
 makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 
-  # If there is a match, give back the function. If not, return NULL
+  # If match.fun() detects a function, give it back. If not, return NULL
   testFun <- tryCatch(match.fun(FUN), error = function(err) NULL)
 
   # If this does not work, maybe we have a useful character string
@@ -469,7 +511,8 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
     testFun  <- eval(parse(text = exprText))
   } # if character
 
-  # Test the function if something has been done
+  # Test the function if the above resulted in something else
+  # than NULL
   if(!is.null(testFun)) {
     # Arbitrary number for testing the function
     testNum <- complex(real = runif(1), imaginary = runif(1))
@@ -485,7 +528,7 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 
 } # makeFunctionFromInput
 
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #' complexFunctionPlot
 #'
 #' This function is just a wrapper for \code{phasePortrait} in order to
