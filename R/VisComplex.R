@@ -1151,6 +1151,17 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
           return(z[c(uplow[1]:uplow[2]),])
        }, z = z)
 
+       # Construct function call to be evaluated inside the parallel loop
+       if(is.null(moreArgs)) {
+         vCall <- "vapply(z[[i]], compFun, FUN.VALUE = complex(1))"
+       }
+       else {
+         vCall <- paste("vapply(z[[i]], compFun, FUN.VALUE = complex(1),",
+                        paste(names(moreArgs), "=", moreArgs, collapse = ","),
+                        ")")
+       }
+       vCall <- parse(text = vCall)
+
        # Run the evaluation parallely on each core and put it together again
        cat("parallel loop starting ... ")
 
@@ -1161,24 +1172,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
          if(length(dim(z[[i]])) < 2) dims <- c(1, length(z[[i]]))
          else                        dims <- dim(z[[i]])
          if(invertFlip) z[[i]]            <- Conj(1 / z[[i]])
-         if(is.null(moreArgs)) {
-           array(
-             vapply(z[[i]], function(z, compFun) {
-               do.call(compFun, list(z))
-             },
-             FUN.VALUE = complex(1),
-             compFun = compFun),
-           dim = dims)
-         }
-         else {
-           array(
-             vapply(z[[i]], function(z, compFun, moreArgs) {
-               do.call(compFun, c(z, moreArgs))
-             },
-             FUN.VALUE = complex(1),
-             compFun = compFun, moreArgs = moreArgs),
-           dim = dims)
-         }
+         array(eval(vCall), dim = dims)
        } # foreach i
        cat("done.")
 
