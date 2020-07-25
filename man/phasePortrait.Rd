@@ -262,18 +262,18 @@ notation, etc. to poster-like artistic pictures.\cr
   strips are sequentially loaded and subdivided into a number of chunks that
   corresponds to the number of registered parallel workers (parameter
   \code{nCores}). By parallely processing each chunk, the function
-  \code{f(z)} defined by the user in \code{exprText} is applied to each cell
-  of the strip. This results in an array of function values that has exactly
-  the same size as the original strip. The new array is saved as a temporary
-  file, the RAM is cleared, and the next strip is loaded. This continues
-  until all strips are processed. In a similar way, all strips containing the
-  function values are loaded sequentially, and in a parallel process the
-  complex values are translated into colors which are stored in a raster
-  object. While the strips are deleted from the RAM after processing, the
-  color values obtained from each new strip are appended to the color raster.
-  After all strips are processed, the raster is plotted into the plot region
-  of the graphics device. If not explicitly defined otherwise by the user,
-  all temporary files are deleted after that.
+  \code{f(z)} defined by the user in the arguement \code{FUN} is applied to
+  each cell of the strip. This results in an array of function values that
+  has exactly the same size as the original strip. The new array is saved as
+  a temporary file, the RAM is cleared, and the next strip is loaded. This
+  continues until all strips are processed. In a similar way, all strips
+  containing the function values are loaded sequentially, and in a parallel
+  process the complex values are translated into colors which are stored in a
+  raster object. While the strips are deleted from the RAM after processing,
+  the color values obtained from each new strip are appended to the color
+  raster. After all strips are processed, the raster is plotted into the plot
+  region of the graphics device. If not explicitly defined otherwise by the
+  user, all temporary files are deleted after that.
   }
   \item{Temporary file system}{By default, the above-mentioned temporary
   files are deleted after use. This will not happen, if the parameter
