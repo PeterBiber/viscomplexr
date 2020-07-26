@@ -1166,7 +1166,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
        cat("parallel loop starting ... ")
 
        w <- foreach(i = c(1:length(z)), .combine = rbind,
-                    .export = c("invertFlip")) %dopar% {
+                    .export = c("invertFlip", "compFun")) %dopar% {
          # Make sure dimensions are correct, because
          # one-line arrays can become vectors mysteriously ...
          if(length(dim(z[[i]])) < 2) dims <- c(1, length(z[[i]]))
