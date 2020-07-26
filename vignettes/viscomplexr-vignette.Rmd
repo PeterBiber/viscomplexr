@@ -273,6 +273,8 @@ With some consideration it becomes quite easy to see that both phase portraits a
 ## Hints for artistic applications {#hints_artistic}
 Not only features of this package, but useful features of R base graphics. The power of R base graphics: everything is possible; the drawback: it takes hours to find them.
 
+auch image quality ansprechen
+
 - first of all: the par(op) mechanism
 - also xaxs = "i", yaxs = "i"
 - axes = FALSE (Zugriff auf alle Grafikparameter über phasePortrait, allerdings Preis zu zahlen)
@@ -408,14 +410,33 @@ phasePortrait(tryThisOneToo, moreArgs = list(n = 50, r = 1/2 - 1/2i),
 
 ```
 
-Defining own functions in C++ and using them with *phasePortrait* usually gives an enormous performance gain. This is especially true if they require operations that cannot be vectorized in R (i.e. if there is now way to avoid for-loops or similar). The ideal tool for integrating C++ code in R programs is *Rcpp* [@edelbuettel_rcpp_2017], but be aware that C++ functions compiled with \code{Rcpp::sourceCpp} will not work with *phasePortrait*, as this is not compatible with parallel processing. What it takes is to provide the C++ functions as or as part of an R package which is not difficult at all. The functions of the `math` family included in this package have all been coded in C++ and integrated with *Rcpp*.
+Defining own functions in C++ and using them with *phasePortrait* usually gives an enormous performance gain. This is especially true if they require operations that cannot be vectorized in R (i.e. if there is now way to avoid for-loops or similar). The ideal tool for integrating C++ code in R programs is *Rcpp* [@edelbuettel_rcpp_2017], but be aware that C++ functions compiled with `Rcpp::sourceCpp` will not work with *phasePortrait*, as this is not compatible with parallel processing. What it takes is to provide the C++ functions as or as part of an R package which is not difficult at all. The functions of the `math` family included in this package have all been coded in C++ and integrated with *Rcpp*.
 
 
 ### Temporary files
-In order not to overload the RAM ...
-+++ Nach Absturz nachschauen! Brauchen viel Speicher +++
+In order to keep the machine's RAM workload manageable, *phasePortrait* will always save data in temporary files. These files are stored in the directory specified with the argument `tempDir` (default is the current working directory). After normal execution, these files will be automatically deleted, so, usually, there is no need to care about. Automatic deletion, however, will not happen, if the user calls *phasePortrait* with the parameter `deleteTempFiles` set to FALSE or if phasePortrait does not terminate properly. Thus, if *phasePortrait* crashed you should check the directory specified as `tempDir` and delete these files, because they usually are of considerable size. However, such orphans will never interfere with further runs of *phasePortrait* (see below).
+
+The size of these temporary files depends from *phasePortrait*'s parameter `blockSizePx` (default: 2250000). If the two-dimensional array of pixels to be plotted comprises more pixels than specified by this parameter, the array will be vertically split into blocks of that size. These sub-arrays are what is stored in the temporary files. More precisely, there are two temporary files per sub-array. One represents the clipout of the untransformed complex plane over which the function of interested is applied; the other contains the values obtained by applying the function to the first one. Thus, each array cell contains a double precision complex number; in a temporary file pair an array cell at the same position referes to the same pixel in the plot.
+
+These files are `.RData` files, and their names adhere to a strict convention, see the following examples:
+
+
+`0001zmat2238046385.RData`
+
+`0001wmat2238046385.RData`
+
+
+These are examples of names of a pair of temporary files belonging to the same block (sub-array). They are equal except for one substring which can either be 'zmat' or 'wmat'. The former contains an untransformed clipout of the complex plane, and the latter the corresponding values obtained from the function of interest as explained above.
+
+Both names begin with '0001', indicating that the array's top line is the first line of the *whole* pixel array to be covered by the phasePortrait. The name of the file that contains the subsequent array can e.g. begin with a number like '0470', indicating that its first line is line number 470 of the whole array. The number of digits for these line numbers is not fixed. It is determined by the greatest number required. Numbers with less digits are zero-padded. The second part of the file name is either zmat or wmat (see above). The third part of the file names is a ten-digit integer. This is a random number which all temporary files stemming from the same call of *phasePortrait* have in common. This guarantees that no temporary files will be confounded in subsequent calls of *phasePortrait*, even if undeleted temporary files from previous runs are still present. It may be worth varying `blockSizePx` in order to find a value with optimum performance on your machine.
+
 
 ### Parallel processing
+For enhanced performance, *phasePortrait* uses parallel processing as provided via the **R** packages `doParallel` [@micwest_doparallel_2019] and `foreach` [@micwest_foreach_2020]. The number of processor cores to be used can be set with the parameter `nCores` when calling *phasePortrait*. By default, all present cores will be utilized. Clearly, setting `nCores = 1` will result in sequential processing. When *phasePortrait* is started, and no parallel backend is registered, it has to be registered first. The same applies, when a parallel backend is registered, but the user desires a different number of cores. This registering may take some time, so *phasePortrait* does not automatically register a sequential backend when it terminates. This saves registering time in subsequent runs of *phasePortrait* with the same number of cores to be used. This default behaviour - keeping parallel backends registered after termination - can be changed by setting the parameter `autoDereg` on TRUE (default is FALSE). Otherwise, *phasePortrait*, after completing the plot, prints a message that the current parallel backend can be manually de-registered with the command `foreach::registerDoSEQ()`. We recommend to do this after the last call to *phasePortrait* in an **R** session.
+
+
+Ein paar Details noch
+
 
 ### Defining image quality
 
