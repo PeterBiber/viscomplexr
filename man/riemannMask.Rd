@@ -105,7 +105,7 @@ par(op)}
 
 # Rational function with Riemann masks without annotation.
 # Axis tick marks on the second diagram do not make sense
-# (it is no bug that you do not get them).
+# (it is not a bug that you do not get them).
 \dontrun{
 x11(width = 16, height = 8)
 op <- par(mfrow = c(1, 2), mar = c(4.7, 4.7, 3.5, 3.5))

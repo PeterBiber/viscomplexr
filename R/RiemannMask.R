@@ -1,10 +1,10 @@
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Function(s) for plotting a Riemann sphere clip over an existing
 # phase portrait
 #
 # P.Biber, February 2020
 #
-# -----------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #' Plot a Riemann sphere mask over a phase portrait
 #'
 #' The function \code{riemannMask} can be used for laying a mask over an
@@ -97,7 +97,7 @@
 #'
 #' # Rational function with Riemann masks without annotation.
 #' # Axis tick marks on the second diagram do not make sense
-#' # (it is no bug that you do not get them).
+#' # (it is not a bug that you do not get them).
 #' \dontrun{
 #' x11(width = 16, height = 8)
 #' op <- par(mfrow = c(1, 2), mar = c(4.7, 4.7, 3.5, 3.5))
@@ -175,8 +175,10 @@ riemannMask <- function(colMask     = "white",
     labels <- c("-1", "i", "0", "-i", "1")
     i <- c(1:5)
     lapply(i, function(i, pts, labels) {
-      adx    <- switch(labels[i], "-1" =   1.5, "i" =  -2.5, "0" = -2.0, "-i" = -0.6, "1" = -1.8)
-      ady    <- switch(labels[i], "-1" =  -1.2, "i" =  -1.2, "0" = -1.2, "-i" =  2.2, "1" = -1.2)
+      adx    <- switch(labels[i],
+        "-1" =   1.5, "i" =  -2.5, "0" = -2.0, "-i" = -0.6, "1" = -1.8)
+      ady    <- switch(labels[i],
+        "-1" =  -1.2, "i" =  -1.2, "0" = -1.2, "-i" =  2.2, "1" = -1.2)
       text(pts$x[i], pts$y[i], labels[i], vfont = c("serif", "bold"),
            adj = c(adx, ady))
     }, pts = pts, labels = labels)
@@ -191,20 +193,19 @@ riemannMask <- function(colMask     = "white",
     labels <- c("-1", "i", " ", "-i", "1")
     i <- c(1:5)
     lapply(i, function(i, pts, labels) {
-      adx    <- switch(labels[i], "-1" =  -0.6, "i" =  -2.5, " " = -2.0, "-i" = -0.6, "1" =  2.6)
-      ady    <- switch(labels[i], "-1" =  -1.2, "i" =  -1.2, " " = -1.2, "-i" =  2.2, "1" = -1.2)
+      adx    <- switch(labels[i],
+        "-1" =  -0.6, "i" =  -2.5, " " = -2.0, "-i" = -0.6, "1" =  2.6)
+      ady    <- switch(labels[i],
+        "-1" =  -1.2, "i" =  -1.2, " " = -1.2, "-i" =  2.2, "1" = -1.2)
       text(pts$x[i], pts$y[i], labels[i], vfont = c("serif", "bold"),
            adj = c(adx, ady))
     }, pts = pts, labels = labels)
 
-    # text(pts$x, pts$y,
-    #      labels = c("-1", "i", "", "-i", "1"),
-    #      pos = c(4, 3, 4, 1, 2),
-    #      vfont = c("serif", "bold"))
     text(0, 0, expression(infinity), adj = c(-0.7, -1.0), cex = 1.7, font = 2)
   } # if annotNorth
 
 } # function riemannMask
-# -----------------------------------------------------------------------------
 
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
