@@ -43,11 +43,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// jacobiTheta
+std::complex<double> jacobiTheta(std::complex<double> z, std::complex<double> tau, int kIter);
+RcppExport SEXP _viscomplexr_jacobiTheta(SEXP zSEXP, SEXP tauSEXP, SEXP kIterSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::complex<double> >::type z(zSEXP);
+    Rcpp::traits::input_parameter< std::complex<double> >::type tau(tauSEXP);
+    Rcpp::traits::input_parameter< int >::type kIter(kIterSEXP);
+    rcpp_result_gen = Rcpp::wrap(jacobiTheta(z, tau, kIter));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_viscomplexr_mandelbrot", (DL_FUNC) &_viscomplexr_mandelbrot, 2},
     {"_viscomplexr_juliaNormal", (DL_FUNC) &_viscomplexr_juliaNormal, 4},
     {"_viscomplexr_blaschkeProd", (DL_FUNC) &_viscomplexr_blaschkeProd, 2},
+    {"_viscomplexr_jacobiTheta", (DL_FUNC) &_viscomplexr_jacobiTheta, 3},
     {NULL, NULL, 0}
 };
 

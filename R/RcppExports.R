@@ -154,3 +154,8 @@ blaschkeProd <- function(z, a) {
     .Call(`_viscomplexr_blaschkeProd`, z, a)
 }
 
+#' @export
+jacobiTheta <- function(z, tau, kIter = 30L) {
+    .Call(`_viscomplexr_jacobiTheta`, z, tau, kIter)
+}
+

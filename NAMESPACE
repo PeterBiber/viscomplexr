@@ -2,6 +2,7 @@
 
 export(blaschkeProd)
 export(complexFunctionPlot)
+export(jacobiTheta)
 export(juliaNormal)
 export(mandelbrot)
 export(phasePortrait)

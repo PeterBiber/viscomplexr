@@ -202,6 +202,28 @@ std::complex<double> blaschkeProd(std::complex<double> z,
 
 
 
+//' @export
+// [[Rcpp::export]]
+std::complex<double> jacobiTheta(std::complex<double> z,
+                                 std::complex<double> tau,
+                                 int kIter = 30) {
+
+  std::complex<double> q = exp(std::complex<double>(0, 1) * M_PI * tau);
+
+  std::complex<double> theta = std::complex<double>(1, 0);
+  int k = 0;
+  for(int i = 0; i < kIter; i++) {
+    k++;
+    std::complex<double> g = exp(2 * M_PI * std::complex<double>(0, 1) * z);
+    theta += pow(q, pow(k, 2)) * pow(g, k) + pow(q, pow(k, 2)) * pow(g, -k);
+  }
+  return theta;
+}
+
+
+
+
+
 
 
 
