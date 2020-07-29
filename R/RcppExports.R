@@ -154,8 +154,50 @@ blaschkeProd <- function(z, a) {
     .Call(`_viscomplexr_blaschkeProd`, z, a)
 }
 
+#' Jacobi theta function
+#'
+#' Aproximation of "the" Jacobi theta function
+#'
+#' This function approximates the Jacobi theta function theta(z; tau) which is
+#' the sum of exp(pi*i*n^2*tau + 2*pi*i*n*z) for n in -Inf, Inf. It uses,
+#' however, the function's triple product representation. See
+#' \url{https://en.wikipedia.org/wiki/Theta_function} for details. This function
+#' has been implemented in C++, but it is only slightly faster than well-crafted
+#' R versions, because the calculation can be nicely vectorized in R.
+#'
+#' @param z Complex number; the point in the complex plane to which the output
+#'   of the function is mapped
+#'
+#' @param tau Complex number; the so-called half-period ratio, must have a
+#'   positive imaginary part
+#'
+#' @param nn Integer; number of factors to be used when approximating the
+#'   triple product (default = 30)
+#'
+#' @return The value of the function for \code{z} and \code{tau}.
+#'
+#' @family maths
+#'
+#'
+#' @examples
+#'
+#' \dontrun{
+#' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/2-1/4),
+#' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2))
+#'
+#' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/2-1/2),
+#' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2))
+#'
+#' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/3+1/3),
+#' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2))
+#'
+#' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/4+1/2),
+#' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2))
+#' }
+#'
+#'
 #' @export
-jacobiTheta <- function(z, tau, kIter = 30L) {
-    .Call(`_viscomplexr_jacobiTheta`, z, tau, kIter)
+jacobiTheta <- function(z, tau, nn = 30L) {
+    .Call(`_viscomplexr_jacobiTheta`, z, tau, nn)
 }
 

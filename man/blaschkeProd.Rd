@@ -44,6 +44,7 @@ phasePortrait(blaschkeProd, moreArgs = list(a = a),
 }
 \seealso{
 Other maths: 
+\code{\link{jacobiTheta}()},
 \code{\link{juliaNormal}()},
 \code{\link{mandelbrot}()}
 }

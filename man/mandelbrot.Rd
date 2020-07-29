@@ -57,6 +57,7 @@ Other fractals:
 
 Other maths: 
 \code{\link{blaschkeProd}()},
+\code{\link{jacobiTheta}()},
 \code{\link{juliaNormal}()}
 }
 \concept{fractals}

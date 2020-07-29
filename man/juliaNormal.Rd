@@ -70,6 +70,7 @@ Other fractals:
 
 Other maths: 
 \code{\link{blaschkeProd}()},
+\code{\link{jacobiTheta}()},
 \code{\link{mandelbrot}()}
 }
 \concept{fractals}

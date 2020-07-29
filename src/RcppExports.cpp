@@ -44,15 +44,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // jacobiTheta
-std::complex<double> jacobiTheta(std::complex<double> z, std::complex<double> tau, int kIter);
-RcppExport SEXP _viscomplexr_jacobiTheta(SEXP zSEXP, SEXP tauSEXP, SEXP kIterSEXP) {
+std::complex<double> jacobiTheta(std::complex<double> z, std::complex<double> tau, int nn);
+RcppExport SEXP _viscomplexr_jacobiTheta(SEXP zSEXP, SEXP tauSEXP, SEXP nnSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::complex<double> >::type z(zSEXP);
     Rcpp::traits::input_parameter< std::complex<double> >::type tau(tauSEXP);
-    Rcpp::traits::input_parameter< int >::type kIter(kIterSEXP);
-    rcpp_result_gen = Rcpp::wrap(jacobiTheta(z, tau, kIter));
+    Rcpp::traits::input_parameter< int >::type nn(nnSEXP);
+    rcpp_result_gen = Rcpp::wrap(jacobiTheta(z, tau, nn));
     return rcpp_result_gen;
 END_RCPP
 }
