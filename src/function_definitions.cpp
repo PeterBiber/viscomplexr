@@ -203,7 +203,8 @@ std::complex<double> blaschkeProd(std::complex<double> z,
 
 //' Jacobi theta function
 //'
-//' Aproximation of "the" Jacobi theta function
+//' Aproximation of "the" Jacobi theta function using the first \code{nn}
+//' factors in its triple product version
 //'
 //' This function approximates the Jacobi theta function theta(z; tau) which is
 //' the sum of exp(pi*i*n^2*tau + 2*pi*i*n*z) for n in -Inf, Inf. It uses,

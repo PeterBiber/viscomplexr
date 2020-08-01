@@ -44,3 +44,9 @@ par(op)}
 
 
 }
+\seealso{
+Other helpers: 
+\code{\link{xlimFromYlim}()},
+\code{\link{ylimFromXlim}()}
+}
+\concept{helpers}

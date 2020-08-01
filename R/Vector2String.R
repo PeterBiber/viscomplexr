@@ -11,6 +11,8 @@
 #' @return A string, where the former vector elements are separated by commas,
 #'   enclosed between "c(" and ")".
 #'
+#' @family helpers
+#'
 #' @export
 #'
 #' @examples

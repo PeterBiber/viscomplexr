@@ -20,12 +20,13 @@ triple product (default = 30)}
 The value of the function for \code{z} and \code{tau}.
 }
 \description{
-Aproximation of "the" Jacobi theta function
+Aproximation of "the" Jacobi theta function using the first \code{nn}
+factors in its triple product version
 }
 \details{
 This function approximates the Jacobi theta function theta(z; tau) which is
 the sum of exp(pi*i*n^2*tau + 2*pi*i*n*z) for n in -Inf, Inf. It uses,
-however the function's triple product representation. See
+however, the function's triple product representation. See
 \url{https://en.wikipedia.org/wiki/Theta_function} for details. This function
 has been implemented in C++, but it is only slightly faster than well-crafted
 R versions, because the calculation can be nicely vectorized in R.
