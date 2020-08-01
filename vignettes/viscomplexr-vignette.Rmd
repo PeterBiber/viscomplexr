@@ -417,6 +417,19 @@ phasePortrait(tryThisOneToo, moreArgs = list(n = 50, r = 1/2 - 1/2i),
 Defining own functions in C++ and using them with *phasePortrait* usually gives an enormous performance gain. This is especially true if they require operations that cannot be vectorized in R (i.e. if there is now way to avoid for-loops or similar). The ideal tool for integrating C++ code in R programs is *Rcpp* [@edelbuettel_rcpp_2017], but be aware that C++ functions compiled with `Rcpp::sourceCpp` will not work with *phasePortrait*, as this is not compatible with parallel processing. What it takes is to provide the C++ functions as or as part of an R package which is not difficult at all. The functions of the `math` family included in this package have all been coded in C++ and integrated with *Rcpp*.
 
 
+### Defining image quality {#img_qual} 
+Clearly, there is a trade-off between the quality of an image plotted with *phasePortrait* and the computing time. The image quality is defined by the argument `res` and has a default value of 150 dpi. For pictures in standard sizes auf about 30 x 20 cm plotting with 150 dpi does not take much time, and for many purposes, this resolution is sufficient. When resolutions of 300, 600 or more dpi are desired for high-quality printouts, we recommend to try out everything with 150 dpi (and, maybe, on a small format) before starting the final high-quality run. Technically, early after being called, *phasePortrait* gets the plot region size of the active graphics device and calculates the number of required pixels from this size and the value of `res`. Note, that **R** graphics devices for files, like `png`, `bmp`, `jpeg` and `tiff`, also expect a parameter `res` (if the units given for device height and width are cm or inches). For plotting to graphics files, it seems a good idea to store the desired resolution in a variable first, and pass it to both, the graphics device and *phasePortrait*:
+
+```{r, eval = FALSE}
+res <- 300 # Define desired resolution in dpi
+png("Logistic_Function.png", width = 40, height = 40 * 3/4, 
+    units = "cm", res = res)
+phasePortrait("1/(1+exp(-z))", xlim = c(-25, 25), ylim = c(-15, 15), res = res,
+              xlab = "real", ylab = "imaginary")
+dev.off()
+```
+
+
 ### Temporary files {#tempfiles}
 In order to keep the machine's RAM workload manageable, *phasePortrait* will always save data in temporary files. These files are stored in the directory specified with the argument `tempDir` (default is the current working directory). After normal execution, these files will be automatically deleted, so, usually, there is no need to care about. Automatic deletion, however, will not happen, if the user calls *phasePortrait* with the parameter `deleteTempFiles` set to FALSE or if phasePortrait does not terminate properly. Thus, if *phasePortrait* crashed you should check the directory specified as `tempDir` and delete these files, because they usually are of considerable size. However, such orphans will never interfere with further runs of *phasePortrait* (see below).
 
@@ -445,11 +458,6 @@ Third, for transforming the function values stored in the `wmat` files into [hsv
 As mentioned in the section about [temporary files](#tempfiles), users can possibly optimize performance by trying different values for the parameter `blockSizePx`. We mention this here as well, as `blockSizePx` does not only influence size and number of the temporary files, but also the size of the array chunks that are processed parallely.
 
 Obviously, applying the function of interest to millions of values is time-critical. Therefore, when defining such a function in **R**, use all options at hand for vectorizing calculations. Moreover, you can count on an enormous performance gain when you write time critical functions in C++. Thanks to the package *Rcpp* [@edelbuettel_rcpp_2017] this not really a hurdle anymore. As mentioned above, however, C++ functions compiled with `Rcpp::sourceCpp` will not work with *phasePortrait*, as this is not compatible with parallel processing; you have to provide such functions in a package. The package at hand provides a few math functions; all of them have been implemented in C++.
-
-
-### Defining image quality {#img_qual} 
-
-Wie schon oben: low quality first zum Ausprobieren.
 
 
 ## References
