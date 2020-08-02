@@ -270,18 +270,90 @@ With some consideration it becomes quite easy to see that both phase portraits a
 
 
 
-## Hints for artistic applications {#hints_artistic}
-Not only features of this package, but useful features of R base graphics. The power of R base graphics: everything is possible; the drawback: it takes hours to find them.
+## Aesthetic hints {#hints_artistic}
+While phase portraits were invented for scientific and technical purposes, their aesthetic quality is a feature in itself. In this section, we give a few technical hints that might be helpful for obtaining appealing graphics. We will be not only talking about features implemented in this package, but also mention some useful options provided by R base graphics.
+
+### The `par(op)` mechanism
+As mentioned above, *phasePortrait* uses **R**'s base graphic system. This is a powerful tool, its functionality is, however, not always easy to understand and use. Many fundamental settings of base **R** graphics are stored in a set of parameters, which can be set or queried using the function `par()`. Among the important graphical parameters in our context are those which steer the figure and plot margins (`oma`, `omi`, `mar`, `mai`) and those which define the default background and foreground colors (`bg`, `fg`). Use `?par` to see a documentation of all parameters. Changing these parameters here and there during an **R** session can easily lead to graphical results that may be nice but hard to reproduce. For avoiding this, when `par()` is used to change one or more graphical parameters, it invisibly returns all parameters and their values *before* the change. These can be stored in a variable, and used to restore the original parameter values after the plotting has been done. This concept seems to be unknown to surprisingly many users of **R**:
+
+```{r, eval = FALSE}
+# Set the plot margins at all four sides to 1/5 inch with mai,
+# set the background color to black with bg, and the default foreground
+# color with fg (e.g. for axes and boxes aroung plots, or the color of
+# the circle outline from the function riemannMask).
+# We catch the previous parameter values in a variable, I called
+# "op" ("old parameters")
+op <- par(mai = c(1/5, 1/5, 1/5, 1/5), bg = "black", fg = "white")
+
+# Make any phase portraits and/or other graphics of your interest
+# ...
+
+# Set the graphical parameters back to the values previously stored in op
+par(op)
+```
+
+### Dealing with axes
+Usually, when aiming for an artistic result, you want to suppress plot axes from being drawn. As phase *phasePortrait* accepts, via its `...` argument, all arguments also accepted by **R**'s `plot.default`,
+this can be easily achieved by providing the argument `axes = FALSE`:
+
+```{r, eval = FALSE}
+phasePortrait("tan(z^3 + 1/2 - 2i)/(1 - 1i - z)", 
+              xlim = c(-6, 6), ylim = c(-3, 3),
+              axes = FALSE)
+```
+
+Note that this does not only suppress both axes, but also the box usually drawn around a plot. If such a box is desired, it can be simply added afterwards by calling `box()`:
+
+```{r, eval = FALSE}
+phasePortrait("tan(z^3 + 1/2 - 2i)/(1 - 1i - z)", 
+              xlim = c(-6, 6), ylim = c(-3, 3),
+              axes = FALSE)
+box()
+```
+
+If axes are desired together with a special aesthetic appeal (e.g. for presentations), it is worth trying out a black background and white axes. However, there are unexpected hurdles to take, before the result looks as it should:
+
+```{r figure_14, fig.width=7, fig.height=5, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Obtaining all plot annotation in the desired color takes special attention (see code of this example).'}
+# set background and foreground colors
+op <- par(bg = "black", fg = "white")
+# Setting the parameter fg has an effect on the box, the axes, and the axes' 
+# ticks, but not on the axis annotations and axis labels.
+# Also the color of the title (main) is not affected. 
+# The colors of these elements have to be set manually and separately. While we
+# could simply set them simply to "white", we set them, more flexibly, to the 
+# current foreground color.
+phasePortrait("tan(z^3 + 1/2 - 2i)/(1 - 1i - z)",
+              xlim = c(-6, 6), ylim = c(-3, 3),            col.axis = par("fg"),
+              xlab = "real", ylab = "imaginary",           col.lab  = par("fg"),
+              main = "All annotation in foreground color", col.main = par("fg"),
+              # Adjust text size
+              cex.main = 0.9, cex.axis = 0.9, cex.lab = 0.9,
+              nCores = 2) 
+par(op)
+```
+
+Note that by default the axes are constructed with an overhang of 4% beyond the ranges given with `xlim` and `ylim` at each end. More often than not this looks nice, but sometimes it is undesired, e.g. when a phase portrait is intended to cover the full display without any frame and margin. This default behaviour is due to the graphical parameters `xaxs` and `yaxs` (axis style) set to 'r' ('regular'). Setting these parameters as `xaxs = "i"` and `yaxs = "i"` ('internal'), no overhang is added. Both, `xaxs` and `yaxs`, can be either set in a call to `par()` or handed as arguments to *phasePortrait*. We will come back to these parameters in the following section.
+
+
+
+### Device ratio and margins
+Aufziehen: erst ein plot ohne Achsen, der ein ganzes Bild einnimmt, dann mit Rahmen,
+(dann noch mehrere mit Rahmen?)
+
+Die xlimFromYlim etc. vorführen, hier auch `xaxs` und `yaxs` entsprechend bringen.
+
+
+
 
 auch image quality ansprechen
 
-- first of all: the par(op) mechanism
-- also xaxs = "i", yaxs = "i"
-- axes = FALSE (Zugriff auf alle Grafikparameter über phasePortrait, allerdings Preis zu zahlen)
+X first of all: the par(op) mechanism
+X also xaxs = "i", yaxs = "i"
+X axes = FALSE (Zugriff auf alle Grafikparameter über phasePortrait, allerdings Preis zu zahlen)
 - stdSaturation
 - gamma
-- black background
-- white text (axes)
+X black background
+X white text (axes)
 - white circle in Riemann Mask
 - auch Rahmen (wie bei Heinz 70)
 - low quality version first
