@@ -343,7 +343,8 @@ op <- par(mar = c(0, 0, 0, 0)) # Set plot margins to zero
 xlim <- c(-3, 3)
 # Calculate ylim with desired center fitting the desired aspect ratio
 ylim <- ylimFromXlim(xlim, centerY = 0, x_to_y = 16/9)
-phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/5 + 1/5), pType = "p",
+phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/5 + 1/5), pType = "p", 
+              nCores = 2,
               xlim = xlim, ylim = ylim,
               xaxs = "i", yaxs = "i",
               axes = FALSE)
@@ -366,7 +367,7 @@ xlim <- c(-1.5, 0.5)
 ratio <- (7 - 2*outerMar) / (7 * 9/16 - 2*outerMar)
 ylim  <- ylimFromXlim(xlim, centerY = 0, x_to_y = ratio)
 phasePortrait("sin(jacobiTheta(z, tau))/z", moreArgs = list(tau = 1i/5 + 1/5),
-              pType = "p",
+              pType = "p", nCores = 2,
               xlim = xlim, ylim = ylim,
               xaxs = "i", yaxs = "i",
               axes = FALSE)
