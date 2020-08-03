@@ -10,9 +10,12 @@ riemannMask(
   circOutline = TRUE,
   circLwd = 1,
   circleSteps = 360,
+  circleCol = par("fg"),
   gridCross = FALSE,
   annotSouth = FALSE,
-  annotNorth = FALSE
+  annotNorth = FALSE,
+  xlim = NULL,
+  ylim = NULL
 )
 }
 \arguments{
@@ -26,7 +29,7 @@ this would be overridden by the parameter \code{alphaMask}.}
 (totally opaque). Defaults to 0.5.}
 
 \item{circOutline}{Boolean - if \code{TRUE}, the outline of the unit circle
-is drawn in the default foreground color (\code{par("fg")}). Defaults to
+is drawn. Defaults to
 \code{TRUE}.}
 
 \item{circLwd}{Line width of the unit circle outline. Obviously relevant
@@ -34,6 +37,9 @@ only when \code{circOutline == TRUE}. Defaults to 1.}
 
 \item{circleSteps}{Number of vertices to draw the circle. Defaults to 360
 (one degree between two vertices).}
+
+\item{circleCol}{Color of the unit circle, default is the default foreground
+color (\code{par("fg")}).}
 
 \item{gridCross}{Boolean - if \code{TRUE}, a horizontal and a verical gray
 line will be drawn over the plot region, intersection in the center of the
@@ -48,6 +54,12 @@ annotation fits to an image that has been created with
 \emph{northern} Riemann hemisphere, defaults to \code{FALSE}. This
 annotation fits to an image that has been created with
 \code{\link{phasePortrait}} and the option \code{invertFlip = TRUE}.}
+
+\item{xlim, ylim}{optional, if provided must by numeric vectors of length 2
+defining plot limits as usual. They define the outer rectangle of the
+Riemann mask. If \code{xlim} or \code{ylim} is not provided (the standard
+case), the coordinates of the plot window as given by \code{par("usr")}
+will be used for the missing component.}
 }
 \description{
 The function \code{riemannMask} can be used for laying a mask over an
