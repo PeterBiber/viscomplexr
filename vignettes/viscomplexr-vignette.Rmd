@@ -274,7 +274,7 @@ With some consideration it becomes quite easy to see that both phase portraits a
 While phase portraits were invented for scientific and technical purposes, their aesthetic quality is a feature in itself. In this section, we give a few technical hints that might be helpful for obtaining appealing graphics. We will be not only talking about features implemented in this package, but also mention some useful options provided by R base graphics.
 
 ### The `par(op)` mechanism
-As mentioned above, *phasePortrait* uses **R**'s base graphic system. This is a powerful tool, its functionality is, however, not always easy to understand and use. Many fundamental settings of base **R** graphics are stored in a set of parameters, which can be set or queried using the function `par()`. Among the important graphical parameters in our context are those which steer the figure and plot margins (`oma`, `omi`, `mar`, `mai`) and those which define the default background and foreground colors (`bg`, `fg`). Use `?par` to see a documentation of all parameters. Changing these parameters here and there during an **R** session can easily lead to graphical results that may be nice but hard to reproduce. For avoiding this, when `par()` is used to change one or more graphical parameters, it invisibly returns all parameters and their values *before* the change. These can be stored in a variable, and used to restore the original parameter values after the plotting has been done. This concept seems to be unknown to surprisingly many users of **R**:
+As mentioned above, *phasePortrait* uses **R**'s base graphic system. This is a powerful tool, its functionality is, however, not always easy to understand and use. Many fundamental settings of base **R** graphics are stored in a set of parameters, which can be set or queried using the function `par()`. Among the important graphical parameters in our context are those which steer the outer margins and the plot margins (`oma`, `omi`, `mar`, `mai`) and those which define the default background and foreground colors (`bg`, `fg`). Use `?par` to see a documentation of all parameters. Changing these parameters here and there during an **R** session can easily lead to graphical results that may be nice but hard to reproduce. For avoiding this, when `par()` is used to change one or more graphical parameters, it invisibly returns all parameters and their values *before* the change. These can be stored in a variable, and used to restore the original parameter values after the plotting has been done. This concept seems to be unknown to surprisingly many users of **R**:
 
 ```{r, eval = FALSE}
 # Set the plot margins at all four sides to 1/5 inch with mai,
@@ -322,27 +322,56 @@ op <- par(bg = "black", fg = "white")
 # The colors of these elements have to be set manually and separately. While we
 # could simply set them simply to "white", we set them, more flexibly, to the 
 # current foreground color.
-phasePortrait("tan(z^3 + 1/2 - 2i)/(1 - 1i - z)",
+phasePortrait("tan(z^3 + 1/2 - 2i)/(2 - 1i - z)",
               xlim = c(-6, 6), ylim = c(-3, 3),            col.axis = par("fg"),
               xlab = "real", ylab = "imaginary",           col.lab  = par("fg"),
               main = "All annotation in foreground color", col.main = par("fg"),
               # Adjust text size
-              cex.main = 0.9, cex.axis = 0.9, cex.lab = 0.9,
+              cex.axis = 0.9, cex.lab = 0.9,
               nCores = 2) 
 par(op)
 ```
 
 Note that by default the axes are constructed with an overhang of 4% beyond the ranges given with `xlim` and `ylim` at each end. More often than not this looks nice, but sometimes it is undesired, e.g. when a phase portrait is intended to cover the full display without any frame and margin. This default behaviour is due to the graphical parameters `xaxs` and `yaxs` (axis style) set to 'r' ('regular'). Setting these parameters as `xaxs = "i"` and `yaxs = "i"` ('internal'), no overhang is added. Both, `xaxs` and `yaxs`, can be either set in a call to `par()` or handed as arguments to *phasePortrait*. We will come back to these parameters in the following section.
 
-
-
 ### Device ratio and margins
-Aufziehen: erst ein plot ohne Achsen, der ein ganzes Bild einnimmt, dann mit Rahmen,
-(dann noch mehrere mit Rahmen?)
+You might want to plot a phase portrait that fully covers the graphics device. The following code example shows how to achieve this. First, it is necessary to set the plot margins to zero (note that the outer margins are zero by default, so there is no need to care for them). Second, as *phasePortrait* uses an aspect ratio of 1 by default, `xlim` and `ylim` have to exactly match the aspect ratio of the graphics device to be plotted in. In order to facilitate this, we provide the functions `ylimFromXlim` and `xlimFromYlim`. In the example, we use the former in order to match `xlim` and `ylim` a device aspect ratio of 16/9. Third, in order to omit the 4% axis overhang (would look like a margin), the parameters `xaxs` and `yaxs` are set to "i". Setting `axes` to FALSE is not absolutely necessary in this case, but is good style.
 
-Die xlimFromYlim etc. vorführen, hier auch `xaxs` und `yaxs` entsprechend bringen.
+```{r figure_15, fig.width=7, fig.height=7*9/16, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='A phase portrait that fully covers a graphics device (see example code above).'}
+# Assume graphics device with 16/9 aspect ratio is already open
+op <- par(mar = c(0, 0, 0, 0)) # Set plot margins to zero
+xlim <- c(-3, 3)
+# Calculate ylim with desired center fitting the desired aspect ratio
+ylim <- ylimFromXlim(xlim, centerY = 0, x_to_y = 16/9)
+phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/5 + 1/5), pType = "p",
+              xlim = xlim, ylim = ylim,
+              xaxs = "i", yaxs = "i",
+              axes = FALSE)
+par(op)
+```
 
+Not many changes are necessary for obtaining a phase portrait like above but with a frame. A convenient option to do this is to set the outer margins of the graphics device in inches with the graphical parameter `omi` and the background to the desired color. Adding this to the code above, however, leads to different horizontal and vertical frame widths. This occurs because, due to the margin setting, the required ratio of the `xlim` and `ylim` ranges is no longer exactly 16/9. The precise ratio has to be calculated and provided to `ylimFromXlim` as done in the code example below.
 
+```{r figure_16, fig.width=7, fig.height=7*9/16, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Phase portrait with frame. Fine tuning is required for obtaining a uniform frame width (see code example above).'}
+# Assume graphics device with 16/9 aspect ratio and a width of 7 inches 
+#   is already open
+# Set plot margins to zero, outer margins to 1/7 inch,
+#   and background color to black
+outerMar <- 1/7 # outer margin width in inches
+op <- par(mar = c(0, 0, 0, 0), omi = rep(outerMar, 4), bg = "black") 
+xlim <- c(-1.5, 0.5)
+# Calculate ylim with desired center fitting the desired aspect ratio;
+#   however, the omi settings slightly change the required 
+#   ratio of xlim and ylim
+ratio <- (7 - 2*outerMar) / (7 * 9/16 - 2*outerMar)
+ylim  <- ylimFromXlim(xlim, centerY = 0, x_to_y = ratio)
+phasePortrait("sin(jacobiTheta(z, tau))/z", moreArgs = list(tau = 1i/5 + 1/5),
+              pType = "p",
+              xlim = xlim, ylim = ylim,
+              xaxs = "i", yaxs = "i",
+              axes = FALSE)
+par(op)
+```
 
 
 auch image quality ansprechen
@@ -355,7 +384,7 @@ X axes = FALSE (Zugriff auf alle Grafikparameter über phasePortrait, allerdings
 X black background
 X white text (axes)
 - white circle in Riemann Mask
-- auch Rahmen (wie bei Heinz 70)
+X auch Rahmen (wie bei Heinz 70)
 - low quality version first
 
 
