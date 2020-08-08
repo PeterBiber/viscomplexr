@@ -271,7 +271,7 @@ With some consideration it becomes quite easy to see that both phase portraits a
 
 
 ## Aesthetic hints {#hints_artistic}
-While phase portraits were invented for scientific and technical purposes, their aesthetic quality is a feature in itself. In this section, we give a few technical hints that might be helpful for obtaining appealing graphics. We will be not only talking about features implemented in this package, but also mention some useful options provided by R base graphics.
+While phase portraits were invented for scientific and technical purposes, their aesthetic quality is a feature in itself. In this section, we give a few technical hints that might be helpful for obtaining appealing graphics. We will be not only talking about features implemented in this package, but also mention some useful options provided by R base graphics. A general recommendation when plotting for maximum aesthetic results is also to first check out the function to be plotted with lower resolutions (e.g. the default 150 dpi), and a smaller format (but with the desired device aspect ratio), adjust the domain (`xlim`, `ylim`), and all other parameters of *phasePortrait* you might want to change (including the parameters `gamma` and `stdSaturation` we have not mentioned in this vignette, so far). Only if you are satisfied with the result at that stage, you should start the run with the desired final resolution and format (see also the section [defining image quality](#img_qual)). When using the function `riemannMask` you could try changing the mask's transparency (`alphaMask`) and it's color (`colMask` often, black is a good alternative to the default white). Besides such simple issues there are, however, a few points we will talk about in more detail below.
 
 ### The `par(op)` mechanism
 As mentioned above, *phasePortrait* uses **R**'s base graphic system. This is a powerful tool, its functionality is, however, not always easy to understand and use. Many fundamental settings of base **R** graphics are stored in a set of parameters, which can be set or queried using the function `par()`. Among the important graphical parameters in our context are those which steer the outer margins and the plot margins (`oma`, `omi`, `mar`, `mai`) and those which define the default background and foreground colors (`bg`, `fg`). Use `?par` to see a documentation of all parameters. Changing these parameters here and there during an **R** session can easily lead to graphical results that may be nice but hard to reproduce. For avoiding this, when `par()` is used to change one or more graphical parameters, it invisibly returns all parameters and their values *before* the change. These can be stored in a variable, and used to restore the original parameter values after the plotting has been done. This concept seems to be unknown to surprisingly many users of **R**:
@@ -293,7 +293,7 @@ par(op)
 ```
 
 ### Dealing with axes
-Usually, when aiming for an artistic result, you want to suppress plot axes from being drawn. As phase *phasePortrait* accepts, via its `...` argument, all arguments also accepted by **R**'s `plot.default`,
+Usually, when aiming for mainly aesthetic effects, you want to suppress plot axes from being drawn. As phase *phasePortrait* accepts, via its `...` argument, all arguments also accepted by **R**'s `plot.default`,
 this can be easily achieved by providing the argument `axes = FALSE`:
 
 ```{r, eval = FALSE}
@@ -304,7 +304,7 @@ phasePortrait("tan(z^3 + 1/2 - 2i)/(1 - 1i - z)",
 
 Note that this does not only suppress both axes, but also the box usually drawn around a plot. If such a box is desired, it can be simply added afterwards by calling `box()`:
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 phasePortrait("tan(z^3 + 1/2 - 2i)/(1 - 1i - z)", 
               xlim = c(-6, 6), ylim = c(-3, 3),
               axes = FALSE)
@@ -313,7 +313,7 @@ box()
 
 If axes are desired together with a special aesthetic appeal (e.g. for presentations), it is worth trying out a black background and white axes. However, there are unexpected hurdles to take, before the result looks as it should:
 
-```{r figure_14, fig.width=7, fig.height=5, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Obtaining all plot annotation in the desired color takes special attention (see code of this example).'}
+```{r, eval=FALSE}
 # set background and foreground colors
 op <- par(bg = "black", fg = "white")
 # Setting the parameter fg has an effect on the box, the axes, and the axes' 
@@ -327,8 +327,7 @@ phasePortrait("tan(z^3 + 1/2 - 2i)/(2 - 1i - z)",
               xlab = "real", ylab = "imaginary",           col.lab  = par("fg"),
               main = "All annotation in foreground color", col.main = par("fg"),
               # Adjust text size
-              cex.axis = 0.9, cex.lab = 0.9,
-              nCores = 2) 
+              cex.axis = 0.9, cex.lab = 0.9) 
 par(op)
 ```
 
@@ -337,14 +336,14 @@ Note that by default the axes are constructed with an overhang of 4% beyond the 
 ### Device ratio and margins
 You might want to plot a phase portrait that fully covers the graphics device. The following code example shows how to achieve this. First, it is necessary to set the plot margins to zero (note that the outer margins are zero by default, so there is no need to care for them). Second, as *phasePortrait* uses an aspect ratio of 1 by default, `xlim` and `ylim` have to exactly match the aspect ratio of the graphics device to be plotted in. In order to facilitate this, we provide the functions `ylimFromXlim` and `xlimFromYlim`. In the example, we use the former in order to match `xlim` and `ylim` a device aspect ratio of 16/9. Third, in order to omit the 4% axis overhang (would look like a margin), the parameters `xaxs` and `yaxs` are set to "i". Setting `axes` to FALSE is not absolutely necessary in this case, but is good style.
 
-```{r figure_15, fig.width=7, fig.height=7*9/16, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='A phase portrait that fully covers a graphics device (see example code above).'}
-# Assume graphics device with 16/9 aspect ratio is already open
+```{r, eval=FALSE}
+# Open graphics device with 16/9 aspect ratio and 7 inch width
+x11(width = 7, height = 9/16 * 7)
 op <- par(mar = c(0, 0, 0, 0)) # Set plot margins to zero
 xlim <- c(-3, 3)
 # Calculate ylim with desired center fitting the desired aspect ratio
 ylim <- ylimFromXlim(xlim, centerY = 0, x_to_y = 16/9)
 phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/5 + 1/5), pType = "p", 
-              nCores = 2,
               xlim = xlim, ylim = ylim,
               xaxs = "i", yaxs = "i",
               axes = FALSE)
@@ -353,9 +352,9 @@ par(op)
 
 Not many changes are necessary for obtaining a phase portrait like above but with a frame. A convenient option to do this is to set the outer margins of the graphics device in inches with the graphical parameter `omi` and the background to the desired color. Adding this to the code above, however, leads to different horizontal and vertical frame widths. This occurs because, due to the margin setting, the required ratio of the `xlim` and `ylim` ranges is no longer exactly 16/9. The precise ratio has to be calculated and provided to `ylimFromXlim` as done in the code example below.
 
-```{r figure_16, fig.width=7, fig.height=7*9/16, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Phase portrait with frame. Fine tuning is required for obtaining a uniform frame width (see code example above).'}
-# Assume graphics device with 16/9 aspect ratio and a width of 7 inches 
-#   is already open
+```{r, eval=FALSE}
+# Open graphics device with 16/9 aspect ratio and a width of 7 inches 
+x11(width = 7, height = 9/16 * 7)
 # Set plot margins to zero, outer margins to 1/7 inch,
 #   and background color to black
 outerMar <- 1/7 # outer margin width in inches
@@ -367,26 +366,12 @@ xlim <- c(-1.5, 0.5)
 ratio <- (7 - 2*outerMar) / (7 * 9/16 - 2*outerMar)
 ylim  <- ylimFromXlim(xlim, centerY = 0, x_to_y = ratio)
 phasePortrait("sin(jacobiTheta(z, tau))/z", moreArgs = list(tau = 1i/5 + 1/5),
-              pType = "p", nCores = 2,
+              pType = "p",
               xlim = xlim, ylim = ylim,
               xaxs = "i", yaxs = "i",
               axes = FALSE)
 par(op)
 ```
-
-
-auch image quality ansprechen
-
-X first of all: the par(op) mechanism
-X also xaxs = "i", yaxs = "i"
-X axes = FALSE (Zugriff auf alle Grafikparameter über phasePortrait, allerdings Preis zu zahlen)
-- stdSaturation
-- gamma
-X black background
-X white text (axes)
-- white circle in Riemann Mask
-X auch Rahmen (wie bei Heinz 70)
-- low quality version first
 
 
 ## Technical moreabouts {#tech_moreabouts}
@@ -559,7 +544,7 @@ Third, for transforming the function values stored in the `wmat` files into [hsv
 
 As mentioned in the section about [temporary files](#tempfiles), users can possibly optimize performance by trying different values for the parameter `blockSizePx`. We mention this here as well, as `blockSizePx` does not only influence size and number of the temporary files, but also the size of the array chunks that are processed parallely.
 
-Obviously, applying the function of interest to millions of values is time-critical. Therefore, when defining such a function in **R**, use all options at hand for vectorizing calculations. Moreover, you can count on an enormous performance gain when you write time critical functions in C++. Thanks to the package *Rcpp* [@edelbuettel_rcpp_2017] this not really a hurdle anymore. As mentioned above, however, C++ functions compiled with `Rcpp::sourceCpp` will not work with *phasePortrait*, as this is not compatible with parallel processing; you have to provide such functions in a package. The package at hand provides a few math functions; all of them have been implemented in C++.
+Obviously, applying the function of interest to millions of values is time-critical. Therefore, when defining such a function in **R**, use all options at hand for vectorizing calculations. Moreover, you can count on an enormous performance gain when you write time critical functions in C++. Thanks to the package *Rcpp* [@edelbuettel_rcpp_2017] this not really a hurdle anymore. As mentioned above, however, C++ functions compiled with `Rcpp::sourceCpp` will not work with *phasePortrait*, as this is not compatible with parallel processing; you have to provide such functions in a package. The package at hand provides a few functions (function family `maths`); all of them have been implemented in C++.
 
 
 ## References
