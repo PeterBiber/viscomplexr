@@ -1,6 +1,6 @@
 ---
 title: "Phase Portraits of Complex Valued Functions with the R Package *viscomplexr*"
-author: "Peter Biber & Veronika Biber"
+author: "Peter Biber"
 output: rmarkdown::html_vignette
 header-includes: \usepackage{amsmath}
 bibliography: REFERENCES.bib
@@ -265,8 +265,11 @@ par(op)
 
 With some consideration it becomes quite easy to see that both phase portraits are kind of everted versions of each other. What is inside the unit disk in the left phase portrait is outside in the right one, and vice versa. If you mentally visualize both unit disks touching in, e.g., point $z_4$ and one disk rolling along the edge of the other, you will see immediately how one disk continues the picture shown in the other. Having the 'Riemann Mask' somewhat transparent is helpful for orientation. Note, how the zeroes $z_{1, 2}$ and the pole $z_4$ which are located exactly on the unit circle continue outside the unit disk on 'their own' plane and in the other unit disk. Note also, that on both hemispheres zeroes and poles can be identified by the same sequence of colours: When circling counter-clockwise around the point of interest, a zero will always exhibit the colour sequence red, yellow, green, blue, magenta, red ..., while this order will always be reverted for a pole. As the pole at the point at infinity ($z_5$) is a double pole, the colour sequence is run through twice during one turn around the pole. As the zero $z_3$ is inside the unit disk representing the southern hemisphere, it lies outside the northern hemisphere disk, but it is still visible on the continuation of the inverted (and rotated) complex plane (belonging to the northern hemisphere) outside the unit disk. Observe, how the grid lines in the vicinity of $z_3$ merge when passing from one unit disk to the other.
 
-
 ### Fractals
+While visualizing fractals is not among the original purposes of this package, *phasePortrait* allows for an unusual way of displaying such that are functions of complex numbers. Classic examples are the [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set) and the [Julia set](https://en.wikipedia.org/wiki/Julia_set), and this package provides the functions `mandelbrot` and `juliaNormal` (implemented in C++) for supporting visualisation. The mandelbrot set comprises all complex numbers $z$ for which the sequence $a_{n+1}=a_n^{2}+z$ with $a_0=0$ remains bounded for all $n\in\mathbb{N_0}$. Normal julia sets are closely related to the Mandelbrot set. They comprise all complex numbers $z$ for which the sequence $a_{n+1}=a_n^2+c$ with $a_0=z$ remains bounded for all $n\in\mathbb{N_0}$. The parameter $c$ is a complex number, and interesting visualisations with this package (i.e. other than a blank screen) are only obtained for $c$ being an element of the Mandelbrot set. For the author's taste, the Julia set visualisations look best and are most interesting when $c$ is located near the border of the Mandelbrot set.
+
++++ Übliche Visualisierungen färben eigentlich die Punkte außerhalb der Menge, was eindeutig ist ... +++
+
 
 
 
