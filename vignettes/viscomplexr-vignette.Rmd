@@ -267,10 +267,22 @@ With some consideration it becomes quite easy to see that both phase portraits a
 
 ### Fractals
 While visualizing fractals is not among the original purposes of this package, *phasePortrait* allows for an unusual way of displaying such that are functions of complex numbers. Classic examples are the [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set) and the [Julia set](https://en.wikipedia.org/wiki/Julia_set), and this package provides the functions `mandelbrot` and `juliaNormal` (implemented in C++) for supporting visualisation. The mandelbrot set comprises all complex numbers $z$ for which the sequence $a_{n+1}=a_n^{2}+z$ with $a_0=0$ remains bounded for all $n\in\mathbb{N_0}$. Normal julia sets are closely related to the Mandelbrot set. They comprise all complex numbers $z$ for which the sequence $a_{n+1}=a_n^2+c$ with $a_0=z$ remains bounded for all $n\in\mathbb{N_0}$. The parameter $c$ is a complex number, and interesting visualisations with this package (i.e. other than a blank screen) are only obtained for $c$ being an element of the Mandelbrot set. For the author's taste, the Julia set visualisations look best and are most interesting when $c$ is located near the border of the Mandelbrot set.
+The classic visualisations of the Mandelbrot and the Julia set use a uniform color (usually black) for all points which belong to the set and color the points outside the set dependent on how quickly they diverge. Visualisations with *phasePortrait*, in contrast, color the points inside the sets by their argument and modulus as described above. While the results are visually appealing (please try the code examples we provide here), they are not unambiguous, as the sequences that define the sets do not always converge to one single value, but to limit cycles. 
 
-+++ Übliche Visualisierungen färben eigentlich die Punkte außerhalb der Menge, was eindeutig ist ... +++
+The following code plots an overview picture of the Mandelbrot set. Note that the function `mandelbrot` is called with a considerably low value (30) for the parameter `itDepht` which defines the number of iterations to be calculated (default is 500). This is because we are using *phasePortrait* for plotting into a graphics window with a comparatively low resolution (see section [Defining image quality](#img_qual) for how to obtain high-quality phasePortraits). While a high number of iterations produces a more accurate representation of the set, the resulting filigree structures might become hardly visible or even invisible when the resolution to be plotted on is low.
 
+```{r, eval=FALSE}
+x11(width = 8, height = 2/3 * 8)      # Open graphics window on screen
+op <- par(mar = c(0, 0, 0, 0))        # Do not leave plot margins
+phasePortrait(mandelbrot, moreArgs = list(itDepth = 30),
+              xlim = c(-2, 1), ylim = c(-1, 1),
+              hsvNaN = c(0, 0, 0),    # black color for points outside the set 
+              axes = FALSE,           # No coordinate axes   
+              xaxs = "i", yaxs = "i") # No space between plot region and plot
+par(op)                               # Set graphics parameters to original
+```
 
++++ Noch ein paar schöne Beispiele, wo direkt in Grafikdateien geplottet wird +++
 
 
 ## Aesthetic hints {#hints_artistic}
