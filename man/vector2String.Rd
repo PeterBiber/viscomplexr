@@ -27,7 +27,7 @@ a <- vector2String(a)
 print(a)
 
 
-# Use this for portraiting a Blasche product
+# Use this for portraying a Blaschke product
 \dontrun{
 x11(width = 9.45, height = 6.30)
 op <- par(mar = c(1, 1, 1, 1), bg = "black")

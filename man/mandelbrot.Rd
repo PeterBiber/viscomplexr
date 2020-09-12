@@ -41,7 +41,7 @@ returns \code{NaN+NaNi}. In all other cases, it returns \code{a[itDepth]}.
 # This code shows the famous Mandelbrot figure in total, just in the
 # opposite way as usual: the Mandelbrot set itself is colored, while the
 # points outside are uniformly black.
-# Adjust xlim and ylim to zoom in whereever you like.
+# Adjust xlim and ylim to zoom in wherever you like.
 
 phasePortrait(mandelbrot,
   xlim = c(-2.3, 0.7),
