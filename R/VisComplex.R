@@ -556,10 +556,10 @@ complexFunctionPlot <- function(...) {
 #' the standards proposed by E. Wegert in his book \emph{Visual Complex
 #' Functions} \insertCite{wegert_visualcpx_2012}{viscomplexr}. In a nutshell,
 #' the argument (\code{\link{Arg}}) of any complex function value is displayed
-#' as a color from the chromatic circle. The fundamental colours red, green, and
+#' as a color from the chromatic circle. The fundamental colors red, green, and
 #' blue relate to the arguments (angles) of 0, 2/3pi, and 4/3pi (with smooth
-#' color transitions inbetween), respectively. Options for displaying the
-#' modulus (\code{\link{Mod}}) of the complex values and addtional reference
+#' color transitions in between), respectively. Options for displaying the
+#' modulus (\code{\link{Mod}}) of the complex values and additional reference
 #' lines for the argument are available. This function is designed for being
 #' used inside the framework of R base graphics. It makes use of parallel
 #' computing, and depending on the desired resolution it may create extensive
@@ -660,7 +660,7 @@ complexFunctionPlot <- function(...) {
 #'   covers an angle domain of \code{2*pi / pi2Div}, the "zero reference" for
 #'   all zones being \code{argOffset}. The angle domain of one zone is linearly
 #'   mapped to a value \code{x} from the range \code{[0, 1[}.
-#'   The value component of the colour to be displayed is calculated as a
+#'   The value component of the color to be displayed is calculated as a
 #'   function of \code{x} with the same equation as shown above. In case the
 #'   user has chosen \code{pType = "pma"}, x-values \code{xMod} and \code{xArg}
 #'   are calculated separately for the modulus and the argument, respectively.

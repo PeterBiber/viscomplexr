@@ -22,7 +22,7 @@
 #' some details, this function behaves less nicely under Windows than under
 #' Linux (see Details).
 #'
-#' There is, unfortunately, a somewhat different behaviour of this function
+#' There is, unfortunately, a somewhat different behavior of this function
 #' under Linux and Windows systems. Under Windows, the region outside the unit
 #' circle is only shaded if the whole unit circle fits into the plot region. If
 #' only a part of the unit circle is to be displayed, the shading is completely

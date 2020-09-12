@@ -30,10 +30,11 @@
 #' @export
 #'
 #' @examples
-#' # Make a phase portrait of a jacobi theta function that fully covers a
+#' # Make a phase portrait of a Jacobi theta function that fully covers a
 #' # plot with a display aspect ratio of 4/3.
 #' \dontrun{
-#' x11(width = 10, height = 10 * 3/4) # 10 inch wide window with 4/3 display ratio (x/y)
+#' # 10 inch wide window with 4/3 display ratio (x/y)
+#' x11(width = 10, height = 10 * 3/4)
 #' xlim <- c(-3, 3)
 #' ylim <- ylimFromXlim(xlim, centerY = -0.3, x_to_y = 4/3)
 #' op <- par(mar = c(0, 0, 0, 0), bg = "black") # Omit all plot margins

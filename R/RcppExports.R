@@ -68,9 +68,9 @@ mandelbrot <- function(z, itDepth = 500L) {
 #' \code{a[0] = z}. The parameter \code{c} is a complex number, and the
 #' sequence is certainly unbounded if \code{abs(a[]) >= R} with \code{R} being
 #' an escape Radius which matches the inequality \code{R^2 - R >= abs(c)}. As
-#' the visulation with this package gives interesting pictures (i.e. other than
-#' a blank screen) only for \code{c} which are elements of the Mandelbrot set,
-#' \code{R = 2} is a good choice. For the author's taste, the Julia
+#' the visualisation with this package gives interesting pictures (i.e. other
+#' than a blank screen) only for \code{c} which are elements of the Mandelbrot
+#' set, \code{R = 2} is a good choice. For the author's taste, the Julia
 #' visualisations become most interesting for \code{c} located in the border
 #' zone of the Mandelbrot set.
 #'
