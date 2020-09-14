@@ -13,7 +13,7 @@ scientific, educational and technical applications, the sheer beauty of
 phase portraits may be motivation enough to explore the realm
 complex-valued functions. The package works in the framework of R base
 graphics and allows for print quality graphics files. To a great deal,
-the package follows the conventions published by (Wegert 2012).
+the package follows the conventions published by Wegert (2012).
 
 ## Installation
 
