@@ -3,3 +3,5 @@ inst/doc
 .Rhistory
 doc
 Meta
+README_cache/
+man/figures

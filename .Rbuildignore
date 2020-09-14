@@ -4,3 +4,4 @@
 ^vignettes/viscomplexr-vignette_cache$
 ^doc$
 ^Meta$
+^README\.Rmd$
