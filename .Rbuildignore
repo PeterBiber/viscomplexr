@@ -6,3 +6,4 @@
 ^Meta$
 ^README\.Rmd$
 README_cache/
+^LICENSE\.md$
