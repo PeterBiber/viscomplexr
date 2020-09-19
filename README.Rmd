@@ -12,6 +12,11 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+
+# This option anti-aliases the plot made below under Windows
+if(Sys.info()[["sysname"]] == "Windows")
+  knitr::opts_chunk$set(dev.args = list(type = "cairo"))
+
 ```
 
 # viscomplexr
