@@ -29,6 +29,7 @@ The **R** package *viscomplexr* has been written as a visualization tool for com
 ### Visualizing the complex plane
 The package does not contain many functions, but provides a very versatile workhorse called *phasePortrait*. We will explore some of its key features now. Let us first consider a function that maps a complex number $z \in \mathbb{C}$ on itself, i.e. $f(z)=z$. After attaching the package with `library(viscomplexr)`, a phase portrait of this function is obtained very easily with:
 
+
 ```{r, figure_1, fig.width = 7, fig.height = 7, results = 'hide', fig.align='center', cache = FALSE, fig.show = 'hold', fig.cap = 'Phase portrait of the function $f(z)=z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
 phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
               xlab = "real", ylab = "imaginary", nCores = 2)
@@ -73,10 +74,14 @@ f(z)=\frac{(3+2\mathrm{i}+z)(-5+5\mathrm{i}+z)}{(-2-2\mathrm{i}+z)^2}
 $$
 Evidently, this function has two zeroes, $z_1=-3-2\mathrm{i}$, and $z_2=5-5\mathrm{i}$. It also has a second order pole at $z_3=2+2\mathrm{i}$. We make a phase portrait of this function over exactly the same cutout of the complex plane as we did in the figures above. When calling *phasePortrait* with such simple functions, it is most convenient to define them as as a quoted character string in **R** syntax containing the variable $z$.  
 
-```{r figure_3, fig.width=7, fig.height=7, results='hide', fig.align='center', cache=TRUE, fig.cap='Phase portrait of the function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
-phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
-              xlab = "real", ylab = "imaginary", nCores = 2)
-
+```{r figure_3, fig.width=5, fig.height=5, results='hide', fig.align='center', cache=TRUE, fig.show='hold', fig.cap='Phase portrait of the function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
+op <- par(mar = c(5.1, 4.1, 2.1, 2.1), cex = 0.8) # adjust plot margins 
+                                                  # and general text size
+phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", 
+              xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
+              xlab = "real", ylab = "imaginary", 
+              nCores = 2)
+par(op) # reset the graphics parameters to their previous values
 ```
 
 The resulting figure nicely displays the function's two zeroes and the pole. Note that all colors meet in zeroes and poles. Around zeroes, the colors cycle counterclockwise in the order red, green, blue, while this order is reversed around poles. For $n$<sup>th</sup> order ($n\in\mathbb{N}$) zeroes and poles, the cycle is passed through $n$ times. I recommend to check this out with examples of your own.
@@ -127,14 +132,17 @@ par(op) # reset graphics parameters to previous values
 
 In order to understand why by default the parameters `pi2Div` and `logBase` are linked as described above, we consider the exponential function $f(z)=\mathrm{e}^z$. We can write $z=r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)$ and thus $f(z)=\mathrm{e}^{r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)}$ or $w=f(z)=\mathrm{e}^{r\cdot\cos\varphi}\cdot\mathrm{e}^{\mathrm{i}\cdot r\cdot\sin\varphi}$. The modulus of $w$ is $\mathrm{e}^{r\cdot\cos\varphi}$ and its argument is $r\cdot\sin\varphi$ with $\Re(z)=r\cdot\cos\varphi$ and $\Im(z)=r\cdot \sin\varphi$. So, the modulus and the argument of $w=\mathrm{e}^z$ depend solely on the real and the imaginary part of $z$, respectively. This can be easily verified with a phase portrait of $f(z)=\mathrm{e}^z$. Note that in the call to *phasePortrait* we hand over the `exp` function directly as an object. Alternatively, the quoted strings `"exp(z)"` or `"exp"` can be used as well (see section [ways to provide functions to *phasePortrait*](#ways_functions) below). 
 
-```{r, figure_7, fig.width = 7, fig.height = 7, results = 'hide', fig.align='center', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=\\mathrm{e}^z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
+```{r, figure_7, fig.width = 5, fig.height = 5, results = 'hide', fig.align='center', fig.show='hold', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=\\mathrm{e}^z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
+op <- par(mar = c(5.1, 4.1, 2.1, 2.1), cex = 0.8) # adjust plot margins 
+                                                  # and general text size
 phasePortrait(exp, xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "p",
               xlab = "real", ylab = "imaginary", nCores = 2)
+par(op) # reset graphics parameters to previous values                         
 ```
 
 If we now define the argument `pi2Div` as a number $n\:(n\in\mathbb{N})$ and use it for determining the angular difference $\Delta\varphi=\frac{2\pi}{n}$ between two subsequent phase angle reference lines, our default link between `pi2Div` and `logBase` (which is the ratio $b$ of the moduli at two subsequent iso-modulus lines) establishes $b=\mathrm{e}^{\Delta\varphi}$. This means, if we add $\Delta\varphi$ to the argument of any $w=\mathrm{e}^z\:(z\in\mathbb{C})$ or increase its modulus by the factor $\mathrm{e}^{\Delta\varphi}$, both are equidistant reference line steps in a plot of $f(z)=\mathrm{e}^z$. We visualize this with the following **R** code:
 
-```{r figure_8, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\mathrm{e}^z$ portrayed with the default coupling of `pi2Div` and `logBase` as implemented in *phasePortrait*.'}
+```{r figure_8, fig.width=7, fig.height=2.8, results='hide', fig.align='center', fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\mathrm{e}^z$ portrayed with the default coupling of `pi2Div` and `logBase` as implemented in *phasePortrait*.'}
 # divide graphics device into three regions and adjust plot margins 
 op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
 for(n in c(6, 9, 18)) {
