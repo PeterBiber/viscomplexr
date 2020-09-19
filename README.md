@@ -10,8 +10,7 @@
 <!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not exectued -->
 
 <img src="man/figures/README-banner-1.png" width="100%" style="display: block; margin: auto;" />
-
-<br />
+<br>
 
 With *viscomplexr* you can create phase portraits of functions on the
 complex number plane. While the main purpose of this package are
@@ -23,11 +22,17 @@ files. To a great deal, *viscomplexr* follows the conventions published
 by Wegert (2012).
 
 For a detailed step-by-step introduction see the package’s vignette.
-After installing *viscomplexr* you can view the vignette by calling:
+After installing *viscomplexr* on your machine, you can view the
+vignette by calling:
 
 ``` r
 vignette("viscomplexr-vignette")
 ```
+
+Besides making you acquainted with how to work with the package, the
+vignette also tells you more about some shenanigans going on behind the
+scenes; among them parallel processing and *viscomplexr*’s temporary
+file system.
 
 ## Installation
 
@@ -89,6 +94,38 @@ portrayed (here provided as a character string) and the parameters
 `xlim` and `ylim`. The other parameters in the example, and also the
 omission of the plot margins before calling *phasePortrait*, were only
 used in order to obtain a pretty banner for this README.
+
+## Acknowledgements
+
+While this package is a 100% leisure project, it would have been a
+mission impossible without the background of my daily work with R as a
+Forest Scientist at the Technical University of Munich (TUM).
+Fortunately, I have a job that allows me to learn about Nature by asking
+her questions (or trying to simulate what she is doing) with
+ever-improving methods and tools. I would like to thank everyone at the
+Chair of Forest Growth and Yield Science at TUM, and especially **Hans
+Pretzsch**, who keep me involved in discussions like: *How can this be
+solved in R …*
+
+``` r
+switch(1 + trunc(runif(1, 0, 6)),
+       "... at all?",
+       "... in a quick-and-dirty way?",
+       "... in Hadley-Wickham-style?",
+       "... without a loop?",
+       "... without nested loops?",
+       "... in a way somebody can understand?")
+```
+
+**Veronika Biber** did a great job revising the vignette with regard to
+contents and structure. **Johannes Biber** turned out the most patient
+pre-release tester one can imagine, boosting things with his high-end
+gaming machine. Thanks, guys\!
+
+Clearly, programming in R would not be what it is, weren’t there some R
+titans who generously share their knowledge online. While I keep
+learning from all of them, I would like to thank especially **Hadley
+Wickham** and **Dirk Eddelbüttel**.
 
 ## References
 
