@@ -1,8 +1,8 @@
 Package: viscomplexr
 Type: Package
 Title: Phase Portraits of Functions in the Complex Number Plane
-Version: 0.0.1.9044
-Date: 2020-09-19
+Version: 0.0.1.9045
+Date: 2020-09-21
 Authors@R: person("Peter", "Biber", email = "castor.fiber@gmx.de", 
                   role = c("aut", "cre"),
                   comment = c(ORCID = "0000-0002-9700-8708"))
@@ -25,7 +25,7 @@ Imports:
 RdMacros:
     Rdpack
 Depends:
-    R (>= 3.6)
+    R (>= 4.0)
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
