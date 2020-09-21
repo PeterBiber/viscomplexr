@@ -25,7 +25,7 @@ Imports:
 RdMacros:
     Rdpack
 Depends:
-    R (>= 4.0)
+    R (>= 3.6)
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
