@@ -3,7 +3,7 @@
 #
 # viscomplexr
 #
-# Phase Portrait representations of complex functions
+# Phase Portrait Representations of Complex Functions
 #
 # Peter Biber
 # Started Christmas 2019
@@ -353,16 +353,7 @@ complexArrayPlot <- function(zMetaInfrm, xlim, ylim,
                              xlab = "", ylab = "", ...) {
 
   # Set up plot
-  # If user has chosen invertFlip = TRUE (for North half-Riemann-sphere),
-  # the axes are not plotted (xaxt, yaxt = "n")
-  if(invertFlip) {
-    plot(NULL, xlim = xlim, ylim = ylim, asp = asp, xlab = xlab, ylab = ylab,
-         xaxt = "n", yaxt = "n", ...)
-  }
-  else {
-    plot(NULL, xlim = xlim, ylim = ylim, asp = asp, xlab = xlab, ylab = ylab,
-         ...)
-  }
+  plot(NULL, xlim = xlim, ylim = ylim, asp = asp, xlab = xlab, ylab = ylab, ...)
 
   # Define call to color transformation function depending user's
   # choice of pType
@@ -753,9 +744,12 @@ complexFunctionPlot <- function(...) {
 #'   which has been transformed to \code{1/z * exp(1i*pi)}. This is the
 #'   projection required to plot the north Riemann hemisphere in the way
 #'   proposed by \insertCite{wegert_visualcpx_2012;textual}{viscomplexr}, p. 41.
-#'   Defaults to \code{FALSE}. If this option is chosen, the axis ticks and
-#'   labels are suppressed (\code{xaxt = "n"}), because they do not make sense
-#'   in this setting.
+#'   Defaults to \code{FALSE}. If this option is chosen, the numbers at the
+#'   axis ticks have another meaning than in the normal case. Along the real
+#'   axis, they represent the real part of \code{1/z}, and along the imaginary
+#'   axis, they represent the imaginary part of \code{1/z}. Thus, if you want
+#'   annotation, you should choose appropriate axis labels like \code{xlab =
+#'   Re(1/z)}, and \code{ylab = Im(1/z)}.
 #'
 #' @param res Desired resolution of the plot in dots per inch (dpi). Default is
 #'   150 dpi. All other things being equal, \code{res} has a strong influence on
@@ -1162,7 +1156,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
        }
        vCall <- parse(text = vCall)
 
-       # Run the evaluation parallely on each core and put it together again
+       # Run the evaluation parallel on each core and put it together again
        cat("parallel loop starting ... ")
 
        w <- foreach(i = c(1:length(z)), .combine = rbind,

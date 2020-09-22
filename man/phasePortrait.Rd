@@ -93,9 +93,12 @@ imaginary axis.}
 which has been transformed to \code{1/z * exp(1i*pi)}. This is the
 projection required to plot the north Riemann hemisphere in the way
 proposed by \insertCite{wegert_visualcpx_2012;textual}{viscomplexr}, p. 41.
-Defaults to \code{FALSE}. If this option is chosen, the axis ticks and
-labels are suppressed (\code{xaxt = "n"}), because they do not make sense
-in this setting.}
+Defaults to \code{FALSE}. If this option is chosen, the numbers at the
+axis ticks have another meaning than in the normal case. Along the real
+axis, they represent the real part of \code{1/z}, and along the imaginary
+axis, they represent the imaginary part of \code{1/z}. Thus, if you want
+annotation, you should choose appropriate axis labels like \code{xlab =
+Re(1/z)}, and \code{ylab = Im(1/z)}.}
 
 \item{res}{Desired resolution of the plot in dots per inch (dpi). Default is
 150 dpi. All other things being equal, \code{res} has a strong influence on
