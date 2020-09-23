@@ -136,12 +136,12 @@ for(n in c(6, 9, 18)) {
 par(op) # reset graphics parameters to previous values
 ```
 
-In order to understand why by default the parameters `pi2Div` and `logBase` are linked as described above, we consider the exponential function $f(z)=\mathrm{e}^z$. We can write $z=r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)$ and thus $f(z)=\mathrm{e}^{r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)}$ or $w=f(z)=\mathrm{e}^{r\cdot\cos\varphi}\cdot\mathrm{e}^{\mathrm{i}\cdot r\cdot\sin\varphi}$. The modulus of $w$ is $\mathrm{e}^{r\cdot\cos\varphi}$ and its argument is $r\cdot\sin\varphi$ with $\Re(z)=r\cdot\cos\varphi$ and $\Im(z)=r\cdot \sin\varphi$. So, the modulus and the argument of $w=\mathrm{e}^z$ depend solely on the real and the imaginary part of $z$, respectively. This can be easily verified with a phase portrait of $f(z)=\mathrm{e}^z$. Note that in the call to *phasePortrait* we hand over the `exp` function directly as an object. Alternatively, the quoted strings `"exp(z)"` or `"exp"` can be used as well (see section [ways to provide functions to *phasePortrait*](#ways_functions) below). 
+In order to understand why by default the parameters `pi2Div` and `logBase` are linked as described above, we consider the exponential function $f(z)=\mathrm{e}^z$. We can write $z=r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)$ and thus $f(z)=\mathrm{e}^{r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)}$ or $w=f(z)=\mathrm{e}^{r\cdot\cos\varphi}\cdot\mathrm{e}^{\mathrm{i}\cdot r\cdot\sin\varphi}$. The modulus of $w$ is $\mathrm{e}^{r\cdot\cos\varphi}$ and its argument is $r\cdot\sin\varphi$ with $\Re(z)=r\cdot\cos\varphi$ and $\Im(z)=r\cdot \sin\varphi$. So, the modulus and the argument of $w=\mathrm{e}^z$ depend solely on the real and the imaginary part of $z$, respectively. This can be easily verified with a phase portrait of $f(z)=\mathrm{e}^z$ (see figure below). Note that in the call to *phasePortrait* we hand over the `exp` function directly as an object. Alternatively, the quoted strings `"exp(z)"` or `"exp"` can be used as well (see section [ways to provide functions to *phasePortrait*](#ways_functions) below). 
 
-```{r, figure_7, fig.width = 5, fig.height = 5, results = 'hide', fig.align='center', fig.show='hold', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=\\mathrm{e}^z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
+```{r, figure_7, fig.width = 5, fig.height = 5, results = 'hide', fig.align='center', fig.show='hold', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=\\mathrm{e}^z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$ with iso-modulus lines.'}
 op <- par(mar = c(5.1, 4.1, 2.1, 2.1), cex = 0.8) # adjust plot margins 
                                                   # and general text size
-phasePortrait(exp, xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "p",
+phasePortrait(exp, xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "pm",
               xlab = "real", ylab = "imaginary", nCores = 2)
 par(op) # reset graphics parameters to previous values                         
 ```
