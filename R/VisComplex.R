@@ -222,7 +222,7 @@ phaseModAngColhsv <- function(pCompArr, pHsvCol, lambda = 7, gamma = 9/10,
 
 buildArray <- function(widthPx, heightPx, xlim, ylim,
                        blockSizePx = 2250000,
-                       tempDir = getwd()) {
+                       tempDir) {
 
   # How many blocks to build?
   linesPerBlock  <- blockSizePx %/% widthPx
@@ -258,8 +258,10 @@ buildArray <- function(widthPx, heightPx, xlim, ylim,
                  xlim1 = xPxValVec[1],                 ylim1 = yPxValVec[upper],
                  xlim2 = xPxValVec[length(xPxValVec)], ylim2 = yPxValVec[lower])
 
-  # Check for temporary directory, create if it does not exist
-  if(!dir.exists(tempDir)) { dir.create(tempDir, recursive = TRUE) }
+  # Check for temporary directory, if it is not the tempdir() of the current
+  # R session, create it if it does not exist
+  if(tempDir != tempdir())
+    if(!dir.exists(tempDir)) { dir.create(tempDir, recursive = TRUE) }
 
   # Parallel loop
   cat("parallel loop starting ... ")
@@ -1049,11 +1051,14 @@ complexFunctionPlot <- function(...) {
 phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
                           invertFlip = FALSE,
                           res = 150,
-                          blockSizePx = 2250000, tempDir = getwd(),
+                          blockSizePx = 2250000,
+                          tempDir = NULL,
                           nCores = detectCores(),
-                          pType = "pma", pi2Div = 9,
+                          pType = "pma",
+                          pi2Div = 9,
                           logBase = exp(2*pi/pi2Div),
-                          argOffset = 0, darkestShade = 0.1,
+                          argOffset = 0,
+                          darkestShade = 0.1,
                           lambda = 7, gamma = 0.9,
                           stdSaturation = 0.8,
                           hsvNaN = c(0, 0, 0.5),
@@ -1122,6 +1127,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
 
   # Make pixelwise array of z-Values (input values to function)
   cat("\nBuilding z plane array ...")
+  if(is.null(tempDir)) tempDir <- tempdir()
   zMetaInfrm <- buildArray(widthPx, heightPx, xlim, ylim, blockSizePx, tempDir)
 
   # This is where it really happens
