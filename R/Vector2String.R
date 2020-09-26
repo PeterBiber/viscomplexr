@@ -1,10 +1,11 @@
-
 #' Convert a vector into a comma-separated string
 #'
-#' This is a utility function that transforms any vector into a single character
-#' string, where the former vector elements are separated by commas. This is
-#' useful for feeding a series of constant numeric values to
-#' \code{\link{phasePortrait}}.
+#' A simple utility function that transforms any vector into a single character
+#' string, where the former vector elements are separated by commas. This is can
+#' be useful, in some circumstances, for feeding a series of constant numeric
+#' values to \code{\link{phasePortrait}} (see examples). For most applications
+#' we recommend, however, to use \code{\link{phasePortrait}}'s parameter
+#' \code{moreArgs} instead.
 #'
 #' @param vec The (usually real or complex valued) vector to be converted.
 #'

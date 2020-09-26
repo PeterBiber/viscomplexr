@@ -14,10 +14,12 @@ A string, where the former vector elements are separated by commas,
   enclosed between "c(" and ")".
 }
 \description{
-This is a utility function that transforms any vector into a single character
-string, where the former vector elements are separated by commas. This is
-useful for feeding a series of constant numeric values to
-\code{\link{phasePortrait}}.
+A simple utility function that transforms any vector into a single character
+string, where the former vector elements are separated by commas. This is can
+be useful, in some circumstances, for feeding a series of constant numeric
+values to \code{\link{phasePortrait}} (see examples). For most applications
+we recommend, however, to use \code{\link{phasePortrait}}'s parameter
+\code{moreArgs} instead.
 }
 \examples{
 # Make a vector of 77 complex random numbers inside the unit circle

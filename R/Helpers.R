@@ -1,4 +1,3 @@
-
 #' Adjust ylim to xlim
 #'
 #' This simple function is useful for adjusting x and y coordinate ranges

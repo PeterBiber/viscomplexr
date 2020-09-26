@@ -1,6 +1,7 @@
+# ------------------------------------------------------------------------------
 # This script contains a few calls for phasePortrait that produce test
 # w-Files that serve as references for automated tests
-
+# ------------------------------------------------------------------------------
 
 # Test case 1
 tempDir <- "tests/testthat"

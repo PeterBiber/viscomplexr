@@ -1,34 +1,6 @@
 # ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-#
-# viscomplexr
-#
-# Phase Portrait Representations of Complex Functions
-#
-# Peter Biber
-# Started Christmas 2019
-#
-# ------------------------------------------------------------------------------
-
-# Useful links
-
-# Making packages
-# http://r-pkgs.had.co.nz/namespace.html
-# https://kbroman.org/pkg_primer/
-# http://tinyheero.github.io/jekyll/update/2015/07/26/making-your-first-R-package.html
-
-# Memory usage in R
-# http://adv-r.had.co.nz/memory.html
-
-# Plot raster data in R
-# https://www.neonscience.org/dc-plot-raster-data-r
-
-# Unregistering foreach clusters
-# https://stackoverflow.com/questions/25097729/un-register-a-doparallel-cluster
-
-# Emulating pointers
-# https://www.stat.berkeley.edu/~paciorek/computingTips/Pointers_passing_reference_.html
-
+# Package viscomplexr
+# Main R file
 # ------------------------------------------------------------------------------
 
 #' @importFrom grDevices  as.raster hsv

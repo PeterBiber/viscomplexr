@@ -62,8 +62,8 @@ case), the coordinates of the plot window as given by \code{par("usr")}
 will be used for the missing component.}
 }
 \description{
-The function \code{riemannMask} can be used for laying a mask over an
-existing phasePortrait (as generated with the function
+The function \code{riemannMask} can be used for laying a circular mask over
+an existing phasePortrait (as generated with the function
 \code{\link{phasePortrait}}). This mask shades the plot region outside the
 unit circle. The unshaded area is a projection on the southern or northern
 Riemann hemisphere. The standard projection used by
@@ -71,53 +71,54 @@ Riemann hemisphere. The standard projection used by
 corresponds to the southern Riemann hemisphere with the origin being the
 south pole. If \code{\link{phasePortrait}} was called with \code{invertFlip =
 TRUE}, then the unit circle contains the northern Riemann hemisphere with the
-point at infinity in the center. Options for tuning the shading, adding
-annotation, landmark points and similar features are available
-(\insertCite{@see @wegert_visualcpx_2012;textual}{viscomplexr}, p. 41). In
-some details, this function behaves less nicely under Windows than under
-Linux (see Details).
+point at infinity in the center (see the vignette for more details). Options
+for adding annotation, landmark points  are available
+(\insertCite{@see @wegert_visualcpx_2012;textual}{viscomplexr}, p. 41).
+Several parameters are on hand for adjusting the mask's transparency, color,
+and similar features. some details, this function behaves less nicely under
+Windows than under Linux (see Details).
 }
 \details{
-There is, unfortunately, a somewhat different behavior of this function
-under Linux and Windows systems. Under Windows, the region outside the unit
-circle is only shaded if the whole unit circle fits into the plot region. If
-only a part of the unit circle is to be displayed, the shading is completely
-omitted under windows (annotation etc. works correctly, however), while it
-works properly on Linux systems. Obviously, the function
-\code{\link{polypath}}, which I am using for creating the unit circle
-template, is interpreted differently on both systems. There is another slight
-glitch, I observed only under Windows so far: When plotting with lower
-resolutions, say, 150 dpi and less (typically when using on-screen devices),
-the Riemann sphere masks sometimes seem dislocated by one row or column of
-pixels. Probably, the reasons are round-off-errors. However, these errors
-vanish when plotting with higher resolutions, say, 300 dpi and more.
-Therefore, print quality graphics are not affected by this issue.
+There is, unfortunately, a somewhat different behavior of this function under
+Linux and Windows systems. Under Windows, the region outside the unit circle
+is only shaded if the whole unit circle fits into the plot region. If only a
+part of the unit circle is to be displayed, the shading is completely omitted
+under Windows (annotation etc. works correctly, however), while it works
+properly on Linux systems. Obviously, the function \code{\link{polypath}},
+which we are using for creating the unit circle template, is interpreted
+differently on both systems.
 }
 \examples{
-# Tangens with fully annotated Riemann masks.
-# Axis tick marks on the second diagram do not make sense
-# (it is no bug that you do not get them).
+# Tangent with fully annotated Riemann masks.
+# The axis tick marks on the second diagram (Northern hemisphere)
+# have to be interpreted as the real and imaginary parts of 1/z
+# (see vignette). The axis labels in this example have been adapted
+# accordingly.
 \dontrun{
 x11(width = 16, height = 8)
 op <- par(mfrow = c(1, 2), mar = c(4.7, 4.7, 3.5, 3.5))
 phasePortrait("tan(z)", pType = "pma",
               main = "Southern Riemann Hemisphere",
               xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2),
-              xlab = "real", ylab = "imaginary", xaxs = "i", yaxs = "i")
+              xlab = "real", ylab = "imaginary",
+              xaxs = "i", yaxs = "i")
 riemannMask(annotSouth = TRUE, gridCross = TRUE)
 
 phasePortrait("tan(z)", pType = "pma",
               main = "Northern Riemann Hemisphere",
               invertFlip = TRUE,
               xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2),
-              xlab = "real", ylab = "imaginary", xaxs = "i", yaxs = "i")
+              xlab = "real (1/z)", ylab = "imaginary (1/z)",
+              xaxs = "i", yaxs = "i")
 riemannMask(annotNorth = TRUE, gridCross = TRUE)
 par(op)}
 
 
 # Rational function with Riemann masks without annotation.
-# Axis tick marks on the second diagram do not make sense
-# (it is not a bug that you do not get them).
+# The axis tick marks on the second diagram (Northern hemisphere)
+# have to be interpreted as the real and imaginary parts of 1/z
+# (see vignette). The axis labels in this example have been adapted
+# accordingly.
 \dontrun{
 x11(width = 16, height = 8)
 op <- par(mfrow = c(1, 2), mar = c(4.7, 4.7, 3.5, 3.5))
@@ -125,7 +126,8 @@ phasePortrait("(-z^17 - z^15 - z^9 - z^7 - z^2 - z + 1)/(1i*z - 1)",
               pType = "pma",
               main = "Southern Riemann Hemisphere",
               xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2),
-              xlab = "real", ylab = "imaginary", xaxs = "i", yaxs = "i")
+              xlab = "real", ylab = "imaginary",
+              xaxs = "i", yaxs = "i")
 riemannMask(annotSouth = FALSE, gridCross = FALSE, circOutline = FALSE,
             alphaMask = 0.7)
 
@@ -134,7 +136,8 @@ phasePortrait("(-z^17 - z^15 - z^9 - z^7 - z^2 - z + 1)/(1i*z - 1)",
               main = "Northern Riemann Hemisphere",
               invertFlip = TRUE,
               xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2),
-              xlab = "real", ylab = "imaginary", xaxs = "i", yaxs = "i")
+              xlab = "real (1/z)", ylab = "imaginary (1/z)",
+              xaxs = "i", yaxs = "i")
 riemannMask(annotNorth = FALSE, gridCross = FALSE, circOutline = FALSE,
             alphaMask = 0.7)
 par(op)}
