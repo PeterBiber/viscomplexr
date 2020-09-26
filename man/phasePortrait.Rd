@@ -13,7 +13,7 @@ phasePortrait(
   res = 150,
   blockSizePx = 2250000,
   tempDir = NULL,
-  nCores = detectCores(),
+  nCores = parallel::detectCores(),
   pType = "pma",
   pi2Div = 9,
   logBase = exp(2 * pi/pi2Div),
@@ -113,19 +113,19 @@ gave good performance on older systems as well as on a high-end gaming
 machine, but some tweaking for your individual system might even improve
 things.}
 
-\item{tempDir}{The name of the directory where the temporary files are stored
-as a character string. Defaults to the current working directory. If
-another directory is specified, it will be created if it does not exist (if
-this is possible). It is advisable to locate this directory on a drive with
-ample free space, especially when the purpose is to produce large high
-resolution images. After completing the plot all temporary files are
-deleted, but \code{tempDir} remains alive even if had been created by
-\code{complexFunctionPlot}.}
+\item{tempDir}{\code{NULL} or a character string, specifying the name of the
+directory where the temporary files written by \code{phasePortrait} are
+stored. Default is \code{NULL}, which makes \code{phasePortrait} use the
+current R session's temporary directory. Note that if you specify another
+directory, it will be created if it does not exist already. Even though the
+temporary files are deleted after completing a phase portrait (unless the
+user specifies \code{deleteTempFiles = FALSE}, see below), the directory
+will remain alive even if has been created by \code{phasePortrait}.}
 
 \item{nCores}{Number of processor cores to be used in the parallel computing
 tasks. Defaults to the maximum number of cores available. Any number
 between 1 (serial computation) and the maximum number of cores available as
-indicated by \code{parallel::detectCores} is acepted.}
+indicated by \code{parallel::detectCores()} is acepted.}
 
 \item{pType}{One of the three options for plotting "p", "pa", "pm", and "pma"
 as a character string. Defaults to "pma". Option "p" produces a mere phase
