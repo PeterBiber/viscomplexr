@@ -12,7 +12,7 @@ phasePortrait(
   invertFlip = FALSE,
   res = 150,
   blockSizePx = 2250000,
-  tempDir = getwd(),
+  tempDir = NULL,
   nCores = detectCores(),
   pType = "pma",
   pi2Div = 9,

@@ -1,29 +1,32 @@
 # -----------------------------------------------------------------------------
-# Test that phasePortrait produces the correct numerical output.
+# Test if phasePortrait produces the correct numerical output.
+#
+# Uses reference files created with the R-script in CreateTestCases/.
+# These reference files are in the project's subdirectory tests/testthat/,
+# which automatically becomes the working directory when test_that() is run.
 # -----------------------------------------------------------------------------
 
-# Names of RData files containing the reference cases.
-# These files will not be deleted by the function cleanUp, which is
-# called before each test.
-referenceFileNames <- c("1wmatCase001.RData", "1wmatCase002.RData",
-                        "1wmatCase003.RData", "1wmatCase004.RData")
 
 # function cleanUp
-# deletes all non-reference .RData files
-cleanUp <- function(refFileNames) {
-  existRData         <- dir(pattern = "\\.RData$")
-  notReference       <- existRData[!(existRData %in% refFileNames)]
-  unlink(notReference)
+# Deletes all files from the R session's temporary directory which match the
+# naming conventions of phasePortrait's temporary files. Is called before and
+# after each test run. Thus, the R session's temporary directory, is always
+# absolutely clean and unambiguous as far as phasePortrait output is concerned.
+cleanUp <- function() {
+  existZWMat <- dir(tempdir(), pattern = "^\\d+(z|w)mat\\d{10}\\.RData$")
+  unlink(paste0(tempdir(), "/", existZWMat))
 }
 
 
-# function loadNonRef
-# loads the only .RData file with "wmat" in its name which can exist
-# in the tests/testhat directory without being a reference file
-loadNonRef <- function(refFileNames) {
-  existRData         <- dir(pattern = "*wmat*.*.RData$")
-  notReference       <- existRData[!(existRData %in% refFileNames)]
-  get(load(notReference))
+# function loadActual
+# After a call to cleanup and a subsequent call of phasePortrait, only output
+# files from the last phasePortrait run can possibly reside in the R session's
+# temporary directory (if we explicitly told phasePortrait not to delete them
+# after use). The test cases are so slim, that there is only one zmat and one
+# wmat file. We load the "wmat" file for further inspection.
+loadActual <- function() {
+  existWMat <- dir(tempdir(), pattern = "^\\d+wmat\\d{10}\\.RData$")
+  get(load(paste0(tempdir(), "/", existWMat)))
 }
 
 
@@ -32,17 +35,20 @@ loadNonRef <- function(refFileNames) {
 
 # Test case 1:
 # A rational function given as single string
-testCase1 <- function(refFileNames) {
-  cleanUp(refFileNames)
+testCase1 <- function() {
+  cleanUp()
   phasePortrait("(2-z)^2*(-1i+z)^3*(4-3i-z)/((2+2i+z)^4)",
                 xlim = c(-4, 4), ylim = c(-4, 4),
-                invertFlip = FALSE, res = 150,
+                invertFlip = FALSE,
+                blockSizePx = 2250000,
+                res = 150,
+                tempDir = NULL,
                 deleteTempFiles = FALSE,
                 noScreenDevice = TRUE,
                 nCores = 2)
   referenceWmat <- get(load("1wmatCase001.RData"))
-  actualWmat    <- loadNonRef(refFileNames)
-  cleanUp(refFileNames)
+  actualWmat    <- loadActual()
+  cleanUp()
   rslt          <- all.equal(referenceWmat, actualWmat)
   rm(referenceWmat, actualWmat)
   return(rslt)
@@ -51,17 +57,20 @@ testCase1 <- function(refFileNames) {
 
 # Test case 2:
 # A rational function given as single string, but with invertFlip = TRUE
-testCase2 <- function(refFileNames) {
-  cleanUp(refFileNames)
+testCase2 <- function() {
+  cleanUp()
   phasePortrait("(2-z)^2*(-1i+z)^3*(4-3i-z)/((2+2i+z)^4)",
                 xlim = c(-4, 4), ylim = c(-4, 4),
-                invertFlip = TRUE, res = 150,
+                invertFlip = TRUE,
+                blockSizePx = 2250000,
+                res = 150,
+                tempDir = NULL,
                 deleteTempFiles = FALSE,
                 noScreenDevice = TRUE,
                 nCores = 2)
   referenceWmat <- get(load("1wmatCase002.RData"))
-  actualWmat    <- loadNonRef(refFileNames)
-  cleanUp(refFileNames)
+  actualWmat    <- loadActual()
+  cleanUp()
   rslt          <- all.equal(referenceWmat, actualWmat)
   rm(referenceWmat, actualWmat)
   return(rslt)
@@ -71,7 +80,7 @@ testCase2 <- function(refFileNames) {
 # Test case 3
 # User function with additional default arguments which are _not_ specified
 # in the call to phasePortrait
-testCase3 <- function(refFileNames) {
+testCase3 <- function() {
 
   jacobiTheta <- function(z, tau = 1i, nIter = 30) {
     k <- c(1:nIter)
@@ -80,16 +89,19 @@ testCase3 <- function(refFileNames) {
     return(1 + sum(q^(k^2)*g^k + q^(k^2)*(1/g)^k))
   }
 
-  cleanUp(refFileNames)
+  cleanUp()
   phasePortrait(jacobiTheta,
                 xlim = c(-2, 2), ylim = c(-2, 2),
-                invertFlip = FALSE, res = 150,
+                invertFlip = FALSE,
+                blockSizePx = 2250000,
+                res = 150,
+                tempDir = NULL,
                 deleteTempFiles = FALSE,
                 noScreenDevice = TRUE,
                 nCores = 2)
   referenceWmat <- get(load("1wmatCase003.RData"))
-  actualWmat    <- loadNonRef(refFileNames)
-  cleanUp(refFileNames)
+  actualWmat    <- loadActual()
+  cleanUp()
   rslt          <- all.equal(referenceWmat, actualWmat)
   rm(referenceWmat, actualWmat)
   return(rslt)
@@ -99,7 +111,7 @@ testCase3 <- function(refFileNames) {
 # Test case 4
 # User function with additional default arguments which are specified
 # in the call to phasePortrait
-testCase4 <- function(refFileNames) {
+testCase4 <- function() {
 
   jacobiTheta <- function(z, tau = 1i, nIter = 30) {
     k <- c(1:nIter)
@@ -108,19 +120,22 @@ testCase4 <- function(refFileNames) {
     return(1 + sum(q^(k^2)*g^k + q^(k^2)*(1/g)^k))
   }
 
-  cleanUp(refFileNames)
+  cleanUp()
   phasePortrait(jacobiTheta,
                 moreArgs = list(tau = 1i/2 - 1/4, nIter = 30),
                 xlim = c(-2, 2), ylim = c(-2, 2),
-                invertFlip = FALSE, res = 150,
+                invertFlip = FALSE,
+                blockSizePx = 2250000,
+                res = 150,
+                tempDir = NULL,
                 deleteTempFiles = FALSE,
                 noScreenDevice = TRUE,
                 nCores = 2,
                 autoDereg = TRUE) # Register sequential backend after
                                   # the last phase portrait
   referenceWmat <- get(load("1wmatCase004.RData"))
-  actualWmat    <- loadNonRef(refFileNames)
-  cleanUp(refFileNames)
+  actualWmat    <- loadActual()
+  cleanUp()
   rslt          <- all.equal(referenceWmat, actualWmat)
   rm(referenceWmat, actualWmat)
   return(rslt)
@@ -130,10 +145,10 @@ testCase4 <- function(refFileNames) {
 
 # The actual tests
 test_that("phasePortrait produces correct numerical output", {
-  expect_true(testCase1(referenceFileNames))
-  expect_true(testCase2(referenceFileNames))
-  expect_true(testCase3(referenceFileNames))
-  expect_true(testCase4(referenceFileNames))
+  expect_true(testCase1())
+  expect_true(testCase2())
+  expect_true(testCase3())
+  expect_true(testCase4())
 })
 
 # -----------------------------------------------------------------------------
