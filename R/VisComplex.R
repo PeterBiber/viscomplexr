@@ -521,23 +521,6 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 
 } # makeFunctionFromInput
 
-# ------------------------------------------------------------------------------
-#' complexFunctionPlot
-#'
-#' This function is just a wrapper for \code{phasePortrait} in order to
-#' guarantee compatibility with earlier versions. Don't use
-#' \code{complexFunctionPlot} when you are writing new scripts. It is
-#' called with exactly the same parameters as \code{\link{phasePortrait}}
-#'
-#' @param ... All parameters \code{\link{phasePortrait}} can be called with,
-#'   using exactly the same definitions.
-#'
-#' @export
-#'
-
-complexFunctionPlot <- function(...) {
-  phasePortrait(...)
-} # function complexFunctionPlot
 
 # -----------------------------------------------------------------------------
 #' Create phase portraits of complex functions
