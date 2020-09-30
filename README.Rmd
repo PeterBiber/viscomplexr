@@ -22,6 +22,7 @@ if(Sys.info()[["sysname"]] == "Windows")
 # viscomplexr
 
 <!-- badges: start -->
+[![R build status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions)
 <!-- badges: end -->
 
 <!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not exectued -->
