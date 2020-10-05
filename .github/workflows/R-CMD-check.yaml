@@ -1,5 +1,8 @@
 # For help debugging build failures open an issue on the RStudio community with the 'github-actions' tag.
 # https://community.rstudio.com/new-topic?category=Package%20development&tags=github-actions
+
+# set-env-problem:
+# https://github.com/actions/toolkit/security/advisories/GHSA-mfwh-5m23-j46w
 on:
   push:
     branches:
@@ -14,13 +17,16 @@ name: R-CMD-check
 
 jobs:
   R-CMD-check:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macOS-latest, windows-latest, ubuntu-latest]
+    runs-on: ubuntu-20.04
+    # runs-on: ${{ matrix.os }}
+    # strategy:
+    #   matrix:
+    #     os: [macOS-latest, windows-latest, ubuntu-latest]
     steps:
-      - uses: actions/checkout@v2
-      - uses: r-lib/actions/setup-r@master
+      # - uses: actions/checkout@v2
+      - uses: actions/checkout@master
+      # uses: r-lib/actions/setup-r@master
+      - uses: r-lib/actions/setup-r@v1
       - name: Install dependencies
         run: |
           install.packages(c("remotes", "rcmdcheck"))
