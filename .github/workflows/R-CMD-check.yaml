@@ -7,8 +7,8 @@ on:
   push:
     branches:
       - master
-      - develop
-      - introduce_actions
+      # - develop
+      # - introduce_actions
   pull_request:
     branches:
       - master
