@@ -38,8 +38,8 @@ file system.
 
 ## Installation
 
-Hopefully soon you will be able to install the released version of
-*viscomplexr* from [CRAN](https://CRAN.R-project.org) with:
+The released version of *viscomplexr* can be installed from
+[CRAN](https://CRAN.R-project.org) with:
 
 ``` r
 install.packages("viscomplexr")

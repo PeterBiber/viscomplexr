@@ -31,14 +31,18 @@ library(viscomplexr)
 ## Introduction
 The **R** package *viscomplexr* has been written as a visualization tool for complex valued functions. More precisely, it provides functionality for making *phase portraits* of such functions, following the conventions described by Wegert in his book *Visual Complex Functions* [@wegert_visualcpx_2012]. Conceptually, the package is intended for being used inside the framework of **R**'s base graphics, i.e. users of this package can freely utilize all features of base graphics for obtaining an optimum result, be it for scientific or artistic purposes. This vignette is not at all an introduction to function theory or an exhaustive treatment of what can be done with phase portraits - I recommend Wegert's book for an ideal combination of both; the purpose of this vignette is in fact to make the reader acquainted with the technical features the package provides in a step-by-step process.
 
+Due to the size restriction of CRAN packages, the number of illustrations in this vignette is kept to a minimum. Readers are encouraged to run all code examples shown below, but especially those where we explictly invite them to do so.
+
+
 ## Using the function *phasePortrait*
 ### Visualizing the complex plane
 The package does not contain many functions, but provides a very versatile workhorse called *phasePortrait*. We will explore some of its key features now. Let us first consider a function that maps a complex number $z \in \mathbb{C}$ on itself, i.e. $f(z)=z$. After attaching the package with `library(viscomplexr)`, a phase portrait of this function is obtained very easily with:
 
 
-```{r, figure_1, fig.width = 7, fig.height = 7, results = 'hide', fig.align='center', cache = FALSE, fig.show = 'hold', fig.cap = 'Phase portrait of the function $f(z)=z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
+```{r, figure_1, fig.width = 5, fig.height = 5, results = 'hide', fig.align='center', cache = FALSE, fig.show = 'hold', fig.cap = 'Phase portrait of the function $f(z)=z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
 phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
-              xlab = "real", ylab = "imaginary", nCores = 2)
+              xlab = "real", ylab = "imaginary", main = "f(z) = z",
+              nCores = 2)
 
 # Note the argument 'nCores' which determines the number of parallel processes to
 # be used. Setting nCores = 2 has been done here and in all subsequent 
@@ -56,9 +60,10 @@ The other lines visible in the figure above relate to the modulus $r$. One such 
 ### Visual structuring - the argument *pType*
 When working with the function *phasePortrait*, it might not always be desirable to display all of these reference lines and zonings. The argument `pType` allows for four different options as illustrated in the next example:
 
-```{r figure_2, fig.width=7, fig.height=7, results="hide", fig.align='center', fig.show='hold', cache=TRUE, fig.cap= "Different options for including reference lines with the argument `pType`."}
+```{r figure_2, fig.width=5, fig.height=5, results="hide", fig.align='center', fig.show='hold', cache=TRUE, fig.cap= "Different options for including reference lines with the argument `pType`."}
 # divide graphics device into four regions and adjust plot margins 
-op <- par(mfrow = c(2, 2), mar = c(1.1, 1.1, 2.1, 1.1)) 
+op <- par(mfrow = c(2, 2), 
+          mar   = c(0.25, 0.55, 1.10, 0.25)) 
 # plot four phase portraits with different choices of pType
 phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "p",
               main = "pType = 'p'",   axes = FALSE, nCores = 2)
@@ -78,9 +83,9 @@ For demonstrating options to adjust the density of the argument and modulus refe
 $$
 f(z)=\frac{(3+2\mathrm{i}+z)(-5+5\mathrm{i}+z)}{(-2-2\mathrm{i}+z)^2}
 $$
-Evidently, this function has two zeroes, $z_1=-3-2\mathrm{i}$, and $z_2=5-5\mathrm{i}$. It also has a second order pole at $z_3=2+2\mathrm{i}$. We make a phase portrait of this function over exactly the same cutout of the complex plane as we did in the figures above. When calling *phasePortrait* with such simple functions, it is most convenient to define them as as a quoted character string in **R** syntax containing the variable $z$.  
+Evidently, this function has two zeroes, $z_1=-3-2\mathrm{i}$, and $z_2=5-5\mathrm{i}$. It also has a second order pole at $z_3=2+2\mathrm{i}$. We make a phase portrait of this function over exactly the same cutout of the complex plane as we did in the figures above. When calling *phasePortrait* with such simple functions, it is most convenient to define them as as a quoted character string in **R** syntax containing the variable $z$ (run code below, figure not shown).  
 
-```{r figure_3, fig.width=5, fig.height=5, results='hide', fig.align='center', cache=TRUE, fig.show='hold', fig.cap='Phase portrait of the function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
+```{r eval=FALSE, figure_3, fig.width=5, fig.height=5, results='hide', fig.align='center', cache=TRUE, fig.show='hold', fig.cap='Phase portrait of the function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
 op <- par(mar = c(5.1, 4.1, 2.1, 2.1), cex = 0.8) # adjust plot margins 
                                                   # and general text size
 phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", 
@@ -136,9 +141,9 @@ for(n in c(6, 9, 18)) {
 par(op) # reset graphics parameters to previous values
 ```
 
-In order to understand why by default the parameters `pi2Div` and `logBase` are linked as described above, we consider the exponential function $f(z)=\mathrm{e}^z$. We can write $z=r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)$ and thus $f(z)=\mathrm{e}^{r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)}$ or $w=f(z)=\mathrm{e}^{r\cdot\cos\varphi}\cdot\mathrm{e}^{\mathrm{i}\cdot r\cdot\sin\varphi}$. The modulus of $w$ is $\mathrm{e}^{r\cdot\cos\varphi}$ and its argument is $r\cdot\sin\varphi$ with $\Re(z)=r\cdot\cos\varphi$ and $\Im(z)=r\cdot \sin\varphi$. So, the modulus and the argument of $w=\mathrm{e}^z$ depend solely on the real and the imaginary part of $z$, respectively. This can be easily verified with a phase portrait of $f(z)=\mathrm{e}^z$ (see figure below). Note that in the call to *phasePortrait* we hand over the `exp` function directly as an object. Alternatively, the quoted strings `"exp(z)"` or `"exp"` can be used as well (see section [ways to provide functions to *phasePortrait*](#ways_functions) below). 
+In order to understand why by default the parameters `pi2Div` and `logBase` are linked as described above, we consider the exponential function $f(z)=\mathrm{e}^z$. We can write $z=r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)$ and thus $f(z)=\mathrm{e}^{r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)}$ or $w=f(z)=\mathrm{e}^{r\cdot\cos\varphi}\cdot\mathrm{e}^{\mathrm{i}\cdot r\cdot\sin\varphi}$. The modulus of $w$ is $\mathrm{e}^{r\cdot\cos\varphi}$ and its argument is $r\cdot\sin\varphi$ with $\Re(z)=r\cdot\cos\varphi$ and $\Im(z)=r\cdot \sin\varphi$. So, the modulus and the argument of $w=\mathrm{e}^z$ depend solely on the real and the imaginary part of $z$, respectively. This can be easily verified with a phase portrait of $f(z)=\mathrm{e}^z$ (run code below, figure not shown). Note that in the call to *phasePortrait* we hand over the `exp` function directly as an object. Alternatively, the quoted strings `"exp(z)"` or `"exp"` can be used as well (see section [ways to provide functions to *phasePortrait*](#ways_functions) below). 
 
-```{r, figure_7, fig.width = 5, fig.height = 5, results = 'hide', fig.align='center', fig.show='hold', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=\\mathrm{e}^z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$ with iso-modulus lines.'}
+```{r, figure_7, eval=FALSE, fig.width = 5, fig.height = 5, results = 'hide', fig.align='center', fig.show='hold', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=\\mathrm{e}^z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$ with iso-modulus lines.'}
 op <- par(mar = c(5.1, 4.1, 2.1, 2.1), cex = 0.8) # adjust plot margins 
                                                   # and general text size
 phasePortrait(exp, xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "pm",
@@ -168,10 +173,10 @@ For optimizing visualization in a technical sense, as well as for aesthetic purp
 $$
 v = s + (1-s)\cdot x^{1/\lambda}
 $$
-For modulus zone shading at a point $z$ in the complex plane when portraying a function $f(z)$, $x$ is the fractional part of $\log_b{f(z)}$, with the base $b$ being the parameter `logBase` that defines the modulus reference zoning (see above). For shading argument reference zones, $x$ is simply the difference between the upper and the lower angle of an argument reference zone, linearly mapped to the range $[0, 1[$. The following code generates a $3\times3$ matrix of phase portraits of $f(z)=\tan{z^2}$ with $\lambda$ and $s$ changing along the rows and columns, respectively.
+For modulus zone shading at a point $z$ in the complex plane when portraying a function $f(z)$, $x$ is the fractional part of $\log_b{f(z)}$, with the base $b$ being the parameter `logBase` that defines the modulus reference zoning (see above). For shading argument reference zones, $x$ is simply the difference between the upper and the lower angle of an argument reference zone, linearly mapped to the range $[0, 1[$. The following code generates a $3\times3$ matrix of phase portraits of $f(z)=\tan{z^2}$ with $\lambda$ and $s$ changing along the rows and columns, respectively (run the code, figure not shown).
 
-```{r figure_9, fig.width=7, fig.height=7, fig.show='hold', results='hide', cache=TRUE, fig.cap='Tuning reference zone contrast with the parameters `darkestShade` (column-wise, 0, 0.2, 0.4), and `lambda` (row-wise, 0.1, 1, 10).'}
-op <- par(mfrow = c(3, 3), mar = c(0.2, 0.2, 0.2, 0.2), oma = c(0, 0, 0, 0))
+```{r eval=FALSE, figure_9, fig.width=5, fig.height=5, fig.show='hold', results='hide', cache=TRUE, fig.cap='Tuning reference zone contrast with the parameters `darkestShade` (column-wise, 0, 0.2, 0.4), and `lambda` (row-wise, 0.1, 1, 10).'}
+op <- par(mfrow = c(3, 3), mar = c(0.2, 0.2, 0.2, 0.2))
 for(lb in c(0.1, 1, 10)) {
   for(dS in c(0, 0.2, 0.4)) {
     phasePortrait("tan(z^2)", xlim = c(-1.7, 1.7), ylim = c(-1.7, 1.7), 
