@@ -119,10 +119,10 @@ switch(1 + trunc(runif(1, 0, 6)),
        "... in a way somebody can understand?")
 ```
 
-**Veronika Biber** did a great job revising the vignette with regard to
-contents and structure. **Johannes Biber** turned out the most patient
-pre-release tester one can imagine, boosting things with his high-end
-gaming machine. Thanks, guys\!
+**Veronika Biber** provided expert advice for improving the vignette.
+**Johannes Biber** turned out the most patient pre-release tester one
+can imagine, boosting things with his high-end gaming machine. Thanks,
+guys\!
 
 Clearly, programming in R would not be what it is, weren’t there some R
 titans who generously share their knowledge online. While I keep
