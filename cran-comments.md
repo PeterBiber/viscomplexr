@@ -1,3 +1,6 @@
+## First submission
+* This is the first submission of the package viscomplexr
+
 ## Test environments
 * local Ubuntu 20.04 install, R 4.0.2
 * local Windows 8.1 install, R 4.0.2
@@ -7,7 +10,6 @@
 * ubuntu-20.04 (devel) on github, R-devel
 
 ## R CMD check results
+0 errors | 0 warnings | 0 notes
 
-0 errors | 0 warnings | 1 note
 
-* This is a first submission

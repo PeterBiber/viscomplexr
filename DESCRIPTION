@@ -7,7 +7,7 @@ Authors@R: person("Peter", "Biber", email = "castor.fiber@gmx.de",
                   role = c("aut", "cre"),
                   comment = c(ORCID = "0000-0002-9700-8708"))
 Description: Functionality for creating phase portraits of functions in the
-    complex number plane. Works with R standard graphics, whose full 
+    complex number plane. Works with R base graphics, whose full 
     functionality is available. Parallel processing is used for optimum 
     performance.
 License: GPL-3
