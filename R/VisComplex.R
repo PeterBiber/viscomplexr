@@ -457,7 +457,7 @@ complexArrayPlot <- function(zMetaInfrm, xlim, ylim,
   ) # lapply
 
   # Now combine all blocks into the big raster ...
-  cat("\nCombine colour rasters ... ")
+  cat("\nCombine color rasters ... ")
   pHsvCol <- rbindArraysbyPointer(pHsvCol)
   cat("done.\n")
 
@@ -560,7 +560,7 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #'   strips are sequentially loaded and subdivided into a number of chunks that
 #'   corresponds to the number of registered parallel workers (parameter
 #'   \code{nCores}). By parallely processing each chunk, the function
-#'   \code{f(z)} defined by the user in the arguement \code{FUN} is applied to
+#'   \code{f(z)} defined by the user in the argument \code{FUN} is applied to
 #'   each cell of the strip. This results in an array of function values that
 #'   has exactly the same size as the original strip. The new array is saved as
 #'   a temporary file, the RAM is cleared, and the next strip is loaded. This
@@ -600,14 +600,14 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #'   temporary files will be confounded by the function, even if undeleted
 #'   temporary files from previous runs are still present.
 #'   }
-#'   \item{HSV colour model}{For colour-coding the argument of a complex number,
+#'   \item{HSV color model}{For color-coding the argument of a complex number,
 #'   \code{phasePortrait} uses the \code{\link{hsv}} (hue, saturation, value)
-#'   color model. Hereby, the arugument is mapped to a position on the chromatic
-#'   circle, where the fundamental colours red, green, and blue relate to the
+#'   color model. Hereby, the argument is mapped to a position on the chromatic
+#'   circle, where the fundamental colors red, green, and blue relate to the
 #'   arguments (angles) of 0, 2/3pi, and 4/3pi, respectively. This affects only
 #'   the hue component of the color model. The value component is used for
 #'   shading modulus and/or argument zones. The saturation component for all
-#'   colours can be defined with the parameter \code{stdSaturation}.
+#'   colors can be defined with the parameter \code{stdSaturation}.
 #'   }
 #'   \item{Zone definitions and shading}{In addition to displaying colors for
 #'   the arguments of complex numbers, zones for the modulus and/or the argument
@@ -753,11 +753,11 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #' @param nCores Number of processor cores to be used in the parallel computing
 #'   tasks. Defaults to the maximum number of cores available. Any number
 #'   between 1 (serial computation) and the maximum number of cores available as
-#'   indicated by \code{parallel::detectCores()} is acepted.
+#'   indicated by \code{parallel::detectCores()} is accepted.
 #'
 #' @param pType One of the three options for plotting "p", "pa", "pm", and "pma"
 #'   as a character string. Defaults to "pma". Option "p" produces a mere phase
-#'   plot, i.e. contains only colours for the complex numbers' arguments, but no
+#'   plot, i.e. contains only colors for the complex numbers' arguments, but no
 #'   reference lines at all. the option "pa" introduces shading zones that
 #'   emphasize the arguments. These zones each cover an angle defined by
 #'   \code{2*pi/pi2Div}, where p2Div is another parameter of this function (see
@@ -777,7 +777,7 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #'   i.e. (40 degrees), starting with 0, i.e. the color red if not defined
 #'   otherwise with the parameter \code{argOffset}. In contrast to the borders
 #'   delimiting the modulus zones, the borders of the reference zones for the
-#'   argument always follow the same colour (by definition).
+#'   argument always follow the same color (by definition).
 #'
 #' @param logBase Modulus ratio between the edges of the modulus reference zones
 #'   in \code{pType} \code{"pm"} and \code{"pma"}. As recommended by
@@ -791,7 +791,7 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #'
 #' @param argOffset The (complex number) argument in radians counterclockwise,
 #'   at which the argument reference zones are fixed. Default is 0, i.e. all
-#'   argument reference zones align to the centre of the red area.
+#'   argument reference zones align to the center of the red area.
 #'
 #' @param darkestShade Darkest possible shading of modulus and angle reference
 #'   zones for \code{pType} \code{"pm"} and \code{"pma"}. It corresponds to the
@@ -1117,7 +1117,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
        z              <- get(load(fileName))
 
        # Split z vertically (by rows) into nCores chunks to be processed
-       # parallely
+       # in parallel
        # - here's some pre-work
        uplow <- verticalSplitIndex(dim(z)[1], nCores)
 
@@ -1173,7 +1173,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
 
   # Transform into color values and plot it
   if(!noScreenDevice) {
-    cat("\nTransforming function values into colours ...")
+    cat("\nTransforming function values into colors ...")
     complexArrayPlot(zMetaInfrm, xlim, ylim, pType, invertFlip,
                      lambda, gamma, pi2Div, logBase,
                      argOffset, stdSaturation, darkestShade,

@@ -101,7 +101,7 @@ par(op)
 While there are many options and a few useful supporting functions (see vignette and documentation), this example shows the core way of plotting phase portraits. It could even be reduced to just the function to be portrayed (here provided as a character string) and the parameters `xlim` and `ylim`. The other parameters in the example, and also the omission of the plot margins before calling *phasePortrait*, were only used in order to obtain a pretty banner for this README.
 
 
-## Acknowledgements
+## Acknowledgments
 While this package is a 100% leisure project, it would have been a mission impossible without the background of my daily work with R as a Forest Scientist at the Technical University of Munich (TUM). Fortunately, I have a job that allows me to learn about Nature by asking her questions (or trying to simulate what she is doing) with ever-improving methods and tools. I would like to thank everyone at the Chair of Forest Growth and Yield Science at TUM, and especially **Hans Pretzsch**, who keep me involved in discussions like: *How can this be solved in R ...*  
 
 ```{r, eval=FALSE}

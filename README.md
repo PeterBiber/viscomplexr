@@ -97,7 +97,7 @@ portrayed (here provided as a character string) and the parameters
 omission of the plot margins before calling *phasePortrait*, were only
 used in order to obtain a pretty banner for this README.
 
-## Acknowledgements
+## Acknowledgments
 
 While this package is a 100% leisure project, it would have been a
 mission impossible without the background of my daily work with R as a

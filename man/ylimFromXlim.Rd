@@ -31,7 +31,7 @@ For certain purposes, e.g. producing a graph that exactly matches a screen,
 the x and y coordinates must be adjusted to match a given display ratio. If
 the horizontal range, \code{xlim}, the desired ratio, \code{x_to_y} and the
 desired center of the y-range, \code{centerY} are provided, this function
-returns an adpated vertical range, that can be used as \code{ylim} in any
+returns an adapted vertical range, that can be used as \code{ylim} in any
 plot including \code{\link{phasePortrait}}.
 }
 \examples{

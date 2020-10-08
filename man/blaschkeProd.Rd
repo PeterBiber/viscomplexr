@@ -27,7 +27,7 @@ A sequence of points \code{a[n]} located inside the unit disk satisfies the
 Blaschke condition, if \code{sum[1:n] (1 - abs(a[n])) < Inf}. For each
 element \code{a != 0} of such a sequence, \code{B(a, z) = abs(a)/a * (a -
 z)/(1 - conj(a) * z)} can be calculated. For \code{a = 0}, \code{B(a, z) =
-z}. The Blaschke produkt \code{B(z)} results as \code{B(z) = prod[1:n]
+z}. The Blaschke product \code{B(z)} results as \code{B(z) = prod[1:n]
 (B(a[n], z))}.
 }
 \examples{

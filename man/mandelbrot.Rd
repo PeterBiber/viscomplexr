@@ -19,7 +19,7 @@ Either \code{NaN+NaNi} or the complex number obtained after
 }
 \description{
 This function is provided as a basis for visualizing the Mandelbrot set with
-\code{\link{phasePortrait}}. While usual visualisations color the points
+\code{\link{phasePortrait}}. While usual visualizations color the points
 \emph{outside} the Mandelbrot set dependent on the velocity of divergence,
 this function produces the information required for coloring the Mandelbrot
 set itself. For numbers that can be identified as not being elements of the

@@ -20,7 +20,7 @@ triple product (default = 30)}
 The value of the function for \code{z} and \code{tau}.
 }
 \description{
-Aproximation of "the" Jacobi theta function using the first \code{nn}
+Approximation of "the" Jacobi theta function using the first \code{nn}
 factors in its triple product version
 }
 \details{

@@ -30,7 +30,7 @@ Either \code{NaN+NaNi} or the complex number obtained after
 }
 \description{
 This function is designed as the basis for visualizing normal Julia sets
-with \code{\link{phasePortrait}}. In contrast to usual visualisations of
+with \code{\link{phasePortrait}}. In contrast to usual visualizations of
 Julia sets, this requires coloring the actual member points of the set and
 not the points outside. Therefore, for numbers that can be identified as not
 being parts of the Julia set, this function returns \code{NaN+NaNi}. All
@@ -45,10 +45,10 @@ is bounded for all \code{n > 0}: \code{a[n+1] = a[n]^2 + c}, starting with
 \code{a[0] = z}. The parameter \code{c} is a complex number, and the
 sequence is certainly unbounded if \code{abs(a[]) >= R} with \code{R} being
 an escape Radius which matches the inequality \code{R^2 - R >= abs(c)}. As
-the visualisation with this package gives interesting pictures (i.e. other
+the visualization with this package gives interesting pictures (i.e. other
 than a blank screen) only for \code{c} which are elements of the Mandelbrot
 set, \code{R = 2} is a good choice. For the author's taste, the Julia
-visualisations become most interesting for \code{c} located in the border
+visualizations become most interesting for \code{c} located in the border
 zone of the Mandelbrot set.
 }
 \examples{

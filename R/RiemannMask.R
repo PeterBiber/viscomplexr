@@ -46,10 +46,10 @@
 #'
 #' @param colMask Color for the shaded area outside the unit circle. Defaults to
 #'   "white". Can be any kind of color definition R accepts. I recommend,
-#'   however, to use a color defintion without a transparency value, because
+#'   however, to use a color definition without a transparency value, because
 #'   this would be overridden by the parameter \code{alphaMask}.
 #'
-#' @param alphaMask Transparancy value for the color defined with
+#' @param alphaMask Transparency value for the color defined with
 #'   \code{colMask}. Has to be a value between 0 (fully transparent) and 1
 #'   (totally opaque). Defaults to 0.5.
 #'
@@ -66,7 +66,7 @@
 #' @param circleCol Color of the unit circle, default is the default foreground
 #'   color (\code{par("fg")}).
 #'
-#' @param gridCross Boolean - if \code{TRUE}, a horizontal and a verical gray
+#' @param gridCross Boolean - if \code{TRUE}, a horizontal and a vertical gray
 #'   line will be drawn over the plot region, intersection in the center of the
 #'   unit circle. Defaults to \code{FALSE}.
 #'

@@ -4,7 +4,7 @@
 #' Mandelbrot iteration with a given number of steps
 #'
 #' This function is provided as a basis for visualizing the Mandelbrot set with
-#' \code{\link{phasePortrait}}. While usual visualisations color the points
+#' \code{\link{phasePortrait}}. While usual visualizations color the points
 #' \emph{outside} the Mandelbrot set dependent on the velocity of divergence,
 #' this function produces the information required for coloring the Mandelbrot
 #' set itself. For numbers that can be identified as not being elements of the
@@ -54,7 +54,7 @@ mandelbrot <- function(z, itDepth = 500L) {
 #' Julia iteration with a given number of steps
 #'
 #' This function is designed as the basis for visualizing normal Julia sets
-#' with \code{\link{phasePortrait}}. In contrast to usual visualisations of
+#' with \code{\link{phasePortrait}}. In contrast to usual visualizations of
 #' Julia sets, this requires coloring the actual member points of the set and
 #' not the points outside. Therefore, for numbers that can be identified as not
 #' being parts of the Julia set, this function returns \code{NaN+NaNi}. All
@@ -68,10 +68,10 @@ mandelbrot <- function(z, itDepth = 500L) {
 #' \code{a[0] = z}. The parameter \code{c} is a complex number, and the
 #' sequence is certainly unbounded if \code{abs(a[]) >= R} with \code{R} being
 #' an escape Radius which matches the inequality \code{R^2 - R >= abs(c)}. As
-#' the visualisation with this package gives interesting pictures (i.e. other
+#' the visualization with this package gives interesting pictures (i.e. other
 #' than a blank screen) only for \code{c} which are elements of the Mandelbrot
 #' set, \code{R = 2} is a good choice. For the author's taste, the Julia
-#' visualisations become most interesting for \code{c} located in the border
+#' visualizations become most interesting for \code{c} located in the border
 #' zone of the Mandelbrot set.
 #'
 #' @param z Complex number; the point in the complex plane to which the output
@@ -125,7 +125,7 @@ juliaNormal <- function(z, c, R_esc, itDepth = 500L) {
 #' Blaschke condition, if \code{sum[1:n] (1 - abs(a[n])) < Inf}. For each
 #' element \code{a != 0} of such a sequence, \code{B(a, z) = abs(a)/a * (a -
 #' z)/(1 - conj(a) * z)} can be calculated. For \code{a = 0}, \code{B(a, z) =
-#' z}. The Blaschke produkt \code{B(z)} results as \code{B(z) = prod[1:n]
+#' z}. The Blaschke product \code{B(z)} results as \code{B(z) = prod[1:n]
 #' (B(a[n], z))}.
 #'
 #' @param z Complex number; the point in the complex plane to which the output
@@ -156,7 +156,7 @@ blaschkeProd <- function(z, a) {
 
 #' Jacobi theta function
 #'
-#' Aproximation of "the" Jacobi theta function using the first \code{nn}
+#' Approximation of "the" Jacobi theta function using the first \code{nn}
 #' factors in its triple product version
 #'
 #' This function approximates the Jacobi theta function theta(z; tau) which is
