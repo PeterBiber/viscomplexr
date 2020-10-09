@@ -5,8 +5,8 @@
 
 <!-- badges: start -->
 
-[![R build
-status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions)
+<!-- [![R build status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions) -->
+
 <!-- badges: end -->
 
 <!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not exectued -->
@@ -99,15 +99,14 @@ used in order to obtain a pretty banner for this README.
 
 ## Acknowledgments
 
-While this package is a 100% leisure project, it would have been a
-mission impossible without the background of my daily work with R as a
-Forest Scientist at the Technical University of Munich (TUM).
-Fortunately, I have a job that allows me to learn about Nature by asking
-her questions (or trying to simulate what she is doing) with
-ever-improving methods and tools. I would like to thank everyone at the
-Chair of Forest Growth and Yield Science at TUM, and especially **Hans
-Pretzsch**, who keep me involved in discussions like: *How can this be
-solved in R …*
+While this package is a leisure project, it would have been a mission
+impossible without the background of my daily work with R as a Forest
+Scientist at the Technical University of Munich (TUM). Fortunately, I
+have a job that allows me to learn about Nature by asking her questions
+(or trying to simulate what she is doing) with ever-improving methods
+and tools. I would like to thank everyone at the Chair of Forest Growth
+and Yield Science at TUM who keep me involved in discussions like: *How
+can this be solved in R …*
 
 ``` r
 switch(1 + trunc(runif(1, 0, 6)),

@@ -649,8 +649,8 @@ As mentioned in the section about [temporary files](#tempfiles), users can possi
 Obviously, applying the function of interest to millions of values is time-critical. Therefore, when defining a function for a phase portrait in **R**, use all options at hand for vectorizing calculations. Moreover, you can count on a significant performance gain when you write time critical functions in C++. Thanks to the package *Rcpp* [@edelbuettel_rcpp_2017] this not really a hurdle anymore. As mentioned above, however, C++ functions compiled with `Rcpp::sourceCpp` will not work with *phasePortrait*, as this is not compatible with parallel processing; you have to provide such functions in a package. The package at hand provides a few functions (function family `maths`); all of them have been implemented in C++.
 
 
-## Acknowledgements
-While this package is a 100% leisure project, it would have been a mission impossible without the background of my daily work with R as a Forest Scientist at the Technical University of Munich (TUM). Fortunately, I have a job that allows me to learn about Nature by asking her questions (or trying to simulate what she is doing) with ever-improving methods and tools. I would like to thank everyone at the Chair of Forest Growth and Yield Science at TUM, and especially **Hans Pretzsch**, who keep me involved in discussions like: *How can this be solved in R ...*  
+## Acknowledgments
+While this package is a leisure project, it would have been a mission impossible without the background of my daily work with R as a Forest Scientist at the Technical University of Munich (TUM). Fortunately, I have a job that allows me to learn about Nature by asking her questions (or trying to simulate what she is doing) with ever-improving methods and tools. I would like to thank everyone at the Chair of Forest Growth and Yield Science at TUM who keep me involved in discussions like: *How can this be solved in R ...*  
 
 ```{r, eval=FALSE}
 switch(1 + trunc(runif(1, 0, 6)),
