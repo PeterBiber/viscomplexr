@@ -48,7 +48,7 @@ NULL
 #   Pointers_passing_reference_.html
 
 newPointer <- function(inputValue) {
-    object        <- new.env(parent = globalenv())
+    object        <- new.env(parent = emptyenv())
     object$value  <- inputValue
     class(object) <- "pointer"
     return(object)
