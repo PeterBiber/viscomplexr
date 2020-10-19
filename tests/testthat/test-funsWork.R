@@ -45,7 +45,8 @@ testCase1 <- function() {
                 tempDir = NULL,
                 deleteTempFiles = FALSE,
                 noScreenDevice = TRUE,
-                nCores = 2)
+                nCores = 2,
+                verbose = FALSE)
   referenceWmat <- get(load("1wmatCase001.RData"))
   actualWmat    <- loadActual()
   cleanUp()
@@ -67,7 +68,8 @@ testCase2 <- function() {
                 tempDir = NULL,
                 deleteTempFiles = FALSE,
                 noScreenDevice = TRUE,
-                nCores = 2)
+                nCores = 2,
+                verbose = FALSE)
   referenceWmat <- get(load("1wmatCase002.RData"))
   actualWmat    <- loadActual()
   cleanUp()
@@ -98,7 +100,8 @@ testCase3 <- function() {
                 tempDir = NULL,
                 deleteTempFiles = FALSE,
                 noScreenDevice = TRUE,
-                nCores = 2)
+                nCores = 2,
+                verbose = FALSE)
   referenceWmat <- get(load("1wmatCase003.RData"))
   actualWmat    <- loadActual()
   cleanUp()
@@ -131,6 +134,7 @@ testCase4 <- function() {
                 deleteTempFiles = FALSE,
                 noScreenDevice = TRUE,
                 nCores = 2,
+                verbose = FALSE,
                 autoDereg = TRUE) # Register sequential backend after
                                   # the last phase portrait
   referenceWmat <- get(load("1wmatCase004.RData"))

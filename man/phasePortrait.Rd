@@ -27,6 +27,7 @@ phasePortrait(
   deleteTempFiles = TRUE,
   noScreenDevice = FALSE,
   autoDereg = FALSE,
+  verbose = TRUE,
   ...
 )
 }
@@ -216,6 +217,12 @@ parallel backend can be time consuming. Thus, if you want make several
 phase portraits in succession, you should set \code{autoDereg} only for the
 last one, or simply type \code{foreach::registerDoSEQ} after you are done.
 In any case, you don't want to have an unused parallel backend lying about.}
+
+\item{verbose}{if TRUE (default), \code{phasePortrait} will continuously
+write progress messages to the console. This is convenient for normal
+purposes, as calculating larger phase portraits in higher resolution may
+take several minutes. The setting \code{verbose = FALSE}, will suppress any
+output to the console.}
 
 \item{...}{All parameters accepted by the \code{\link{plot.default}}
 function.}

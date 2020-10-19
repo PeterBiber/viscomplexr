@@ -848,6 +848,12 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #'   last one, or simply type \code{foreach::registerDoSEQ} after you are done.
 #'   In any case, you don't want to have an unused parallel backend lying about.
 #'
+#' @param verbose if TRUE (default), \code{phasePortrait} will continuously
+#'   write progress messages to the console. This is convenient for normal
+#'   purposes, as calculating larger phase portraits in higher resolution may
+#'   take several minutes. The setting \code{verbose = FALSE}, will suppress any
+#'   output to the console.
+#'
 #' @param ... All parameters accepted by the \code{\link{plot.default}}
 #'   function.
 #'
