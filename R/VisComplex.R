@@ -213,14 +213,15 @@ phaseModAngColhsv <- function(pCompArr, pHsvCol, lambda = 7, gamma = 9/10,
 
 buildArray <- function(widthPx, heightPx, xlim, ylim,
                        blockSizePx = 2250000,
-                       tempDir) {
+                       tempDir,
+                       verbose) {
 
   # How many blocks to build?
   linesPerBlock  <- blockSizePx %/% widthPx
   nBlocks        <- heightPx    %/% linesPerBlock
   linesRest      <- heightPx    %%  linesPerBlock
   nBlocks        <- nBlocks + 1 * (linesRest > 0)
-  cat("\n.making", nBlocks, "blocks ... ")
+  if(verbose) cat("\n.making", nBlocks, "blocks ... ")
 
   # First and last line number covered by each block
   iBlocks        <- c(1:nBlocks)
@@ -255,7 +256,7 @@ buildArray <- function(widthPx, heightPx, xlim, ylim,
     if(!dir.exists(tempDir)) { dir.create(tempDir, recursive = TRUE) }
 
   # Parallel loop
-  cat("parallel loop starting ... ")
+  if(verbose) cat("parallel loop starting ... ")
   foreach(i = iBlocks) %dopar% {
     yPxValVecBlock <- rep(yPxValVec[c(metaZ[i,"lower"]:metaZ[i,"upper"])],
                           widthPx)
@@ -267,7 +268,7 @@ buildArray <- function(widthPx, heightPx, xlim, ylim,
     save(compArr, file = paste(tempDir, metaZ[i,"fileNames"], sep = "/"))
     rm(list = c("compArr", "compVec", "xPxValVecBlock", "yPxValVecBlock"))
   } # foreach i
-  cat("done.")
+  if(verbose) cat("done.")
 
   # Arrange meta-information to be returned
   metaBack <- list(tempDir = tempDir, rndCode = rndCode, metaZ = metaZ)
@@ -343,7 +344,9 @@ complexArrayPlot <- function(zMetaInfrm, xlim, ylim,
                              darkestShade = 0.1,
                              hsvNaN = c(0, 0, 0.5),
                              asp = 1,
-                             xlab = "", ylab = "", ...) {
+                             xlab = "", ylab = "",
+                             verbose,
+                             ...) {
 
   # Set up plot
   plot(NULL, xlim = xlim, ylim = ylim, asp = asp, xlab = xlab, ylab = ylab, ...)
@@ -394,7 +397,7 @@ complexArrayPlot <- function(zMetaInfrm, xlim, ylim,
   pHsvCol <- lapply(c(1:nrow(zMetaInfrm$metaZ)),
                     function(i, zMetaInfrm, colCmd) {
 
-      cat("\n.transforming block", i, "... ")
+      if(verbose) cat("\n.transforming block", i, "... ")
       # load a block (will soon become a list of pointers, hence the name)
       pListCompArr  <- get(load(zMetaInfrm$metaZ[i,]$wFileNames))
       # split it for parallel processing
@@ -415,7 +418,7 @@ complexArrayPlot <- function(zMetaInfrm, xlim, ylim,
 
       # Parallel loop transforming the chunks into a color raster each;
       # giving back a list of pointers to the rasters
-      cat("parallel loop starting ... ")
+      if(verbose) cat("parallel loop starting ... ")
       pHsvCol <- foreach(i = c(1:length(pListCompArr)),
                          .export  = c("phaseColhsv",
                                       "phaseModColhsv",
@@ -439,7 +442,7 @@ complexArrayPlot <- function(zMetaInfrm, xlim, ylim,
                                         # the foreach loop
         return(pHsvCol)
       } # foreach
-      cat("done.")
+      if(verbose) cat("done.")
 
       # Remove the original array
       rm(pListCompArr)
@@ -457,14 +460,14 @@ complexArrayPlot <- function(zMetaInfrm, xlim, ylim,
   ) # lapply
 
   # Now combine all blocks into the big raster ...
-  cat("\nCombine color rasters ... ")
+  if(verbose) cat("\nCombine color rasters ... ")
   pHsvCol <- rbindArraysbyPointer(pHsvCol)
-  cat("done.\n")
+  if(verbose) cat("done.\n")
 
   # ... and plot it
-  cat("Plotting raster image ... ")
+  if(verbose) cat("Plotting raster image ... ")
   rasterImage(as.raster(pHsvCol$value), xlim[1], ylim[1], xlim[2], ylim[2])
-  cat("done.\n")
+  if(verbose) cat("done.\n")
 
   pHsvCol$value <- NULL
   rm(pHsvCol)
@@ -1041,6 +1044,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
                           deleteTempFiles = TRUE,
                           noScreenDevice = FALSE,
                           autoDereg = FALSE,
+                          verbose = TRUE,
                           ...) {
 
   # Bring the user's function definition in workable form
@@ -1085,33 +1089,38 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
                                                 # and not more than available
   if(nCores != 1) {
     if (nWorkers != nCores) {
-      cat("\nRegistering parallel workers ... ")
+      if(verbose) cat("\nRegistering parallel workers ... ")
       registerDoSEQ()    # Unregister parallel for the sake of safety before
       registerDoParallel(cores = nCores) # register with new number of cores
-      cat(nCores, "parallel workers registered ...")
+      if(verbose) cat(nCores, "parallel workers registered ...")
     }
     else {
-      cat("\n", nCores, " parallel workers previously registered ...", sep = "")
+      if(verbose)
+        cat("\n", nCores, " parallel workers previously registered ...",
+            sep = "")
     }
   }
   # Only one core desired
   else {
     registerDoSEQ()
-    cat("\nnCores set to 1. Parallel loops will be executed sequentially ...")
+    if(verbose)
+      cat("\nnCores set to 1.",
+          "Parallel loops will be executed sequentially ...")
   }
 
   # Make pixelwise array of z-Values (input values to function)
-  cat("\nBuilding z plane array ...")
+  if(verbose) cat("\nBuilding z plane array ...")
   if(is.null(tempDir)) tempDir <- tempdir()
-  zMetaInfrm <- buildArray(widthPx, heightPx, xlim, ylim, blockSizePx, tempDir)
+  zMetaInfrm <- buildArray(widthPx, heightPx, xlim, ylim, blockSizePx, tempDir,
+                           verbose)
 
   # This is where it really happens
-  cat("\nEvaluation loop starting ... ")
+  if(verbose) cat("\nEvaluation loop starting ... ")
   zMetaInfrm$metaZ$wFileNames <- vapply(c(1:nrow(zMetaInfrm$metaZ)),
                                         function(i, zMetaInfrm, compFun,
                                                  moreArgs) {
 
-       cat("\n.processing block", i, "... ")
+       if(verbose) cat("\n.processing block", i, "... ")
        fileName       <- paste(zMetaInfrm$tempDir,
                                zMetaInfrm$metaZ[i,]$fileName, sep = "/")
        z              <- get(load(fileName))
@@ -1138,7 +1147,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
        vCall <- parse(text = vCall)
 
        # Run the evaluation parallel on each core and put it together again
-       cat("parallel loop starting ... ")
+       if(verbose) cat("parallel loop starting ... ")
 
        w <- foreach(i = c(1:length(z)), .combine = rbind,
                     .export = c("invertFlip", "compFun")) %dopar% {
@@ -1149,7 +1158,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
          if(invertFlip) z[[i]]            <- Conj(1 / z[[i]])
          array(eval(vCall), dim = dims)
        } # foreach i
-       cat("done.")
+       if(verbose) cat("done.")
 
        rm(z) # discard z array
 
@@ -1173,38 +1182,41 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
 
   # Transform into color values and plot it
   if(!noScreenDevice) {
-    cat("\nTransforming function values into colors ...")
+    if(verbose) cat("\nTransforming function values into colors ...")
     complexArrayPlot(zMetaInfrm, xlim, ylim, pType, invertFlip,
                      lambda, gamma, pi2Div, logBase,
-                     argOffset, stdSaturation, darkestShade,
-                     hsvNaN, ...)
+                     argOffset, stdSaturation, darkestShade, hsvNaN,
+                     verbose = verbose, ...)
   } # if(!noScreenDevice)
-  else cat("\nNo plot is made (explicit wish of the user) ...")
+  else if(verbose) cat("\nNo plot is made (explicit wish of the user) ...")
 
   # Delete all temporary files ... or not
   if(deleteTempFiles) {
-    cat("Deleting temporary files ... ")
+    if(verbose) cat("Deleting temporary files ... ")
     filesToDelete <- paste(zMetaInfrm$tempDir,
                            c(as.character(zMetaInfrm$metaZ$fileNames),
                              as.character(zMetaInfrm$metaZ$wFileNames)),
                            sep = "/")
     unlink(filesToDelete)
-    cat("done.\n")
+    if(verbose) cat("done.\n")
   } else {
-    cat("\nTemporary files are NOT deleted (explicit wish of the user).\n")
+    if(verbose)
+      cat("\nTemporary files are NOT deleted (explicit wish of the user).\n")
   } # else (temp files ore not deleted)
 
   # If a parallel backend has been registered, keep or register a sequential
   # backend dependent on user settings
   if(nCores > 1) {
     if(!autoDereg) {
-      cat("\nParallel backend with", nCores,
+      if(verbose) cat("\nParallel backend with", nCores,
           "cores remains registered for convenience.")
-      cat("\nCan be de-registered manually with 'foreach::registerDoSEQ()'.\n")
+      if(verbose)
+        cat("\nCan be de-registered manually with",
+            "'foreach::registerDoSEQ()'.\n")
     }
     else {
       foreach::registerDoSEQ()
-      cat("\nSequential backend registered again.\n")
+      if(verbose) cat("\nSequential backend registered again.\n")
     }
   } # if nCores > 1
 
