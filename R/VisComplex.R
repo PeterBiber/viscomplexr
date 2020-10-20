@@ -404,7 +404,7 @@ complexArrayPlot <- function(zMetaInfrm, xlim, ylim,
       nCores   <- getDoParWorkers()
       uplow    <- verticalSplitIndex(nrow(pListCompArr), nCores)
 
-      # here's the actual splitting, cCompArr becomes a list of pointers
+      # here's the actual splitting, pListCompArr becomes a list of pointers
       pListCompArr  <- lapply(uplow, FUN = function(uplow, pListCompArr) {
         nwPtr <- newPointer(pListCompArr[c(uplow[1]:uplow[2]),])
         # if the split result has only one line, it will automatically become a
@@ -444,7 +444,7 @@ complexArrayPlot <- function(zMetaInfrm, xlim, ylim,
       } # foreach
       if(verbose) cat("done.")
 
-      # Remove the original array
+      # Remove the original list of array pointers
       rm(pListCompArr)
 
       # Combine the color arrays in the value of the first pointer.
@@ -1094,7 +1094,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
   nCores     <- min(max(nCores, 1), availCores) # register at least 1 :)
                                                 # and not more than available
   if(nCores != 1) {
-    if (nWorkers != nCores) {
+    if(nWorkers != nCores) {
       if(verbose) cat("\nRegistering parallel workers ... ")
       registerDoSEQ()    # Unregister parallel for the sake of safety before
       registerDoParallel(cores = nCores) # register with new number of cores
