@@ -30,8 +30,10 @@ print(a)
 
 
 # Use this for portraying a Blaschke product
-\dontrun{
-x11(width = 9.45, height = 6.30)
+\donttest{
+# x11(width = 9.45, height = 6.30) # Screen device commented out
+                                   # due to CRAN test requirements.
+                                   # Use it when trying this example
 op <- par(mar = c(1, 1, 1, 1), bg = "black")
 n <- 77
 a <- complex(n, modulus = runif(n), argument = 2*pi*runif(n))
@@ -41,8 +43,11 @@ FUN <- paste("vapply(z, function(z, a){
                    }, a =", a,
              ", FUN.VALUE = complex(1))", sep = "")
 phasePortrait(FUN, pType = "p", axes = FALSE,
-              xlim = c(-3, 3), ylim = c(-2.0, 2.0))
-par(op)}
+              xlim = c(-3, 3), ylim = c(-2.0, 2.0),
+              nCores = 2) # Max. two cores allowed on CRAN
+                          # not a limit for your own use
+par(op)
+}
 
 
 }

@@ -37,17 +37,22 @@ plot including \code{\link{phasePortrait}}.
 \examples{
 # Make a phase portrait of a Jacobi theta function that fully covers a
 # plot with a display aspect ratio of 4/3.
-\dontrun{
 # 10 inch wide window with 4/3 display ratio (x/y)
-x11(width = 10, height = 10 * 3/4)
+\donttest{
+# x11(width = 10, height = 10 * 3/4) # Screen device commented out
+                                     # due to CRAN test requirements.
+                                     # Use it when trying this example
 xlim <- c(-3, 3)
 ylim <- ylimFromXlim(xlim, centerY = -0.3, x_to_y = 4/3)
 op <- par(mar = c(0, 0, 0, 0), bg = "black") # Omit all plot margins
 phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/2 - 1/3),
   xlim = xlim, ylim = ylim, # Apply the coordinate ranges
-  xaxs = "i", yaxs = "i")   # Allow for now room between plot and axes
+  xaxs = "i", yaxs = "i",   # Allow for now room between plot and axes
+  nCores = 2) # Max. two cores allowed on CRAN
+              # not a limit for your own use
 par(op)
 }
+
 
 }
 \seealso{

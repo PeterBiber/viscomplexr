@@ -864,44 +864,65 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #'
 #' @examples
 #' # Map the complex plane on itself
-#' \dontrun{
-#' x11(width = 8, height = 8)
+#'
+#' # x11(width = 8, height = 8)   # Screen device commented out
+#'                                # due to CRAN test requirements.
+#'                                # Use it when trying this example
 #' phasePortrait("z", xlim = c(-2, 2), ylim = c(-2, 2),
-#'               xlab = "real", ylab = "imaginary")}
+#'               xlab = "real", ylab = "imaginary",
+#'               verbose = FALSE, # Suppress progress messages
+#'               nCores = 2)      # Max. two cores allowed on CRAN
+#'                                # not a limit for your own use
 #'
 #'
 #' # A rational function
-#' \dontrun{
-#' x11(width = 10, height = 8)
+#' \donttest{
+#' # x11(width = 10, height = 8) # Screen device commented out
+#'                               # due to CRAN test requirements.
+#'                               # Use it when trying this example
 #' phasePortrait("(2-z)^2*(-1i+z)^3*(4-3i-z)/((2+2i+z)^4)",
 #'               xlim = c(-8, 8), ylim = c(-6.3, 4.3),
-#'               xlab = "real", ylab = "imaginary")}
+#'               xlab = "real", ylab = "imaginary",
+#'               nCores = 2)     # Max. two cores allowed on CRAN
+#'                               # not a limit for your own use
+#' }
 #'
 #'
 #' # Different pType options by example of the sine function.
 #' # Note the different equivalent definitions of the sine
 #' # function in the calls to phasePortrait
-#' \dontrun{
-#' x11(width = 9, height = 9)
+#' \donttest{
+#' # x11(width = 9, height = 9) # Screen device commented out
+#'                              # due to CRAN test requirements.
+#'                              # Use it when trying this example
 #' op <- par(mfrow = c(2, 2), mar = c(2.1, 2.1, 2.1, 2.1))
 #' phasePortrait("sin(z)", xlim = c(-pi, pi), ylim = c(-pi, pi),
-#'               pType = "p",   main = "pType = 'p'",   axes = FALSE)
+#'               pType = "p",   main = "pType = 'p'",   axes = FALSE,
+#'               nCores = 2) # Max. two cores on CRAN, not a limit for your use
 #' phasePortrait("sin(z)", xlim = c(-pi, pi), ylim = c(-pi, pi),
-#'               pType = "pm",  main = "pType = 'pm'",  axes = FALSE)
+#'               pType = "pm",  main = "pType = 'pm'",  axes = FALSE,
+#'               nCores = 2)
 #' phasePortrait("sin",    xlim = c(-pi, pi), ylim = c(-pi, pi),
-#'               pType = "pa",  main = "pType = 'pa'",  axes = FALSE)
+#'               pType = "pa",  main = "pType = 'pa'",  axes = FALSE,
+#'               nCores = 2)
 #' phasePortrait(sin,      xlim = c(-pi, pi), ylim = c(-pi, pi),
-#'               pType = "pma", main = "pType = 'pma'", axes = FALSE)
+#'               pType = "pma", main = "pType = 'pma'", axes = FALSE,
+#'               nCores = 2)
 #' par(op)}
 #'
 #'
 #' # I called this one 'nuclear fusion'
-#' \dontrun{
-#' x11(width = 16/9*8, height = 8)
+#'
+#' # x11(width = 16/9*8, height = 8) # Screen device commented out
+#'                                   # due to CRAN test requirements.
+#'                                   # Use it when trying this example
+#' \donttest{
 #' op <- par(mar = c(0, 0, 0, 0), omi = c(0.2, 0.2, 0.2, 0.2), bg = "black")
 #' phasePortrait("cos((z + 1/z)/(1i/2 * (z-1)^10))",
 #'               xlim = 16/9*c(-2, 2), ylim = c(-2, 2),
-#'               axes = FALSE, xaxs = "i", yaxs = "i")
+#'               axes = FALSE, xaxs = "i", yaxs = "i",
+#'               nCores = 2) # Max. two cores allowed on CRAN
+#'                           # not a limit for your own use
 #' par(op)}
 #'
 #'
@@ -910,19 +931,23 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #' # and the gamma function, both from the package pracma.
 #' # R's built-in gamma is not useful, as it does not work
 #' # with complex input values.
-#' \dontrun{
-#' library(pracma)
-#' x11(width = 16, height = 8)
+#' \donttest{
+#' if(requireNamespace("pracma", quietly = TRUE)) {
+#' # x11(width = 16, height = 8) # Screen device commented out
+#'                               # due to CRAN test requirements.
+#'                               # Use it when trying this example
 #' op <- par(mfrow = c(1, 2))
-#' phasePortrait(zeta,  xlim = c(-35, 15), ylim = c(-25, 25),
+#' phasePortrait(pracma::zeta,  xlim = c(-35, 15), ylim = c(-25, 25),
 #'               xlab = "real", ylab = "imaginary",
-#'               main = expression(zeta(z)),
-#'               cex.main = 2)
-#' phasePortrait(gammaz, xlim = c(-10, 10), ylim = c(-10, 10),
+#'               main = expression(zeta(z)), cex.main = 2,
+#'               nCores = 2) # Max. two cores on CRAN, not a limit for your use
+#' phasePortrait(pracma::gammaz, xlim = c(-10, 10), ylim = c(-10, 10),
 #'               xlab = "real", ylab = "imaginary",
-#'               main = expression(Gamma(z)),
-#'               cex.main = 2)
-#' par(op)}
+#'               main = expression(Gamma(z)), cex.main = 2,
+#'               nCores = 2) # Max. two cores allowed on CRAN
+#'                           # not a limit for your own use
+#' }
+#' }
 #'
 #'
 #' # Using vapply for defining a whole function as a string.
@@ -930,9 +955,11 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #' # See the documentation of the function vector2String for a more
 #' # convenient space-saving definition of a.
 #' # But note that a C++ version of the Blaschke product is available
-#' # in this package (function blachkeProd()).
-#' \dontrun{
-#' x11(width = 10, height = 8)
+#' # in this package (function blaschkeProd()).
+#' \donttest{
+#' # x11(width = 10, height = 8) # Screen device commented out
+#'                               # due to CRAN test requirements.
+#'                               # Use it when trying this example
 #' phasePortrait("vapply(z, function(z, a) {
 #'                 fct <- ifelse(abs(a) != 0,
 #'                   abs(a)/a * (a-z)/(1-Conj(a)*z), z)
@@ -951,12 +978,15 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #'               FUN.VALUE = complex(1))",
 #'               pType = "p",
 #'               xlim = c(-4, 2), ylim = c(-2, 2),
-#'               xlab = "real", ylab = "imaginary")}
+#'               xlab = "real", ylab = "imaginary",
+#'               nCores = 2) # Max. two cores allowed on CRAN
+#'                           # not a limit for your own use
+#' }
 #'
 #'
 #' # Much more elegant: Define the function outside.
 #' # Here comes a Blaschke product with 200 random points.
-#' \dontrun{
+#' \donttest{
 #' # define function for calculating blaschke products, even
 #' # possible as a one-liner
 #' blaschke <- function(z, a) {
@@ -966,68 +996,93 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #' n <- 200
 #' a <- complex(modulus = runif(n), argument = runif(n)*2*pi)
 #' # Plot it
-#' x11(width = 10, height = 8)
+#' # x11(width = 10, height = 8) # Screen device commented out
+#'                               # due to CRAN test requirements.
+#'                               # Use it when trying this example
 #' phasePortrait(blaschke,
 #'   moreArgs = list(a = a),
 #'   pType = "p",
 #'   xlim = c(-2.5, 2.5), ylim = c(-1.7, 1.7),
-#'   xlab = "real", ylab = "imaginary")}
+#'   xlab = "real", ylab = "imaginary",
+#'   nCores = 2) # Max. two cores allowed on CRAN
+#'               # not a limit for your own use
+#' }
 #'
 #'
 #' # A hybrid solution: A one-liner expression given as a character string
 #' # can be provided additional arguments with moreArgs
-#' \dontrun{
+#' \donttest{
 #' n <- 73
 #' a <- complex(modulus = runif(n), argument = runif(n)*2*pi)
-#' x11(width = 10, height = 8)
+#' # x11(width = 10, height = 8) # Screen device commented out
+#'                               # due to CRAN test requirements.
+#'                               # Use it when trying this example
 #' phasePortrait("prod(ifelse(abs(a) != 0,
 #'   abs(a)/a * (a-z)/(1-Conj(a)*z), z))",
 #'   moreArgs = list(a = a),
 #'   pType = "p",
 #'   xlim = c(-2.5, 2.5), ylim = c(-1.7, 1.7),
-#'   xlab = "real", ylab = "imaginary")}
+#'   xlab = "real", ylab = "imaginary",
+#'   nCores = 2) # Max. two cores allowed on CRAN
+#'               # not a limit for your own use
+#' }
 #'
 #'
 #' # Note the difference in performance when using the C++ defined
 #' # function blaschkeProd() provided in this package
-#' \dontrun{
+#' \donttest{
 #' n <- 73
 #' a <- complex(modulus = runif(n), argument = runif(n)*2*pi)
 #' # Plot it
-#' x11(width = 10, height = 8)
+#' # x11(width = 10, height = 8) # Screen device commented out
+#'                               # due to CRAN test requirements.
+#'                               # Use it when trying this example
 #' phasePortrait(blaschkeProd,
 #'   moreArgs = list(a = a),
 #'   pType = "p",
 #'   xlim = c(-2.5, 2.5), ylim = c(-1.7, 1.7),
-#'   xlab = "real", ylab = "imaginary")}
+#'   xlab = "real", ylab = "imaginary",
+#'   nCores = 2) # Max. two cores allowed on CRAN
+#'               # not a limit for your own use
+#' }
 #'
 #'
 #' # Interesting reunion with Benoit Mandelbrot.
 #' # The function mandelbrot() is part of this package (defined
 #' # in C++ for performance)
-#' \dontrun{
-#' x11(width = 11.7, height = 9/16*11.7)
+#' \donttest{
+#' # x11(width = 11.7, height = 9/16*11.7) # Screen device commented out
+#'                                         # due to CRAN test requirements.
+#'                                         # Use it when trying this example
 #' op <- par(mar = c(0, 0, 0, 0), bg = "black")
 #' phasePortrait(mandelbrot,
 #'               moreArgs = list(itDepth = 100),
 #'               xlim = c(-0.847, -0.403), ylim = c(0.25, 0.50),
 #'               axes = TRUE, pType = "pma",
-#'               hsvNaN = c(0, 0, 0), xaxs = "i", yaxs = "i")
-#' par(op)}
+#'               hsvNaN = c(0, 0, 0), xaxs = "i", yaxs = "i",
+#'               nCores = 2) # Max. two cores allowed on CRAN
+#'                           # not a limit for your own use
+#' par(op)
+#' }
 #'
 #'
 #' # Here comes a Julia set.
 #' # The function juliaNormal() is part of this package (defined
 #' # in C++ for performance)
-#' \dontrun{
-#' x11(width = 11.7, height = 9/16*11.7)
+#' \donttest{
+#' # x11(width = 11.7, height = 9/16*11.7) # Screen device commented out
+#'                                         # due to CRAN test requirements.
+#'                                         # Use it when trying this example
 #' op <- par(mar = c(0, 0, 0, 0), bg = "black")
 #' phasePortrait(juliaNormal,
 #'   moreArgs = list(c = -0.09 - 0.649i, R_esc = 2),
 #'   xlim = c(-2, 2),
 #'   ylim = c(-1.3, 1.3),
-#'   hsvNaN = c(0, 0, 0))
-#' par(op)}
+#'   hsvNaN = c(0, 0, 0),
+#'   nCores = 2) # Max. two cores allowed on CRAN
+#'               # not a limit for your own use
+#' par(op)
+#' }
 #'
 #'
 #' @export

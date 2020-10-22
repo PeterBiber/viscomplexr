@@ -94,14 +94,17 @@ differently on both systems.
 # have to be interpreted as the real and imaginary parts of 1/z
 # (see vignette). The axis labels in this example have been adapted
 # accordingly.
-\dontrun{
-x11(width = 16, height = 8)
+
+# x11(width = 16, height = 8) # Screen device commented out
+                              # due to CRAN test requirements.
+                              # Use it when trying this example
 op <- par(mfrow = c(1, 2), mar = c(4.7, 4.7, 3.5, 3.5))
 phasePortrait("tan(z)", pType = "pma",
               main = "Southern Riemann Hemisphere",
               xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2),
               xlab = "real", ylab = "imaginary",
-              xaxs = "i", yaxs = "i")
+              xaxs = "i", yaxs = "i",
+              nCores = 2) # Max. two cores on CRAN, not a limit for your use
 riemannMask(annotSouth = TRUE, gridCross = TRUE)
 
 phasePortrait("tan(z)", pType = "pma",
@@ -109,9 +112,10 @@ phasePortrait("tan(z)", pType = "pma",
               invertFlip = TRUE,
               xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2),
               xlab = "real (1/z)", ylab = "imaginary (1/z)",
-              xaxs = "i", yaxs = "i")
+              xaxs = "i", yaxs = "i",
+              nCores = 2) # Max. two cores on CRAN, not a limit for your use
 riemannMask(annotNorth = TRUE, gridCross = TRUE)
-par(op)}
+par(op)
 
 
 # Rational function with Riemann masks without annotation.
@@ -119,15 +123,18 @@ par(op)}
 # have to be interpreted as the real and imaginary parts of 1/z
 # (see vignette). The axis labels in this example have been adapted
 # accordingly.
-\dontrun{
-x11(width = 16, height = 8)
+
+# x11(width = 16, height = 8) # Screen device commented out
+                              # due to CRAN test requirements.
+                              # Use it when trying this example
 op <- par(mfrow = c(1, 2), mar = c(4.7, 4.7, 3.5, 3.5))
 phasePortrait("(-z^17 - z^15 - z^9 - z^7 - z^2 - z + 1)/(1i*z - 1)",
               pType = "pma",
               main = "Southern Riemann Hemisphere",
               xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2),
               xlab = "real", ylab = "imaginary",
-              xaxs = "i", yaxs = "i")
+              xaxs = "i", yaxs = "i",
+              nCores = 2) # Max. two cores on CRAN, not a limit for your use
 riemannMask(annotSouth = FALSE, gridCross = FALSE, circOutline = FALSE,
             alphaMask = 0.7)
 
@@ -137,10 +144,11 @@ phasePortrait("(-z^17 - z^15 - z^9 - z^7 - z^2 - z + 1)/(1i*z - 1)",
               invertFlip = TRUE,
               xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2),
               xlab = "real (1/z)", ylab = "imaginary (1/z)",
-              xaxs = "i", yaxs = "i")
+              xaxs = "i", yaxs = "i",
+              nCores = 2) # Max. two cores on CRAN, not a limit for your use
 riemannMask(annotNorth = FALSE, gridCross = FALSE, circOutline = FALSE,
             alphaMask = 0.7)
-par(op)}
+par(op)
 
 
 }

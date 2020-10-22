@@ -31,15 +31,15 @@ z}. The Blaschke product \code{B(z)} results as \code{B(z) = prod[1:n]
 (B(a[n], z))}.
 }
 \examples{
-\dontrun{
 # Generate random vector of 17 zeroes inside the unit disk
 n <- 17
 a <- complex(modulus = runif(n, 0, 1), argument = runif(n, 0, 2*pi))
 
 # Portrait the Blaschke product
 phasePortrait(blaschkeProd, moreArgs = list(a = a),
-  xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2))
-}
+  xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2),
+  nCores = 2) # Max. two cores on CRAN, not a limit for your use
+
 
 }
 \seealso{

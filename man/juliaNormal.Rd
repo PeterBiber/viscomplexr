@@ -52,16 +52,17 @@ visualizations become most interesting for \code{c} located in the border
 zone of the Mandelbrot set.
 }
 \examples{
-\dontrun{
 # This code visualizes a Julia set with some appeal (for the author's
 # taste). Zoom in as you like by adjusting xlim and ylim.
-
+\donttest{
 phasePortrait(juliaNormal,
   moreArgs = list(c = -0.09 - 0.649i, R_esc = 2),
   xlim = c(-2, 2),
   ylim = c(-1.3, 1.3),
-  hsvNaN = c(0, 0, 0))
+  hsvNaN = c(0, 0, 0),
+  nCores = 2)          # Max. two cores on CRAN, not a limit for your use
 }
+
 
 }
 \seealso{

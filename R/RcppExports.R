@@ -33,17 +33,16 @@
 #' @family maths
 #'
 #' @examples
-#' \dontrun{
 #' # This code shows the famous Mandelbrot figure in total, just in the
 #' # opposite way as usual: the Mandelbrot set itself is colored, while the
 #' # points outside are uniformly black.
 #' # Adjust xlim and ylim to zoom in wherever you like.
-#'
+#' \donttest{
 #' phasePortrait(mandelbrot,
 #'   xlim = c(-2.3, 0.7),
 #'   ylim = c(-1.2, 1.2),
-#'   hsvNaN = c(0, 0, 0)
-#' )
+#'   hsvNaN = c(0, 0, 0),
+#'   nCores = 2)          # Max. two cores on CRAN, not a limit for your use
 #' }
 #'
 #' @export
@@ -98,16 +97,17 @@ mandelbrot <- function(z, itDepth = 500L) {
 #' @family maths
 #'
 #' @examples
-#' \dontrun{
 #' # This code visualizes a Julia set with some appeal (for the author's
 #' # taste). Zoom in as you like by adjusting xlim and ylim.
-#'
+#' \donttest{
 #' phasePortrait(juliaNormal,
 #'   moreArgs = list(c = -0.09 - 0.649i, R_esc = 2),
 #'   xlim = c(-2, 2),
 #'   ylim = c(-1.3, 1.3),
-#'   hsvNaN = c(0, 0, 0))
+#'   hsvNaN = c(0, 0, 0),
+#'   nCores = 2)          # Max. two cores on CRAN, not a limit for your use
 #' }
+#'
 #'
 #' @export
 juliaNormal <- function(z, c, R_esc, itDepth = 500L) {
@@ -139,15 +139,15 @@ juliaNormal <- function(z, c, R_esc, itDepth = 500L) {
 #' @family maths
 #'
 #' @examples
-#' \dontrun{
 #' # Generate random vector of 17 zeroes inside the unit disk
 #' n <- 17
 #' a <- complex(modulus = runif(n, 0, 1), argument = runif(n, 0, 2*pi))
 #'
 #' # Portrait the Blaschke product
 #' phasePortrait(blaschkeProd, moreArgs = list(a = a),
-#'   xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2))
-#' }
+#'   xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2),
+#'   nCores = 2) # Max. two cores on CRAN, not a limit for your use
+#'
 #'
 #' @export
 blaschkeProd <- function(z, a) {
@@ -181,19 +181,28 @@ blaschkeProd <- function(z, a) {
 #'
 #'
 #' @examples
-#'
-#' \dontrun{
+#' \donttest{
 #' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/2-1/4),
-#' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2))
+#' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
+#' nCores = 2) # Max. two cores on CRAN, not a limit for your use
+#' }
 #'
+#' \donttest{
 #' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/2-1/2),
-#' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2))
+#' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
+#' nCores = 2)
+#' }
 #'
+#' \donttest{
 #' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/3+1/3),
-#' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2))
+#' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
+#' nCores = 2)
+#' }
 #'
+#' \donttest{
 #' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/4+1/2),
-#' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2))
+#' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
+#' nCores = 2)
 #' }
 #'
 #'

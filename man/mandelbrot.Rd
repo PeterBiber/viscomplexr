@@ -37,17 +37,16 @@ iteration for \code{n = 0, ..., itDepth - 1} and permanently checks for
 returns \code{NaN+NaNi}. In all other cases, it returns \code{a[itDepth]}.
 }
 \examples{
-\dontrun{
 # This code shows the famous Mandelbrot figure in total, just in the
 # opposite way as usual: the Mandelbrot set itself is colored, while the
 # points outside are uniformly black.
 # Adjust xlim and ylim to zoom in wherever you like.
-
+\donttest{
 phasePortrait(mandelbrot,
   xlim = c(-2.3, 0.7),
   ylim = c(-1.2, 1.2),
-  hsvNaN = c(0, 0, 0)
-)
+  hsvNaN = c(0, 0, 0),
+  nCores = 2)          # Max. two cores on CRAN, not a limit for your use
 }
 
 }

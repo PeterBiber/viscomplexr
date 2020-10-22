@@ -37,16 +37,23 @@ plot including \code{\link{phasePortrait}}.
 \examples{
 # Make a phase portrait of a pretty function that fully covers a
 # plot with a display aspect ratio of 5/4.
-\dontrun{
-x11(width = 9, height = 9 * 4/5) # 9 inch wide window with 5/4 display ratio (x/y)
+
+# 9 inch wide window with 5/4 display ratio (x/y)
+\donttest{
+# x11(width = 9, height = 9 * 4/5) # Screen device commented out
+                                   # due to CRAN test requirements.
+                                   # Use it when trying this example
 ylim <- c(-8, 7)
 xlim <- xlimFromYlim(ylim, centerX = 0, x_to_y = 5/4)
 op <- par(mar = c(0, 0, 0, 0), bg = "black") # Omit all plot margins
 phasePortrait("exp(cosh(1/(z - 2i + 2)^2 * (1/2i - 1/4 + z)^3))", pType = "pm",
 xlim = xlim, ylim = ylim, # Apply the coordinate ranges
-xaxs = "i", yaxs = "i")   # Allow for now room between plot and axes
+xaxs = "i", yaxs = "i",   # Allow for now room between plot and axes
+nCores = 2) # Max. two cores allowed on CRAN
+            # not a limit for your own use
 par(op)
 }
+
 
 }
 \seealso{
