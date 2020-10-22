@@ -142,11 +142,12 @@ juliaNormal <- function(z, c, R_esc, itDepth = 500L) {
 #' # Generate random vector of 17 zeroes inside the unit disk
 #' n <- 17
 #' a <- complex(modulus = runif(n, 0, 1), argument = runif(n, 0, 2*pi))
-#'
+#' \donttest{
 #' # Portrait the Blaschke product
 #' phasePortrait(blaschkeProd, moreArgs = list(a = a),
 #'   xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2),
 #'   nCores = 2) # Max. two cores on CRAN, not a limit for your use
+#' }
 #'
 #'
 #' @export
