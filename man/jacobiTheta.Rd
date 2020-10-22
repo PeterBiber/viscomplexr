@@ -36,24 +36,44 @@ R versions, because the calculation can be nicely vectorized in R.
 phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/2-1/4),
 pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
 nCores = 2) # Max. two cores on CRAN, not a limit for your use
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 }
 
 \donttest{
 phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/2-1/2),
 pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
 nCores = 2)
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 }
 
 \donttest{
 phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/3+1/3),
 pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
 nCores = 2)
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 }
 
 \donttest{
 phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/4+1/2),
 pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
 nCores = 2)
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 }
 
 

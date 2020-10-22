@@ -381,6 +381,11 @@ phasePortrait("z", xlim = c(-2, 2), ylim = c(-2, 2),
               verbose = FALSE, # Suppress progress messages
               nCores = 2)      # Max. two cores allowed on CRAN
                                # not a limit for your own use
+\dontshow{
+# R CMD check: make sure any open connections are closed afterward
+foreach::registerDoSEQ()
+doParallel::stopImplicitCluster()
+}
 
 
 # A rational function
@@ -393,6 +398,11 @@ phasePortrait("(2-z)^2*(-1i+z)^3*(4-3i-z)/((2+2i+z)^4)",
               xlab = "real", ylab = "imaginary",
               nCores = 2)     # Max. two cores allowed on CRAN
                               # not a limit for your own use
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 }
 
 
@@ -407,15 +417,35 @@ op <- par(mfrow = c(2, 2), mar = c(2.1, 2.1, 2.1, 2.1))
 phasePortrait("sin(z)", xlim = c(-pi, pi), ylim = c(-pi, pi),
               pType = "p",   main = "pType = 'p'",   axes = FALSE,
               nCores = 2) # Max. two cores on CRAN, not a limit for your use
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 phasePortrait("sin(z)", xlim = c(-pi, pi), ylim = c(-pi, pi),
               pType = "pm",  main = "pType = 'pm'",  axes = FALSE,
               nCores = 2)
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 phasePortrait("sin",    xlim = c(-pi, pi), ylim = c(-pi, pi),
               pType = "pa",  main = "pType = 'pa'",  axes = FALSE,
               nCores = 2)
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 phasePortrait(sin,      xlim = c(-pi, pi), ylim = c(-pi, pi),
               pType = "pma", main = "pType = 'pma'", axes = FALSE,
               nCores = 2)
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 par(op)}
 
 
@@ -431,6 +461,11 @@ phasePortrait("cos((z + 1/z)/(1i/2 * (z-1)^10))",
               axes = FALSE, xaxs = "i", yaxs = "i",
               nCores = 2) # Max. two cores allowed on CRAN
                           # not a limit for your own use
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 par(op)}
 
 
@@ -449,11 +484,21 @@ phasePortrait(pracma::zeta,  xlim = c(-35, 15), ylim = c(-25, 25),
               xlab = "real", ylab = "imaginary",
               main = expression(zeta(z)), cex.main = 2,
               nCores = 2) # Max. two cores on CRAN, not a limit for your use
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 phasePortrait(pracma::gammaz, xlim = c(-10, 10), ylim = c(-10, 10),
               xlab = "real", ylab = "imaginary",
               main = expression(Gamma(z)), cex.main = 2,
               nCores = 2) # Max. two cores allowed on CRAN
                           # not a limit for your own use
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 }
 }
 

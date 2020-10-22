@@ -63,6 +63,11 @@ using namespace Rcpp;
 //'   ylim = c(-1.2, 1.2),
 //'   hsvNaN = c(0, 0, 0),
 //'   nCores = 2)          # Max. two cores on CRAN, not a limit for your use
+//'   \dontshow{
+//'   # R CMD check: make sure any open connections are closed afterward
+//'   foreach::registerDoSEQ()
+//'   doParallel::stopImplicitCluster()
+//'   }
 //' }
 //'
 //' @export
@@ -137,6 +142,11 @@ std::complex<double> mandelbrot(std::complex<double> z,
 //'   ylim = c(-1.3, 1.3),
 //'   hsvNaN = c(0, 0, 0),
 //'   nCores = 2)          # Max. two cores on CRAN, not a limit for your use
+//'   \dontshow{
+//'   # R CMD check: make sure any open connections are closed afterward
+//'   foreach::registerDoSEQ()
+//'   doParallel::stopImplicitCluster()
+//'   }
 //' }
 //'
 //'
@@ -196,8 +206,12 @@ std::complex<double> juliaNormal(std::complex<double> z,
 //' phasePortrait(blaschkeProd, moreArgs = list(a = a),
 //'   xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2),
 //'   nCores = 2) # Max. two cores on CRAN, not a limit for your use
+//'   \dontshow{
+//'   # R CMD check: make sure any open connections are closed afterward
+//'   foreach::registerDoSEQ()
+//'   doParallel::stopImplicitCluster()
+//'   }
 //' }
-//'
 //'
 //' @export
 // [[Rcpp::export]]
@@ -252,24 +266,44 @@ std::complex<double> blaschkeProd(std::complex<double> z,
 //' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/2-1/4),
 //' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
 //' nCores = 2) # Max. two cores on CRAN, not a limit for your use
+//'   \dontshow{
+//'   # R CMD check: make sure any open connections are closed afterward
+//'   foreach::registerDoSEQ()
+//'   doParallel::stopImplicitCluster()
+//'   }
 //' }
 //'
 //' \donttest{
 //' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/2-1/2),
 //' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
 //' nCores = 2)
+//'   \dontshow{
+//'   # R CMD check: make sure any open connections are closed afterward
+//'   foreach::registerDoSEQ()
+//'   doParallel::stopImplicitCluster()
+//'   }
 //' }
 //'
 //' \donttest{
 //' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/3+1/3),
 //' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
 //' nCores = 2)
+//'   \dontshow{
+//'   # R CMD check: make sure any open connections are closed afterward
+//'   foreach::registerDoSEQ()
+//'   doParallel::stopImplicitCluster()
+//'   }
 //' }
 //'
 //' \donttest{
 //' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/4+1/2),
 //' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
 //' nCores = 2)
+//'   \dontshow{
+//'   # R CMD check: make sure any open connections are closed afterward
+//'   foreach::registerDoSEQ()
+//'   doParallel::stopImplicitCluster()
+//'   }
 //' }
 //'
 //'

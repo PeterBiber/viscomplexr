@@ -94,7 +94,7 @@ differently on both systems.
 # have to be interpreted as the real and imaginary parts of 1/z
 # (see vignette). The axis labels in this example have been adapted
 # accordingly.
-
+\donttest{
 # x11(width = 16, height = 8) # Screen device commented out
                               # due to CRAN test requirements.
                               # Use it when trying this example
@@ -105,6 +105,11 @@ phasePortrait("tan(z)", pType = "pma",
               xlab = "real", ylab = "imaginary",
               xaxs = "i", yaxs = "i",
               nCores = 2) # Max. two cores on CRAN, not a limit for your use
+\dontshow{
+# R CMD check: make sure any open connections are closed afterward
+foreach::registerDoSEQ()
+doParallel::stopImplicitCluster()
+}
 riemannMask(annotSouth = TRUE, gridCross = TRUE)
 
 phasePortrait("tan(z)", pType = "pma",
@@ -114,16 +119,21 @@ phasePortrait("tan(z)", pType = "pma",
               xlab = "real (1/z)", ylab = "imaginary (1/z)",
               xaxs = "i", yaxs = "i",
               nCores = 2) # Max. two cores on CRAN, not a limit for your use
+\dontshow{
+# R CMD check: make sure any open connections are closed afterward
+foreach::registerDoSEQ()
+doParallel::stopImplicitCluster()
+}
 riemannMask(annotNorth = TRUE, gridCross = TRUE)
 par(op)
-
+}
 
 # Rational function with Riemann masks without annotation.
 # The axis tick marks on the second diagram (Northern hemisphere)
 # have to be interpreted as the real and imaginary parts of 1/z
 # (see vignette). The axis labels in this example have been adapted
 # accordingly.
-
+\donttest{
 # x11(width = 16, height = 8) # Screen device commented out
                               # due to CRAN test requirements.
                               # Use it when trying this example
@@ -135,6 +145,11 @@ phasePortrait("(-z^17 - z^15 - z^9 - z^7 - z^2 - z + 1)/(1i*z - 1)",
               xlab = "real", ylab = "imaginary",
               xaxs = "i", yaxs = "i",
               nCores = 2) # Max. two cores on CRAN, not a limit for your use
+\dontshow{
+# R CMD check: make sure any open connections are closed afterward
+foreach::registerDoSEQ()
+doParallel::stopImplicitCluster()
+}
 riemannMask(annotSouth = FALSE, gridCross = FALSE, circOutline = FALSE,
             alphaMask = 0.7)
 
@@ -146,9 +161,15 @@ phasePortrait("(-z^17 - z^15 - z^9 - z^7 - z^2 - z + 1)/(1i*z - 1)",
               xlab = "real (1/z)", ylab = "imaginary (1/z)",
               xaxs = "i", yaxs = "i",
               nCores = 2) # Max. two cores on CRAN, not a limit for your use
+\dontshow{
+# R CMD check: make sure any open connections are closed afterward
+foreach::registerDoSEQ()
+doParallel::stopImplicitCluster()
+}
 riemannMask(annotNorth = FALSE, gridCross = FALSE, circOutline = FALSE,
             alphaMask = 0.7)
 par(op)
+}
 
 
 }
