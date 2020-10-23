@@ -52,6 +52,11 @@ xaxs = "i", yaxs = "i",   # Allow for now room between plot and axes
 nCores = 2) # Max. two cores allowed on CRAN
             # not a limit for your own use
 par(op)
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 }
 
 

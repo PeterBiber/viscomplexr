@@ -48,9 +48,14 @@ op <- par(mar = c(0, 0, 0, 0), bg = "black") # Omit all plot margins
 phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/2 - 1/3),
   xlim = xlim, ylim = ylim, # Apply the coordinate ranges
   xaxs = "i", yaxs = "i",   # Allow for now room between plot and axes
-  nCores = 2) # Max. two cores allowed on CRAN
+  nCores = 1) # Max. two cores allowed on CRAN
               # not a limit for your own use
 par(op)
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 }
 
 

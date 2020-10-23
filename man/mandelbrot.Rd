@@ -46,7 +46,7 @@ phasePortrait(mandelbrot,
   xlim = c(-2.3, 0.7),
   ylim = c(-1.2, 1.2),
   hsvNaN = c(0, 0, 0),
-  nCores = 2)          # Max. two cores on CRAN, not a limit for your use
+  nCores = 1)          # Max. two cores on CRAN, not a limit for your use
   \dontshow{
   # R CMD check: make sure any open connections are closed afterward
   foreach::registerDoSEQ()

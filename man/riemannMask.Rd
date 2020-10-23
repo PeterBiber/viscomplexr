@@ -105,11 +105,11 @@ phasePortrait("tan(z)", pType = "pma",
               xlab = "real", ylab = "imaginary",
               xaxs = "i", yaxs = "i",
               nCores = 2) # Max. two cores on CRAN, not a limit for your use
-\dontshow{
-# R CMD check: make sure any open connections are closed afterward
-foreach::registerDoSEQ()
-doParallel::stopImplicitCluster()
-}
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 riemannMask(annotSouth = TRUE, gridCross = TRUE)
 
 phasePortrait("tan(z)", pType = "pma",
@@ -119,11 +119,11 @@ phasePortrait("tan(z)", pType = "pma",
               xlab = "real (1/z)", ylab = "imaginary (1/z)",
               xaxs = "i", yaxs = "i",
               nCores = 2) # Max. two cores on CRAN, not a limit for your use
-\dontshow{
-# R CMD check: make sure any open connections are closed afterward
-foreach::registerDoSEQ()
-doParallel::stopImplicitCluster()
-}
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 riemannMask(annotNorth = TRUE, gridCross = TRUE)
 par(op)
 }
@@ -145,11 +145,11 @@ phasePortrait("(-z^17 - z^15 - z^9 - z^7 - z^2 - z + 1)/(1i*z - 1)",
               xlab = "real", ylab = "imaginary",
               xaxs = "i", yaxs = "i",
               nCores = 2) # Max. two cores on CRAN, not a limit for your use
-\dontshow{
-# R CMD check: make sure any open connections are closed afterward
-foreach::registerDoSEQ()
-doParallel::stopImplicitCluster()
-}
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 riemannMask(annotSouth = FALSE, gridCross = FALSE, circOutline = FALSE,
             alphaMask = 0.7)
 
@@ -161,11 +161,11 @@ phasePortrait("(-z^17 - z^15 - z^9 - z^7 - z^2 - z + 1)/(1i*z - 1)",
               xlab = "real (1/z)", ylab = "imaginary (1/z)",
               xaxs = "i", yaxs = "i",
               nCores = 2) # Max. two cores on CRAN, not a limit for your use
-\dontshow{
-# R CMD check: make sure any open connections are closed afterward
-foreach::registerDoSEQ()
-doParallel::stopImplicitCluster()
-}
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 riemannMask(annotNorth = FALSE, gridCross = FALSE, circOutline = FALSE,
             alphaMask = 0.7)
 par(op)

@@ -60,7 +60,7 @@ phasePortrait(juliaNormal,
   xlim = c(-2, 2),
   ylim = c(-1.3, 1.3),
   hsvNaN = c(0, 0, 0),
-  nCores = 2)          # Max. two cores on CRAN, not a limit for your use
+  nCores = 1)          # Max. two cores on CRAN, not a limit for your use
   \dontshow{
   # R CMD check: make sure any open connections are closed afterward
   foreach::registerDoSEQ()

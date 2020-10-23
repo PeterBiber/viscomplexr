@@ -42,7 +42,7 @@
 #'   xlim = c(-2.3, 0.7),
 #'   ylim = c(-1.2, 1.2),
 #'   hsvNaN = c(0, 0, 0),
-#'   nCores = 2)          # Max. two cores on CRAN, not a limit for your use
+#'   nCores = 1)          # Max. two cores on CRAN, not a limit for your use
 #'   \dontshow{
 #'   # R CMD check: make sure any open connections are closed afterward
 #'   foreach::registerDoSEQ()
@@ -110,7 +110,7 @@ mandelbrot <- function(z, itDepth = 500L) {
 #'   xlim = c(-2, 2),
 #'   ylim = c(-1.3, 1.3),
 #'   hsvNaN = c(0, 0, 0),
-#'   nCores = 2)          # Max. two cores on CRAN, not a limit for your use
+#'   nCores = 1)          # Max. two cores on CRAN, not a limit for your use
 #'   \dontshow{
 #'   # R CMD check: make sure any open connections are closed afterward
 #'   foreach::registerDoSEQ()
@@ -156,7 +156,7 @@ juliaNormal <- function(z, c, R_esc, itDepth = 500L) {
 #' # Portrait the Blaschke product
 #' phasePortrait(blaschkeProd, moreArgs = list(a = a),
 #'   xlim = c(-1.2, 1.2), ylim = c(-1.2, 1.2),
-#'   nCores = 2) # Max. two cores on CRAN, not a limit for your use
+#'   nCores = 1) # Max. two cores on CRAN, not a limit for your use
 #'   \dontshow{
 #'   # R CMD check: make sure any open connections are closed afterward
 #'   foreach::registerDoSEQ()
@@ -199,7 +199,7 @@ blaschkeProd <- function(z, a) {
 #' \donttest{
 #' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/2-1/4),
 #' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
-#' nCores = 2) # Max. two cores on CRAN, not a limit for your use
+#' nCores = 1) # Max. two cores on CRAN, not a limit for your use
 #'   \dontshow{
 #'   # R CMD check: make sure any open connections are closed afterward
 #'   foreach::registerDoSEQ()
@@ -210,7 +210,7 @@ blaschkeProd <- function(z, a) {
 #' \donttest{
 #' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/2-1/2),
 #' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
-#' nCores = 2)
+#' nCores = 1)
 #'   \dontshow{
 #'   # R CMD check: make sure any open connections are closed afterward
 #'   foreach::registerDoSEQ()
@@ -221,7 +221,7 @@ blaschkeProd <- function(z, a) {
 #' \donttest{
 #' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/3+1/3),
 #' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
-#' nCores = 2)
+#' nCores = 1)
 #'   \dontshow{
 #'   # R CMD check: make sure any open connections are closed afterward
 #'   foreach::registerDoSEQ()
@@ -232,7 +232,7 @@ blaschkeProd <- function(z, a) {
 #' \donttest{
 #' phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/4+1/2),
 #' pType = "p", xlim = c(-2, 2), ylim = c(-2, 2),
-#' nCores = 2)
+#' nCores = 1)
 #'   \dontshow{
 #'   # R CMD check: make sure any open connections are closed afterward
 #'   foreach::registerDoSEQ()

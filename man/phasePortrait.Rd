@@ -534,6 +534,11 @@ phasePortrait("vapply(z, function(z, a) {
               xlab = "real", ylab = "imaginary",
               nCores = 2) # Max. two cores allowed on CRAN
                           # not a limit for your own use
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 }
 
 
@@ -559,6 +564,11 @@ phasePortrait(blaschke,
   xlab = "real", ylab = "imaginary",
   nCores = 2) # Max. two cores allowed on CRAN
               # not a limit for your own use
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 }
 
 
@@ -576,8 +586,13 @@ phasePortrait("prod(ifelse(abs(a) != 0,
   pType = "p",
   xlim = c(-2.5, 2.5), ylim = c(-1.7, 1.7),
   xlab = "real", ylab = "imaginary",
-  nCores = 2) # Max. two cores allowed on CRAN
+  nCores = 1) # Max. two cores allowed on CRAN
               # not a limit for your own use
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 }
 
 
@@ -595,8 +610,13 @@ phasePortrait(blaschkeProd,
   pType = "p",
   xlim = c(-2.5, 2.5), ylim = c(-1.7, 1.7),
   xlab = "real", ylab = "imaginary",
-  nCores = 2) # Max. two cores allowed on CRAN
+  nCores = 1) # Max. two cores allowed on CRAN
               # not a limit for your own use
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 }
 
 
@@ -613,9 +633,14 @@ phasePortrait(mandelbrot,
               xlim = c(-0.847, -0.403), ylim = c(0.25, 0.50),
               axes = TRUE, pType = "pma",
               hsvNaN = c(0, 0, 0), xaxs = "i", yaxs = "i",
-              nCores = 2) # Max. two cores allowed on CRAN
+              nCores = 1) # Max. two cores allowed on CRAN
                           # not a limit for your own use
 par(op)
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 }
 
 
@@ -632,9 +657,14 @@ phasePortrait(juliaNormal,
   xlim = c(-2, 2),
   ylim = c(-1.3, 1.3),
   hsvNaN = c(0, 0, 0),
-  nCores = 2) # Max. two cores allowed on CRAN
+  nCores = 1) # Max. two cores allowed on CRAN
               # not a limit for your own use
 par(op)
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
 }
 
 
