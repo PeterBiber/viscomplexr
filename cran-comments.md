@@ -1,5 +1,5 @@
 ## Resubmission
-Thanks to Gregor Seyer for his constructive review of the first submission. I fixed all isses pointed out. I copied G. Seyer's remarks below and answer point-by-point.
+Thanks to Gregor Seyer for his constructive review of the first submission. I fixed all issues pointed out. Find below G. Seyer's remarks and my answers to each of them.
 
 **G.S.:** *\\dontrun{} should only be used if the example really cannot be executed (e.g. because of missing additional software, missing API keys, ...) by the user. That's why wrapping examples in \\dontrun{} adds the comment ("# Not run:") as a warning for the user.
 Does not seem necessary.
@@ -19,7 +19,7 @@ Instead of print()/cat() rather use message()/warning()  or if(verbose)cat(..) (
 
 **G.S.:** *Please ensure that you do not use more than 2 cores in your examples, vignettes, etc.*
 
-Done.
+**Answer:** Done.
 
 ### Test environments
 * local Ubuntu 20.04 install, R 4.0.3
