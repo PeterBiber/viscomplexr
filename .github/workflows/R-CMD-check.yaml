@@ -5,7 +5,6 @@ on:
     branches:
       - master
       - develop
-      - Issue_30
   pull_request:
     branches:
       - master
