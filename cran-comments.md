@@ -1,7 +1,45 @@
+## Resubmission
+Thanks to Gregor Seyer for his constructive review of the first submission. I fixed all isses pointed out. I copied G. Seyer's remarks below and answer point-by-point.
+
+**G.S.:** *\\dontrun{} should only be used if the example really cannot be executed (e.g. because of missing additional software, missing API keys, ...) by the user. That's why wrapping examples in \\dontrun{} adds the comment ("# Not run:") as a warning for the user.
+Does not seem necessary.
+Please unwrap the examples if they are executable in < 5 sec, or replace \\dontrun{} with \\donttest{}.*
+
+**Answer:** I unwrapped all examples. Most of them, however, take > 5 sec execution time. Therefore, I encapsulated these with \\donttest{}.
+
+**G.S.:** *You write information messages to the console that cannot be easily suppressed.
+It is more R like to generate objects that can be used to extract the information a user is interested in, and then print() that object.
+Instead of print()/cat() rather use message()/warning()  or if(verbose)cat(..) (or maybe stop()) if you really have to write text to the console. (except for print, summary, interactive functions)*
+
+**Answer:** The messages can now be easily suppressed by calling *phasePortrait* with *verbose = FALSE*. The default value of *verbose* is TRUE, because calculation may take up to several minutes (and more, in extreme cases), and the purpose of the messages is to inform the user in real time about the progress. After completion, the information is not really useful anymore, that's why it is not stored and returned in an object. Needless to say, the use of *verbose* is included in the documentation and also mentioned in the first example shown in the vignette.
+
+**G.S.:** *Please do not modify the global environment in your functions. This is not allowed by the CRAN policies.*
+
+**Answer:** Fixed. For being able to handle large arrays with pointers to them, I create environments which contain these arrays. In the previous version, the parent of these environments was the global environment. Now, the parent is the empty environment.
+
+**G.S.:** *Please ensure that you do not use more than 2 cores in your examples, vignettes, etc.*
+
+Done.
+
+### Test environments
+* local Ubuntu 20.04 install, R 4.0.3
+* local Windows 8.1 install, R 4.0.3
+* local Windows 10 install, R 4.0.2
+* windows-latest (Microsoft Windows Server 2019) on github, R 4.0.3
+* macOS-latest (Mac OS X) on github, R 4.0.3
+* ubuntu-20.04 (release) on github, R 4.0.3
+* ubuntu-20.04 (devel) on github, R-devel
+
+### R CMD check results
+0 errors | 0 warnings | 0 notes
+
+
+
+-------------
 ## First submission
 * This is the first submission of the package viscomplexr
 
-## Test environments
+### Test environments
 * local Ubuntu 20.04 install, R 4.0.2
 * local Windows 8.1 install, R 4.0.2
 * windows-latest (Microsoft Windows Server 2019) on github, R 4.0.2
@@ -9,7 +47,7 @@
 * ubuntu-20.04 (release) on github, R 4.0.2
 * ubuntu-20.04 (devel) on github, R-devel
 
-## R CMD check results
+### R CMD check results
 0 errors | 0 warnings | 0 notes
 
 

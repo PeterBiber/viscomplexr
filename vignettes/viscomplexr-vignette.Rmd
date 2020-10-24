@@ -49,6 +49,9 @@ phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
 # examples as CRAN checks do not allow more parallel processes. 
 # For normal work, we recommend not to define nCores at all which will make 
 # phasePortrait use all available cores on your machine.
+
+# The progress messages phasePortrait is writing to the console can be 
+# suppressed by including 'verbose = FALSE' in the call (see documentation).
 ```
 
 Such a phase portrait is based on the polar representation of complex numbers. Any complex number $z$ can be written as $z=r\cdot\mathrm{e}^{\mathrm{i}\varphi}$ or equivalently $z=r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)$, whereby $r$ is the *modulus* and the angle $\varphi$ is the *argument*. The argument, also called the *phase angle*, is the angle in the origin of the complex number plane between the real axis and the position vector of the number in counter-clockwise orientation. The main feature of a phase portrait is to translate the argument into a color. In addition, there are options for visualizing the modulus or, more precisely, its relative change.
