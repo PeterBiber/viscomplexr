@@ -42,7 +42,7 @@ The package does not contain many functions, but provides a very versatile workh
 ```{r, figure_1, fig.width = 5, fig.height = 5, results = 'hide', fig.align='center', cache = FALSE, fig.show = 'hold', fig.cap = 'Phase portrait of the function $f(z)=z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
 phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
               xlab = "real", ylab = "imaginary", main = "f(z) = z",
-              nCores = 2)
+              nCores = 2) # Probably not required on your machine (see below)
 
 # Note the argument 'nCores' which determines the number of parallel processes to
 # be used. Setting nCores = 2 has been done here and in all subsequent 
@@ -91,7 +91,7 @@ op <- par(mar = c(5.1, 4.1, 2.1, 2.1), cex = 0.8) # adjust plot margins
 phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", 
               xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
               xlab = "real", ylab = "imaginary", 
-              nCores = 2)
+              nCores = 2) # Increase or leave out for higher performance
 par(op) # reset the graphics parameters to their previous values
 ```
 
@@ -296,6 +296,7 @@ The following code plots an overview picture of the Mandelbrot set. Note that th
 x11(width = 8, height = 2/3 * 8)      # Open graphics window on screen
 op <- par(mar = c(0, 0, 0, 0))        # Do not leave plot margins
 phasePortrait(mandelbrot, moreArgs = list(itDepth = 30),
+              ncores = 1,             # Increase or leave out for higher performance
               xlim = c(-2, 1), ylim = c(-1, 1),
               hsvNaN = c(0, 0, 0),    # black color for points outside the set 
               axes = FALSE,           # No coordinate axes   
@@ -319,6 +320,7 @@ xlim <- c(-1.254, -1.248)        # horizontal (real) plot limits
 #   desired ratio (sqrt(2)) centered around the desired imaginary value
 ylim <- ylimFromXlim(xlim, centerY = 0.02, x_to_y = sqrt(2))
 phasePortrait(mandelbrot,
+              nCores = 1,             # Increase or leave out for higher performance
               xlim = xlim, ylim = ylim,
               hsvNaN = c(0, 0, 0),    # Black color for NaN results
               xaxs = "i", yaxs = "i", # suppress R's default axis margins
@@ -341,6 +343,7 @@ phasePortrait(juliaNormal,
               # see documentation of juliaNormal about the arguments
               #  c and R_esc
               moreArgs = list(c = -0.09 - 0.649i, R_esc = 2),
+              nCores = 1, # Increase or leave out for higher performance
               xlim = xlim, ylim = ylim,
               hsvNaN = c(0, 0, 0),
               xaxs = "i", yaxs = "i",
@@ -361,6 +364,7 @@ phasePortrait(juliaNormal,
               # see documentation of juliaNormal about the arguments
               #  c and R_esc
               moreArgs = list(c = -0.119 - 0.882i, R_esc = 2),
+              nCores = 1, # Increase or leave out for higher performance
               xlim = xlim, ylim = ylim,
               hsvNaN = c(0, 0, 0),
               tempDir = tempDir,
@@ -401,7 +405,8 @@ this can be easily achieved by providing the argument `axes = FALSE`:
 ```{r, eval = FALSE}
 phasePortrait("tan(z^3 + 1/2 - 2i)/(1 - 1i - z)", 
               xlim = c(-6, 6), ylim = c(-3, 3),
-              axes = FALSE)
+              axes = FALSE,
+              nCores = 2) # Increase or leave out for higher performance
 ```
 
 Note that this does not only suppress both axes, but also the box usually drawn around a plot. If such a box is desired, it can be simply added afterwards by calling `box()`:
@@ -409,7 +414,8 @@ Note that this does not only suppress both axes, but also the box usually drawn 
 ```{r, eval=FALSE}
 phasePortrait("tan(z^3 + 1/2 - 2i)/(1 - 1i - z)", 
               xlim = c(-6, 6), ylim = c(-3, 3),
-              axes = FALSE)
+              axes = FALSE,
+              nCores = 2) # Increase or leave out for higher performance
 box()
 ```
 
@@ -429,7 +435,8 @@ phasePortrait("tan(z^3 + 1/2 - 2i)/(2 - 1i - z)",
               xlab = "real", ylab = "imaginary",           col.lab  = par("fg"),
               main = "All annotation in foreground color", col.main = par("fg"),
               # Adjust text size
-              cex.axis = 0.9, cex.lab = 0.9) 
+              cex.axis = 0.9, cex.lab = 0.9,
+              nCores = 2) # Increase or leave out for higher performance
 par(op)
 ```
 
@@ -448,7 +455,8 @@ ylim <- ylimFromXlim(xlim, centerY = 0, x_to_y = 16/9)
 phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/5 + 1/5), pType = "p", 
               xlim = xlim, ylim = ylim,
               xaxs = "i", yaxs = "i",
-              axes = FALSE)
+              axes = FALSE,
+              nCores = 2) # Increase or leave out for higher performance
 par(op)
 ```
 
@@ -471,7 +479,8 @@ phasePortrait("sin(jacobiTheta(z, tau))/z", moreArgs = list(tau = 1i/5 + 1/5),
               pType = "p",
               xlim = xlim, ylim = ylim,
               xaxs = "i", yaxs = "i",
-              axes = FALSE)
+              axes = FALSE,
+              nCores = 1) # Increase or leave out for higher performance
 par(op)
 ```
 
@@ -487,17 +496,18 @@ Any function to be visualized with *phasePortrait* must be provided as the argum
 ```{r, eval = FALSE}
 # Note that 'FUN =' is not required if the argument to FUN is handed to 
 # phasePortrait in the first position
-phasePortrait(FUN = "1/(1 - z^2)", xlim = c(-5, 5), ylim = c(-5, 5))
-phasePortrait("sin((z - 2)/(z + 2))", xlim = c(-5, 5), ylim = c(-5, 5))
-phasePortrait("tan(z)", xlim = c(-5, 5), ylim = c(-5, 5))
+phasePortrait(FUN = "1/(1 - z^2)", xlim = c(-5, 5), ylim = c(-5, 5), nCores = 2)
+phasePortrait("sin((z - 2)/(z + 2))", xlim = c(-5, 5), ylim = c(-5, 5), nCores = 2)
+phasePortrait("tan(z)", xlim = c(-5, 5), ylim = c(-5, 5), nCores = 2)
 ```
 
 If your expression requires arguments besides $z$ you can provide them to *phasePortrait* by means of `moreArgs`, which expects a named list containing the additional arguments:
 
 ```{r, eval = FALSE}
 phasePortrait("-1 * sum(z^c(-k:k))", moreArgs = list(k = 11),
-               xlim = c(-2, 2), ylim = c(-1.5, 1.5),
-               pType = "p") 
+              xlim = c(-2, 2), ylim = c(-1.5, 1.5),
+              pType = "p",
+              nCores = 2) # Increase or leave out for higher performance 
 ```
 
 While we recommend other solutions (see below), it is also possible to hand over more extensive user-defined functions as character strings. To make this work, however, the function must be wrapped in a `vapply` construct which guarantees the output of the function being a complex number by setting vapply's argument `FUN.VALUE` as `complex(1)`. Moreover, the first argument to `vapply` must be $z$. In such cases, it is often convenient to define the character string outside the call to *phasePortrait* and hand it over after that, as we do in the following example:
@@ -510,7 +520,8 @@ funString <- "vapply(z, FUN = function(z) {
                   return(rslt)
                 },
                 FUN.VALUE = complex(1))"
-phasePortrait(funString, xlim = c(-2, 2), ylim = c(-2, 2))
+phasePortrait(funString, xlim = c(-2, 2), ylim = c(-2, 2), 
+              nCores = 2) # Increase or leave out for higher performance
 ```
 
 If such a function has arguments in addition to $z$, they can be included into the call to 'vapply' and thus included into the string (for supporting this, we provide the function `vector2string`, see the example in its documentation), but we do not recommend that. Anyway, if you must know, here it is:
@@ -524,7 +535,8 @@ funString <- "vapply(z, FUN = function(z, fct) {
                 },
                 fct = -1, 
                 FUN.VALUE = complex(1))"
-phasePortrait(funString, xlim = c(-2, 2), ylim = c(-2, 2))
+phasePortrait(funString, xlim = c(-2, 2), ylim = c(-2, 2),
+              nCores = 2) # Increase or leave out for higher performance
 ```
 
 Probably, the most useful application of this concept is when the `vapply` construct is pasted together at runtime with values for the additional arguments depending on what happened earlier. However, defining the function directly as a function first, and then simply passing its name to *phasePortrait* leads to a more readable code:
@@ -539,7 +551,8 @@ tryThisOne <- function(z, fct, n) {
 
 # Call function by its name only, provide additional arguments via "moreArgs"
 phasePortrait("tryThisOne", moreArgs = list(fct = 1, n = 5),
-  xlim = c(-2.5, 2.5), ylim = c(-2, 2))
+  xlim = c(-2.5, 2.5), ylim = c(-2, 2),
+  nCores = 2) # Increase or leave out for higher performance
 ```
 
 As the function in the example above requires two additional arguments beside $z$, we hand them over to *phasePortrait* via the argument `moreArgs`, which must be (even in case of only one additional argument) a named list (names must match the names of the required arguments), where the argument values are assigned.
@@ -555,7 +568,8 @@ phasePortrait(function(z) {
     }
     return(z)
   },
-  xlim = c(-3, 3), ylim = c(-2, 2)) 
+  xlim = c(-3, 3), ylim = c(-2, 2),
+  nCores = 2) # Increase or leave out for higher performance 
 ```
 
 Evidently, this can be used with `moreArgs` as well:
@@ -569,18 +583,21 @@ phasePortrait(function(z, n) {
     return(z)
   },
   moreArgs = list(n = 27),
-  xlim = c(-3, 3), ylim = c(-2, 2)) 
+  xlim = c(-3, 3), ylim = c(-2, 2),
+  nCores = 2) # Increase or leave out for higher performance 
 ```
 
 Any function object that is known by name to R, be it user-defined or contained in a package will work in the same way. Just hand over the function object itself:
 
 ```{r, eval = FALSE}
 # atan from package base
-phasePortrait(atan, xlim = c(-pi, pi), ylim = c(-pi, pi))
+phasePortrait(atan, xlim = c(-pi, pi), ylim = c(-pi, pi),
+              nCores = 2)
 
 # gammaz from package pracma (the package must be installed on your machine
 # if you want this example to be working)
-phasePortrait(pracma::gammaz, xlim = c(-9, 9), ylim = c(-5, 5))
+phasePortrait(pracma::gammaz, xlim = c(-9, 9), ylim = c(-5, 5),
+              nCores = 2)
 
 # blaschkeProd from this package (moreArgs example)
 #  make random vector of zeroes
@@ -588,7 +605,8 @@ n <- 12
 a <- complex(modulus = runif(n), argument = 2 * pi * runif(n))
 #  plot the actual phase portrait
 phasePortrait(blaschkeProd, moreArgs = list(a = a), 
-              xlim = c(-1.3, 1.3), ylim = c(-1.3, 1.3))
+              xlim = c(-1.3, 1.3), ylim = c(-1.3, 1.3),
+              nCores = 2)
 
 # User function example
 tryThisOneToo <- function(z, n, r) {
@@ -599,7 +617,8 @@ tryThisOneToo <- function(z, n, r) {
 } 
 # Use argument "hsvNaN = c(0, 0, 0)" if you want the gray areas black
 phasePortrait(tryThisOneToo, moreArgs = list(n = 50, r = 1/2 - 1/2i),
-              xlim = c(-3, 2), ylim = c(-2.5, 2.5))
+              xlim = c(-3, 2), ylim = c(-2.5, 2.5),
+              nCores = 2)
 
 ```
 
@@ -614,7 +633,8 @@ res <- 300 # Define desired resolution in dpi
 png("Logistic_Function.png", width = 40, height = 40 * 3/4, 
     units = "cm", res = res)
 phasePortrait("1/(1+exp(-z))", xlim = c(-25, 25), ylim = c(-15, 15), res = res,
-              xlab = "real", ylab = "imaginary")
+              xlab = "real", ylab = "imaginary",
+              nCores = 2) # Increase or leave out for higher performance
 dev.off()
 ```
 
