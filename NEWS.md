@@ -1,3 +1,8 @@
+# viscomplexr 1.0.1.9000
+
+Branched off new development version
+
+------
 # viscomplexr 1.0.1
 
 Published on CRAN 3. Nov 2020
