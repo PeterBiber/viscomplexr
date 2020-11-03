@@ -12,6 +12,7 @@ status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.sv
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
 [![Codecov test
 coverage](https://codecov.io/gh/PeterBiber/viscomplexr/branch/master/graph/badge.svg)](https://codecov.io/gh/PeterBiber/viscomplexr?branch=master)
+[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 <!-- badges: end -->
 
 <!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not exectued -->
