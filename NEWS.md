@@ -1,5 +1,7 @@
 # viscomplexr 1.0.1
 
+Published on CRAN 3. Nov 2020
+
 Fixed the issues pointed out by Gregor Seyer in his review of the CRAN submission:
 
 * Unwrapped all examples from \\dontrun{}. Most of them had to be wrapped in \\donttest{}, however, due to execution time > 5 sec
