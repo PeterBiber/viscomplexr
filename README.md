@@ -16,6 +16,7 @@ coverage](https://codecov.io/gh/PeterBiber/viscomplexr/branch/master/graph/badge
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 <!-- badges: end -->
 
 <!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not exectued -->
