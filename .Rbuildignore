@@ -9,3 +9,7 @@ README_cache/
 ^LICENSE\.md$
 ^\.github$
 ^cran-comments\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+src-i386/
