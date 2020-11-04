@@ -17,8 +17,9 @@ knitr::opts_chunk$set(
 )
 
 # This option anti-aliases the plots made below under Windows
-if(Sys.info()[["sysname"]] == "Windows")
-  knitr::opts_chunk$set(dev.args = list(type = "cairo"))
+if(Sys.info()[["sysname"]] == "Windows") {
+  knitr::opts_chunk$set(dev = "CairoPNG")
+}
 
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
