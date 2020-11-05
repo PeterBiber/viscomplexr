@@ -1,7 +1,7 @@
 Package: viscomplexr
 Type: Package
 Title: Phase Portraits of Functions in the Complex Number Plane
-Version: 1.0.1.9000
+Version: 1.0.1.9001
 Date: 2020-11-03
 Authors@R: person("Peter", "Biber", email = "castor.fiber@gmx.de", 
                   role = c("aut", "cre"),
@@ -32,7 +32,8 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 2.1.0),
-    pracma
+    pracma,
+    covr
 VignetteBuilder: knitr
 LinkingTo: 
     Rcpp
