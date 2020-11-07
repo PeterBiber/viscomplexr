@@ -2,7 +2,7 @@ title: viscomplexr
 url: https://peterbiber.github.io/viscomplexr/
 template:
   params:
-    bootswatch: flatly
+    bootswatch: cosmo
 reference:
   - title: Main function
     contents:
@@ -18,3 +18,11 @@ reference:
       - '`jacobiTheta`'
       - '`juliaNormal`'
       - '`mandelbrot`'
+navbar:
+  components:
+    articles:
+      text: Articles
+      menu:
+      - text: Phase Portraits with viscomplexr
+        href: articles/viscomplexr-vignette_for_website.html
+

@@ -2,6 +2,8 @@
 ^\.Rproj\.user$
 ^CreateTestCases$
 ^vignettes/viscomplexr-vignette_cache$
+^vignettes/viscomplexr-vignette_for_website_cache$
+^vignettes/viscomplexr-vignette_for_website.Rmd$
 ^doc$
 ^Meta$
 ^README\.Rmd$
