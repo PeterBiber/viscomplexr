@@ -371,7 +371,6 @@ phasePortrait(juliaNormal,
               nCores = 1, # Increase or leave out for higher performance
               xlim = xlim, ylim = ylim,
               hsvNaN = c(0, 0, 0),
-              tempDir = tempDir,
               xaxs = "i", yaxs = "i",
               axes = FALSE,
               res = res)
