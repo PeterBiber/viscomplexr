@@ -4,9 +4,10 @@ template:
   params:
     bootswatch: cosmo
 reference:
-  - title: Main function
+  - title: Main functions
     contents:
       - '`phasePortrait`'
+      - '`riemannMask`'
   - title: Helpers
     contents:
       - '`vector2String`'

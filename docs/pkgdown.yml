@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   viscomplexr-vignette: viscomplexr-vignette.html
   viscomplexr-vignette_for_website: viscomplexr-vignette_for_website.html
-last_built: 2020-11-08T17:35Z
+last_built: 2020-11-08T18:00Z
 urls:
   reference: https://peterbiber.github.io/viscomplexr//reference
   article: https://peterbiber.github.io/viscomplexr//articles
