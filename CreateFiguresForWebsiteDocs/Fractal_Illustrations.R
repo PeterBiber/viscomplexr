@@ -7,7 +7,7 @@
 figPath <- "CreateFiguresForWebsiteDocs/"
 
 # ------------------------------------------------------------------------------
-res  <- 150 # set resolution
+res  <- 300 # set resolution
 # open png graphics device with in DIN A4 format
 # DIN A format has an edge length ratio of sqrt(2)
 png(paste0(figPath, "figure_Mandelbrot_Example.png"),
@@ -30,7 +30,7 @@ par(op)   # reset graphics parameters
 dev.off() # close graphics device and complete the png file
 # ------------------------------------------------------------------------------
 
-res <- 150
+res <- 300
 png(paste0(figPath, "figure_Julia_Example_1.png"), width = 14, height = 14/sqrt(2),
     units = "in", res = res)
 op <- par(mar = c(0, 0, 0, 0))
@@ -50,7 +50,7 @@ par(op)
 dev.off()
 # ------------------------------------------------------------------------------
 
-res <- 150
+res <- 300
 png(paste0(figPath, "figure_Julia_Example_2.png"), width = 7, height = 7/sqrt(2),
     units = "in", res = res)
 op <- par(mar = c(0, 0, 0, 0))
