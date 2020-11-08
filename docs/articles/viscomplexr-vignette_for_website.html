@@ -486,6 +486,7 @@ Riemann sphere plot of the function <span class="math inline">\(f(z)=\frac{(z^{2
 <code class="sourceCode R"><span class="fu"><a href="../reference/phasePortrait.html">phasePortrait</a></span><span class="op">(</span><span class="st">"tan(z^3 + 1/2 - 2i)/(1 - 1i - z)"</span>, 
               xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">6</span>, <span class="fl">6</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>,
               axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<p>Note the unequal figure margins. These are <strong>R</strong>-default in order to reserve space for the usual annotations. Adjusting them is possible by means of the graphics parameters <code>mar</code> or <code>mai</code> as explained above.</p>
 <!-- Load the plot as an image, 150 dpi -->
 <p><img src="figure_axes_left_away.png" width="100%"></p>
 <p>Note that this does not only suppress both axes, but also the box usually drawn around a plot. If such a box is desired, it can be simply added afterwards by calling <code><a href="https://rdrr.io/r/graphics/box.html">box()</a></code>:</p>
