@@ -485,15 +485,17 @@ Riemann sphere plot of the function <span class="math inline">\(f(z)=\frac{(z^{2
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/phasePortrait.html">phasePortrait</a></span><span class="op">(</span><span class="st">"tan(z^3 + 1/2 - 2i)/(1 - 1i - z)"</span>, 
               xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">6</span>, <span class="fl">6</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>,
-              axes <span class="op">=</span> <span class="cn">FALSE</span>,
-              nCores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="co"># Increase or leave out for higher performance</span></code></pre></div>
+              axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<!-- Load the plot as an image, 150 dpi -->
+<p><img src="figure_axes_left_away.png" width="100%"></p>
 <p>Note that this does not only suppress both axes, but also the box usually drawn around a plot. If such a box is desired, it can be simply added afterwards by calling <code><a href="https://rdrr.io/r/graphics/box.html">box()</a></code>:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/phasePortrait.html">phasePortrait</a></span><span class="op">(</span><span class="st">"tan(z^3 + 1/2 - 2i)/(1 - 1i - z)"</span>, 
               xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">6</span>, <span class="fl">6</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>,
-              axes <span class="op">=</span> <span class="cn">FALSE</span>,
-              nCores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="co"># Increase or leave out for higher performance</span>
+              axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/box.html">box</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<!-- Load the plot as an image, 150 dpi -->
+<p><img src="figure_with_box.png" width="100%"></p>
 <p>If axes are desired together with a special aesthetic appeal (e.g. for presentations), it is worth trying out a black background and white axes. However, there are unexpected hurdles to take, before the result looks as it should:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># set background and foreground colors</span>
@@ -509,9 +511,10 @@ Riemann sphere plot of the function <span class="math inline">\(f(z)=\frac{(z^{2
               xlab <span class="op">=</span> <span class="st">"real"</span>, ylab <span class="op">=</span> <span class="st">"imaginary"</span>,           col.lab  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="st">"fg"</span><span class="op">)</span>,
               main <span class="op">=</span> <span class="st">"All annotation in foreground color"</span>, col.main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="st">"fg"</span><span class="op">)</span>,
               <span class="co"># Adjust text size</span>
-              cex.axis <span class="op">=</span> <span class="fl">0.9</span>, cex.lab <span class="op">=</span> <span class="fl">0.9</span>,
-              nCores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="co"># Increase or leave out for higher performance</span>
+              cex.axis <span class="op">=</span> <span class="fl">0.9</span>, cex.lab <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></code></pre></div>
+<!-- Load the plot as an image, 150 dpi -->
+<p><img src="figure_black_bg_white_text.png" width="100%"></p>
 <p>Note that by default the axes are constructed with an overhang of 4% beyond the ranges given with <code>xlim</code> and <code>ylim</code> at each end. More often than not this looks nice, but sometimes it is undesired, e.g. when a phase portrait is intended to cover the full display without any frame and margin. This behavior is due to the graphical parameters <code>xaxs</code> and <code>yaxs</code> (axis style) being set to ‘r’ (‘regular’) by default. Setting these parameters as <code>xaxs = "i"</code> and <code>yaxs = "i"</code> (‘internal’), no overhang is added. Both, <code>xaxs</code> and <code>yaxs</code>, can be either set in a call to <code><a href="https://rdrr.io/r/graphics/par.html">par()</a></code> or handed as arguments to <em>phasePortrait</em>. We will come back to these parameters in the following section.</p>
 </div>
 <div id="device-ratio-and-margins" class="section level3">
@@ -528,9 +531,10 @@ Riemann sphere plot of the function <span class="math inline">\(f(z)=\frac{(z^{2
 <span class="fu"><a href="../reference/phasePortrait.html">phasePortrait</a></span><span class="op">(</span><span class="va">jacobiTheta</span>, moreArgs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>tau <span class="op">=</span> <span class="fl">1i</span><span class="op">/</span><span class="fl">5</span> <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="fl">5</span><span class="op">)</span>, pType <span class="op">=</span> <span class="st">"p"</span>, 
               xlim <span class="op">=</span> <span class="va">xlim</span>, ylim <span class="op">=</span> <span class="va">ylim</span>,
               xaxs <span class="op">=</span> <span class="st">"i"</span>, yaxs <span class="op">=</span> <span class="st">"i"</span>,
-              axes <span class="op">=</span> <span class="cn">FALSE</span>,
-              nCores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="co"># Increase or leave out for higher performance</span>
+              axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></code></pre></div>
+<!-- Load the plot as an image, 150 dpi -->
+<p><img src="figure_full_cover_device.png" width="100%"></p>
 <p>Not many changes are necessary for obtaining a phase portrait like above but with a frame. A convenient way to do this is to set the outer margins of the graphics device in inches with the graphical parameter <code>omi</code> and the background to the desired color. Adding this to the code above, however, leads to differing horizontal and vertical frame widths. This occurs because, due to the margin setting, the required ratio of the <code>xlim</code> and <code>ylim</code> ranges is no longer exactly 16/9. The precise ratio has to be calculated and provided to <code>ylimFromXlim</code> as shown in the code example below.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Open graphics device with 16/9 aspect ratio and a width of 7 inches </span>
@@ -549,9 +553,10 @@ Riemann sphere plot of the function <span class="math inline">\(f(z)=\frac{(z^{2
               pType <span class="op">=</span> <span class="st">"p"</span>,
               xlim <span class="op">=</span> <span class="va">xlim</span>, ylim <span class="op">=</span> <span class="va">ylim</span>,
               xaxs <span class="op">=</span> <span class="st">"i"</span>, yaxs <span class="op">=</span> <span class="st">"i"</span>,
-              axes <span class="op">=</span> <span class="cn">FALSE</span>,
-              nCores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># Increase or leave out for higher performance</span>
+              axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></code></pre></div>
+<!-- Load the plot as an image, 150 dpi -->
+<p><img src="figure_equal_margins.png" width="100%"></p>
 </div>
 </div>
 <div id="tech_moreabouts" class="section level2">

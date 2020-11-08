@@ -409,8 +409,12 @@ this can be easily achieved by providing the argument `axes = FALSE`:
 ```{r, eval=FALSE, fig.width=7, fig.height=2/3*7, fig.align='center', results='hide', fig.show='hold', cache=TRUE}
 phasePortrait("tan(z^3 + 1/2 - 2i)/(1 - 1i - z)", 
               xlim = c(-6, 6), ylim = c(-3, 3),
-              axes = FALSE,
-              nCores = 2) # Increase or leave out for higher performance
+              axes = FALSE)
+```
+
+<!-- Load the plot as an image, 150 dpi -->
+```{r, echo=FALSE, out.width='100%'}
+knitr::include_graphics("figure_axes_left_away.png")
 ```
 
 Note that this does not only suppress both axes, but also the box usually drawn around a plot. If such a box is desired, it can be simply added afterwards by calling `box()`:
@@ -418,9 +422,13 @@ Note that this does not only suppress both axes, but also the box usually drawn 
 ```{r, eval=FALSE, fig.width=7, fig.height=2/3*7, fig.align='center', results='hide', fig.show='hold', cache=TRUE}
 phasePortrait("tan(z^3 + 1/2 - 2i)/(1 - 1i - z)", 
               xlim = c(-6, 6), ylim = c(-3, 3),
-              axes = FALSE,
-              nCores = 2) # Increase or leave out for higher performance
+              axes = FALSE)
 box()
+```
+
+<!-- Load the plot as an image, 150 dpi -->
+```{r, echo=FALSE, out.width='100%'}
+knitr::include_graphics("figure_with_box.png")
 ```
 
 If axes are desired together with a special aesthetic appeal (e.g. for presentations), it is worth trying out a black background and white axes. However, there are unexpected hurdles to take, before the result looks as it should:
@@ -439,9 +447,13 @@ phasePortrait("tan(z^3 + 1/2 - 2i)/(2 - 1i - z)",
               xlab = "real", ylab = "imaginary",           col.lab  = par("fg"),
               main = "All annotation in foreground color", col.main = par("fg"),
               # Adjust text size
-              cex.axis = 0.9, cex.lab = 0.9,
-              nCores = 2) # Increase or leave out for higher performance
+              cex.axis = 0.9, cex.lab = 0.9)
 par(op)
+```
+
+<!-- Load the plot as an image, 150 dpi -->
+```{r, echo=FALSE, out.width='100%'}
+knitr::include_graphics("figure_black_bg_white_text.png")
 ```
 
 Note that by default the axes are constructed with an overhang of 4% beyond the ranges given with `xlim` and `ylim` at each end. More often than not this looks nice, but sometimes it is undesired, e.g. when a phase portrait is intended to cover the full display without any frame and margin. This behavior is due to the graphical parameters `xaxs` and `yaxs` (axis style) being set to 'r' ('regular') by default. Setting these parameters as `xaxs = "i"` and `yaxs = "i"` ('internal'), no overhang is added. Both, `xaxs` and `yaxs`, can be either set in a call to `par()` or handed as arguments to *phasePortrait*. We will come back to these parameters in the following section.
@@ -459,9 +471,13 @@ ylim <- ylimFromXlim(xlim, centerY = 0, x_to_y = 16/9)
 phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/5 + 1/5), pType = "p", 
               xlim = xlim, ylim = ylim,
               xaxs = "i", yaxs = "i",
-              axes = FALSE,
-              nCores = 2) # Increase or leave out for higher performance
+              axes = FALSE)
 par(op)
+```
+
+<!-- Load the plot as an image, 150 dpi -->
+```{r, echo=FALSE, out.width='100%'}
+knitr::include_graphics("figure_full_cover_device.png")
 ```
 
 Not many changes are necessary for obtaining a phase portrait like above but with a frame. A convenient way to do this is to set the outer margins of the graphics device in inches with the graphical parameter `omi` and the background to the desired color. Adding this to the code above, however, leads to differing horizontal and vertical frame widths. This occurs because, due to the margin setting, the required ratio of the `xlim` and `ylim` ranges is no longer exactly 16/9. The precise ratio has to be calculated and provided to `ylimFromXlim` as shown in the code example below.
@@ -483,9 +499,13 @@ phasePortrait("sin(jacobiTheta(z, tau))/z", moreArgs = list(tau = 1i/5 + 1/5),
               pType = "p",
               xlim = xlim, ylim = ylim,
               xaxs = "i", yaxs = "i",
-              axes = FALSE,
-              nCores = 1) # Increase or leave out for higher performance
+              axes = FALSE)
 par(op)
+```
+
+<!-- Load the plot as an image, 150 dpi -->
+```{r, echo=FALSE, out.width='100%'}
+knitr::include_graphics("figure_equal_margins.png")
 ```
 
 
