@@ -169,7 +169,7 @@ v = s + (1-s)\cdot x^{1/\lambda}
 $$
 For modulus zone shading at a point $z$ in the complex plane when portraying a function $f(z)$, $x$ is the fractional part of $\log_b{f(z)}$, with the base $b$ being the parameter `logBase` that defines the modulus reference zoning (see above). For shading argument reference zones, $x$ is simply the difference between the upper and the lower angle of an argument reference zone, linearly mapped to the range $[0, 1[$. The following code generates a $3\times3$ matrix of phase portraits of $f(z)=\tan{z^2}$ with $\lambda$ and $s$ changing along the rows and columns, respectively. Run the code for visualizing these concepts (active 7" x 7" screen graphics device suggested, e.g. `x11()`).
 
-```{r figure_9, fig.width=7, fig.height=7, fig.show='hold', results='hide', cache=TRUE, fig.cap='Tuning reference zone contrast with the parameters `darkestShade` (column-wise, 0, 0.2, 0.4), and `lambda` (row-wise, 0.1, 1, 10).'}
+```{r figure_9, fig.width=7, fig.height=7, fig.show='hold', results='hide', fig.align='center', cache=TRUE, fig.cap='Tuning reference zone contrast with the parameters `darkestShade` (column-wise, 0, 0.2, 0.4), and `lambda` (row-wise, 0.1, 1, 10).'}
 op <- par(mfrow = c(3, 3), mar = c(0.2, 0.2, 0.2, 0.2))
 for(lb in c(0.1, 1, 10)) {
   for(dS in c(0, 0.2, 0.4)) {
@@ -312,7 +312,6 @@ xlim <- c(-1.254, -1.248)        # horizontal (real) plot limits
 #   desired ratio (sqrt(2)) centered around the desired imaginary value
 ylim <- ylimFromXlim(xlim, centerY = 0.02, x_to_y = sqrt(2))
 phasePortrait(mandelbrot,
-              nCores = 1,             # Increase or leave out for higher performance
               xlim = xlim, ylim = ylim,
               hsvNaN = c(0, 0, 0),    # Black color for NaN results
               xaxs = "i", yaxs = "i", # suppress R's default axis margins
@@ -320,6 +319,11 @@ phasePortrait(mandelbrot,
               res = res)              # resolution is required
 par(op)   # reset graphics parameters
 dev.off() # close graphics device and complete the png file
+```
+
+<!-- Load the plot as an image, 150 dpi only -->
+```{r, echo=FALSE, out.width='100%'}
+knitr::include_graphics("figure_Mandelbrot_Example.png")
 ```
 
 Inside the same technical setting, the following two examples plot Julia sets into a png file.
@@ -335,7 +339,6 @@ phasePortrait(juliaNormal,
               # see documentation of juliaNormal about the arguments
               #  c and R_esc
               moreArgs = list(c = -0.09 - 0.649i, R_esc = 2),
-              nCores = 1, # Increase or leave out for higher performance
               xlim = xlim, ylim = ylim,
               hsvNaN = c(0, 0, 0),
               xaxs = "i", yaxs = "i",
@@ -344,6 +347,12 @@ phasePortrait(juliaNormal,
 par(op)
 dev.off()
 ```
+
+<!-- Load the plot as an image, 150 dpi only -->
+```{r, echo=FALSE, out.width='100%'}
+knitr::include_graphics("figure_Julia_Example_1.png")
+```
+
 
 ```{r, eval=FALSE}
 res <- 600
@@ -356,15 +365,18 @@ phasePortrait(juliaNormal,
               # see documentation of juliaNormal about the arguments
               #  c and R_esc
               moreArgs = list(c = -0.119 - 0.882i, R_esc = 2),
-              nCores = 1, # Increase or leave out for higher performance
               xlim = xlim, ylim = ylim,
               hsvNaN = c(0, 0, 0),
-              tempDir = tempDir,
               xaxs = "i", yaxs = "i",
               axes = FALSE,
               res = res)
 par(op)
 dev.off()
+```
+
+<!-- Load the plot as an image, 150 dpi only -->
+```{r, echo=FALSE, out.width='100%'}
+knitr::include_graphics("figure_Julia_Example_2.png")
 ```
 
 

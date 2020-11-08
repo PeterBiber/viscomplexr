@@ -62,7 +62,14 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/PeterBiber/viscomplexr/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -80,7 +87,7 @@
                         <h4 class="author">Peter Biber</h4>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/PeterBiber/viscomplexr/blob/master/vignettes/viscomplexr-vignette_for_website.Rmd"><code>vignettes/viscomplexr-vignette_for_website.Rmd</code></a></small>
       <div class="hidden name"><code>viscomplexr-vignette_for_website.Rmd</code></div>
 
     </div>
@@ -100,7 +107,7 @@
 <div id="visualizing-the-complex-plane" class="section level3">
 <h3 class="hasAnchor">
 <a href="#visualizing-the-complex-plane" class="anchor"></a>Visualizing the complex plane</h3>
-<p>The package does not contain many functions, but provides a very versatile workhorse called <em>phasePortrait</em>. We will explore some of its key features now. Let us first consider a function that maps a complex number <span class="math inline">\(z \in \mathbb{C}\)</span> on itself, i.e. <span class="math inline">\(f(z)=z\)</span>. After attaching the package with <code><a href="https://rdrr.io/r/base/library.html">library(viscomplexr)</a></code>, a phase portrait of this function is obtained very easily with:</p>
+<p>The package does not contain many functions, but provides a very versatile workhorse called <em>phasePortrait</em>. We will explore some of its key features now. Let us first consider a function that maps a complex number <span class="math inline">\(z \in \mathbb{C}\)</span> on itself, i.e. <span class="math inline">\(f(z)=z\)</span>. After attaching the package with <code><a href="https://peterbiber.github.io/viscomplexr">library(viscomplexr)</a></code>, a phase portrait of this function is obtained very easily with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/phasePortrait.html">phasePortrait</a></span><span class="op">(</span><span class="st">"z"</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8.5</span>, <span class="fl">8.5</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">8.5</span>, <span class="fl">8.5</span><span class="op">)</span>,
               xlab <span class="op">=</span> <span class="st">"real"</span>, ylab <span class="op">=</span> <span class="st">"imaginary"</span>, main <span class="op">=</span> <span class="st">"f(z) = z"</span><span class="op">)</span></code></pre></div>
@@ -255,7 +262,7 @@ v = s + (1-s)\cdot x^{1/\lambda}
   <span class="op">}</span>
 <span class="op">}</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span></code></pre></div>
-<div class="figure">
+<div class="figure" style="text-align: center">
 <img src="viscomplexr-vignette_for_website_files/figure-html/figure_9-1.png" alt="Tuning reference zone contrast with the parameters `darkestShade` (column-wise, 0, 0.2, 0.4), and `lambda` (row-wise, 0.1, 1, 10)." width="672"><p class="caption">
 Tuning reference zone contrast with the parameters <code>darkestShade</code> (column-wise, 0, 0.2, 0.4), and <code>lambda</code> (row-wise, 0.1, 1, 10).
 </p>
@@ -396,7 +403,6 @@ Riemann sphere plot of the function <span class="math inline">\(f(z)=\frac{(z^{2
 <span class="co">#   desired ratio (sqrt(2)) centered around the desired imaginary value</span>
 <span class="va">ylim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ylimFromXlim.html">ylimFromXlim</a></span><span class="op">(</span><span class="va">xlim</span>, centerY <span class="op">=</span> <span class="fl">0.02</span>, x_to_y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/phasePortrait.html">phasePortrait</a></span><span class="op">(</span><span class="va">mandelbrot</span>,
-              nCores <span class="op">=</span> <span class="fl">1</span>,             <span class="co"># Increase or leave out for higher performance</span>
               xlim <span class="op">=</span> <span class="va">xlim</span>, ylim <span class="op">=</span> <span class="va">ylim</span>,
               hsvNaN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,    <span class="co"># Black color for NaN results</span>
               xaxs <span class="op">=</span> <span class="st">"i"</span>, yaxs <span class="op">=</span> <span class="st">"i"</span>, <span class="co"># suppress R's default axis margins</span>
@@ -404,6 +410,8 @@ Riemann sphere plot of the function <span class="math inline">\(f(z)=\frac{(z^{2
               res <span class="op">=</span> <span class="va">res</span><span class="op">)</span>              <span class="co"># resolution is required</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span>   <span class="co"># reset graphics parameters</span>
 <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># close graphics device and complete the png file</span></code></pre></div>
+<!-- Load the plot as an image, 150 dpi only -->
+<p><img src="figure_Mandelbrot_Example.png" width="100%"></p>
 <p>Inside the same technical setting, the following two examples plot Julia sets into a png file.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fl">600</span>
@@ -416,7 +424,6 @@ Riemann sphere plot of the function <span class="math inline">\(f(z)=\frac{(z^{2
               <span class="co"># see documentation of juliaNormal about the arguments</span>
               <span class="co">#  c and R_esc</span>
               moreArgs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>c <span class="op">=</span> <span class="op">-</span><span class="fl">0.09</span> <span class="op">-</span> <span class="fl">0.649i</span>, R_esc <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,
-              nCores <span class="op">=</span> <span class="fl">1</span>, <span class="co"># Increase or leave out for higher performance</span>
               xlim <span class="op">=</span> <span class="va">xlim</span>, ylim <span class="op">=</span> <span class="va">ylim</span>,
               hsvNaN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,
               xaxs <span class="op">=</span> <span class="st">"i"</span>, yaxs <span class="op">=</span> <span class="st">"i"</span>,
@@ -424,6 +431,8 @@ Riemann sphere plot of the function <span class="math inline">\(f(z)=\frac{(z^{2
               res <span class="op">=</span> <span class="va">res</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<!-- Load the plot as an image, 150 dpi only -->
+<p><img src="figure_Julia_Example_1.png" width="100%"></p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fl">600</span>
 <span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span><span class="op">(</span><span class="st">"Julia Example 2.png"</span>, width <span class="op">=</span> <span class="fl">29.7</span>, height <span class="op">=</span> <span class="fl">29.7</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>,
@@ -435,15 +444,15 @@ Riemann sphere plot of the function <span class="math inline">\(f(z)=\frac{(z^{2
               <span class="co"># see documentation of juliaNormal about the arguments</span>
               <span class="co">#  c and R_esc</span>
               moreArgs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>c <span class="op">=</span> <span class="op">-</span><span class="fl">0.119</span> <span class="op">-</span> <span class="fl">0.882i</span>, R_esc <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,
-              nCores <span class="op">=</span> <span class="fl">1</span>, <span class="co"># Increase or leave out for higher performance</span>
               xlim <span class="op">=</span> <span class="va">xlim</span>, ylim <span class="op">=</span> <span class="va">ylim</span>,
               hsvNaN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,
-              tempDir <span class="op">=</span> <span class="va">tempDir</span>,
               xaxs <span class="op">=</span> <span class="st">"i"</span>, yaxs <span class="op">=</span> <span class="st">"i"</span>,
               axes <span class="op">=</span> <span class="cn">FALSE</span>,
               res <span class="op">=</span> <span class="va">res</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="va">op</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<!-- Load the plot as an image, 150 dpi only -->
+<p><img src="figure_Julia_Example_2.png" width="100%"></p>
 </div>
 </div>
 <div id="hints_artistic" class="section level2">

@@ -1,9 +1,11 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^CreateTestCases$
+^CreateFiguresForWebsiteDocs$
 ^vignettes/viscomplexr-vignette_cache$
 ^vignettes/viscomplexr-vignette_for_website_cache$
 ^vignettes/viscomplexr-vignette_for_website.Rmd$
+^vignettes/*.png
 ^doc$
 ^Meta$
 ^README\.Rmd$
