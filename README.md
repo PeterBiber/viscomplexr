@@ -10,10 +10,13 @@ status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.sv
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
 <!-- badges: end -->
 
-<!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not exectued -->
+<!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not executed -->
 
-<img src="man/figures/README-banner-1.png" width="100%" style="display: block; margin: auto;" />
-<br>
+<!-- Currently deactivated. Loading the banner as a pre-built file seems better -->
+
+<!-- Load banner from file -->
+
+<img src="man/figures/README-banner-1.png" width="100%" /> <br>
 
 With *viscomplexr* you can create phase portraits of functions on the
 complex number plane. While the main purpose of this package are

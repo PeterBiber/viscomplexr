@@ -28,9 +28,10 @@ if(Sys.info()[["sysname"]] == "Windows")
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
 <!-- badges: end -->
 
-<!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not exectued -->
+<!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not executed -->
+<!-- Currently deactivated. Loading the banner as a pre-built file seems better -->
 
-```{r banner, echo=FALSE, fig.width=9, fig.height=3.6, results='hide', fig.align='center', fig.show='hold', cache=TRUE}
+```{r banner, eval=FALSE, echo=FALSE, fig.width=9, fig.height=3.6, results='hide', fig.align='center', fig.show='hold', cache=TRUE}
 # Make a phase portrait of the function 
 # f(z) = sin(z^3/(z - 1i + 2))
 # in the domain [-6, 6] (real), and [-2.4, 2.4] (imaginary)
@@ -46,6 +47,12 @@ phasePortrait("sin(z^3/(z - 1i + 2))",                # define the function
               xaxs = "i", yaxs = "i")           # no empty zone around plot
 # set graphics parameters to previous values
 par(op)
+```
+
+<!-- Load banner from file -->
+```{r, echo=FALSE}
+banner_path <- "man/figures/README-banner-1.png"
+knitr::include_graphics(banner_path)
 ```
 <br>    
     
