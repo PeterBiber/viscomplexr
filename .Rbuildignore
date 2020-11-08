@@ -16,4 +16,5 @@ README_cache/
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^_pkgdown/
 src-i386/
