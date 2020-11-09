@@ -96,7 +96,7 @@ sets of large temporary files (see Details and Examples)." />
         <li>
   <a href="../index.html">
     <span class="fas fa fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li>
@@ -105,7 +105,7 @@ sets of large temporary files (see Details and Examples)." />
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -122,16 +122,16 @@ sets of large temporary files (see Details and Examples)." />
         <li>
   <a href="https://github.com/PeterBiber/viscomplexr/">
     <span class="fab fa fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header>
 
@@ -230,7 +230,7 @@ sets of large temporary files (see Details and Examples).</p>
   <code>FUN</code>. In general, providing a function as an object, and using
   <code>moreArgs</code> in case additional arguments are required, is what we
   recommend for user-defined functions.</p></dd>
-  
+
 </dl>
 
 <p>When executing <code>phasePortrait</code>, <code>FUN</code> is first evaluated with
@@ -577,11 +577,6 @@ ISBN 978-3-0348-0179-9.</p>
               verbose <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='co'># Suppress progress messages</span>
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>      <span class='co'># Max. two cores allowed on CRAN</span>
                                <span class='co'># not a limit for your own use</span>
-<span class='co'># \dontshow{</span>
-<span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-<span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='co'># }</span>
 
 
 <span class='co'># A rational function</span>
@@ -594,11 +589,6 @@ ISBN 978-3-0348-0179-9.</p>
               xlab <span class='op'>=</span> <span class='st'>"real"</span>, ylab <span class='op'>=</span> <span class='st'>"imaginary"</span>,
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>     <span class='co'># Max. two cores allowed on CRAN</span>
                               <span class='co'># not a limit for your own use</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='co'># }</span>
 
 
@@ -613,36 +603,17 @@ ISBN 978-3-0348-0179-9.</p>
 <span class='fu'>phasePortrait</span><span class='op'>(</span><span class='st'>"sin(z)"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>pi</span>, <span class='va'>pi</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>pi</span>, <span class='va'>pi</span><span class='op'>)</span>,
               pType <span class='op'>=</span> <span class='st'>"p"</span>,   main <span class='op'>=</span> <span class='st'>"pType = 'p'"</span>,   axes <span class='op'>=</span> <span class='cn'>FALSE</span>,
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Max. two cores on CRAN, not a limit for your use</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='fu'>phasePortrait</span><span class='op'>(</span><span class='st'>"sin(z)"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>pi</span>, <span class='va'>pi</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>pi</span>, <span class='va'>pi</span><span class='op'>)</span>,
               pType <span class='op'>=</span> <span class='st'>"pm"</span>,  main <span class='op'>=</span> <span class='st'>"pType = 'pm'"</span>,  axes <span class='op'>=</span> <span class='cn'>FALSE</span>,
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='fu'>phasePortrait</span><span class='op'>(</span><span class='st'>"sin"</span>,    xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>pi</span>, <span class='va'>pi</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>pi</span>, <span class='va'>pi</span><span class='op'>)</span>,
               pType <span class='op'>=</span> <span class='st'>"pa"</span>,  main <span class='op'>=</span> <span class='st'>"pType = 'pa'"</span>,  axes <span class='op'>=</span> <span class='cn'>FALSE</span>,
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='fu'>phasePortrait</span><span class='op'>(</span><span class='va'>sin</span>,      xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>pi</span>, <span class='va'>pi</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>pi</span>, <span class='va'>pi</span><span class='op'>)</span>,
               pType <span class='op'>=</span> <span class='st'>"pma"</span>, main <span class='op'>=</span> <span class='st'>"pType = 'pma'"</span>, axes <span class='op'>=</span> <span class='cn'>FALSE</span>,
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>op</span><span class='op'>)</span><span class='co'># }</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>op</span><span class='op'>)</span>
+<span class='co'># }</span>
 
 
 <span class='co'># I called this one 'nuclear fusion'</span>
@@ -657,12 +628,8 @@ ISBN 978-3-0348-0179-9.</p>
               axes <span class='op'>=</span> <span class='cn'>FALSE</span>, xaxs <span class='op'>=</span> <span class='st'>"i"</span>, yaxs <span class='op'>=</span> <span class='st'>"i"</span>,
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Max. two cores allowed on CRAN</span>
                           <span class='co'># not a limit for your own use</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>op</span><span class='op'>)</span><span class='co'># }</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>op</span><span class='op'>)</span>
+<span class='co'># }</span>
 
 
 <span class='co'># Passing function objects to phasePortrait:</span>
@@ -680,21 +647,11 @@ ISBN 978-3-0348-0179-9.</p>
               xlab <span class='op'>=</span> <span class='st'>"real"</span>, ylab <span class='op'>=</span> <span class='st'>"imaginary"</span>,
               main <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='fu'>zeta</span><span class='op'>(</span><span class='va'>z</span><span class='op'>)</span><span class='op'>)</span>, cex.main <span class='op'>=</span> <span class='fl'>2</span>,
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Max. two cores on CRAN, not a limit for your use</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='fu'>phasePortrait</span><span class='op'>(</span><span class='fu'>pracma</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/pracma/man/gammaz.html'>gammaz</a></span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>10</span>, <span class='fl'>10</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>10</span>, <span class='fl'>10</span><span class='op'>)</span>,
               xlab <span class='op'>=</span> <span class='st'>"real"</span>, ylab <span class='op'>=</span> <span class='st'>"imaginary"</span>,
               main <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/family.html'>Gamma</a></span><span class='op'>(</span><span class='va'>z</span><span class='op'>)</span><span class='op'>)</span>, cex.main <span class='op'>=</span> <span class='fl'>2</span>,
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Max. two cores allowed on CRAN</span>
                           <span class='co'># not a limit for your own use</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='op'>}</span>
 <span class='co'># }</span>
 
@@ -730,11 +687,6 @@ ISBN 978-3-0348-0179-9.</p>
               xlab <span class='op'>=</span> <span class='st'>"real"</span>, ylab <span class='op'>=</span> <span class='st'>"imaginary"</span>,
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Max. two cores allowed on CRAN</span>
                           <span class='co'># not a limit for your own use</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='co'># }</span>
 
 
@@ -760,11 +712,6 @@ ISBN 978-3-0348-0179-9.</p>
   xlab <span class='op'>=</span> <span class='st'>"real"</span>, ylab <span class='op'>=</span> <span class='st'>"imaginary"</span>,
   nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Max. two cores allowed on CRAN</span>
               <span class='co'># not a limit for your own use</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='co'># }</span>
 
 
@@ -784,11 +731,6 @@ ISBN 978-3-0348-0179-9.</p>
   xlab <span class='op'>=</span> <span class='st'>"real"</span>, ylab <span class='op'>=</span> <span class='st'>"imaginary"</span>,
   nCores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='co'># Max. two cores allowed on CRAN</span>
               <span class='co'># not a limit for your own use</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='co'># }</span>
 
 
@@ -808,11 +750,6 @@ ISBN 978-3-0348-0179-9.</p>
   xlab <span class='op'>=</span> <span class='st'>"real"</span>, ylab <span class='op'>=</span> <span class='st'>"imaginary"</span>,
   nCores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='co'># Max. two cores allowed on CRAN</span>
               <span class='co'># not a limit for your own use</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='co'># }</span>
 
 
@@ -832,11 +769,6 @@ ISBN 978-3-0348-0179-9.</p>
               nCores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='co'># Max. two cores allowed on CRAN</span>
                           <span class='co'># not a limit for your own use</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>op</span><span class='op'>)</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='co'># }</span>
 
 
@@ -856,11 +788,6 @@ ISBN 978-3-0348-0179-9.</p>
   nCores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='co'># Max. two cores allowed on CRAN</span>
               <span class='co'># not a limit for your own use</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>op</span><span class='op'>)</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='co'># }</span>
 
 
@@ -886,7 +813,7 @@ ISBN 978-3-0348-0179-9.</p>
       </footer>
    </div>
 
-  
+
 
 
   </body>
