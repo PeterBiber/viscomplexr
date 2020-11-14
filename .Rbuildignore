@@ -10,6 +10,7 @@
 ^Meta$
 ^README\.Rmd$
 README_cache/
+^index
 ^LICENSE\.md$
 ^\.github$
 ^cran-comments\.md$
