@@ -27,9 +27,10 @@ framework of R base graphics and allows for print quality graphics
 files. To a great deal, *viscomplexr* follows the conventions published
 by Wegert (2012).
 
-For a detailed step-by-step introduction see the package’s vignette.
-After installing *viscomplexr* on your machine, you can view the
-vignette by calling:
+For a detailed step-by-step introduction see [this
+article](https://peterbiber.github.io/viscomplexr/articles/viscomplexr-vignette_for_website.html)
+or the package’s vignette. After installing *viscomplexr* on your
+machine, you can view the vignette by calling:
 
 ``` r
 vignette("viscomplexr-vignette")
