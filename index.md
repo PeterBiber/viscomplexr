@@ -7,7 +7,7 @@
 
 [![R build
 status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
 <!-- badges: end -->
 
 <!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not executed -->
@@ -16,7 +16,7 @@ status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.sv
 
 <!-- Load banner from file -->
 
-<img src="figure_banner_300dpi.png" width="100%" /> <br>
+<img src="_pkgdown/figure_banner_300dpi.png" width="100%" /> <br>
 
 With *viscomplexr* you can create phase portraits of functions on the
 complex number plane. While the main purpose of this package are
@@ -27,9 +27,10 @@ framework of R base graphics and allows for print quality graphics
 files. To a great deal, *viscomplexr* follows the conventions published
 by Wegert (2012).
 
-For a detailed step-by-step introduction see the package’s vignette.
-After installing *viscomplexr* on your machine, you can view the
-vignette by calling:
+For a detailed step-by-step introduction see [this
+article](https://peterbiber.github.io/viscomplexr/articles/viscomplexr-vignette_for_website.html)
+or the package’s vignette. After installing *viscomplexr* on your
+machine, you can view the vignette by calling:
 
 ``` r
 vignette("viscomplexr-vignette")
@@ -43,13 +44,14 @@ file system.
 ## Installation
 
 The released version of *viscomplexr* can be installed from
-[CRAN](https://CRAN.R-project.org) with:
+[CRAN](https://CRAN.R-project.org/package=viscomplexr) with:
 
 ``` r
 install.packages("viscomplexr")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
+And the development version from
+[GitHub](https://github.com/PeterBiber/viscomplexr) with:
 
 ``` r
 # install.packages("devtools")

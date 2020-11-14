@@ -1,6 +1,6 @@
 ---
 output: github_document
-bibliography: REFERENCES.bib
+bibliography: _pkgdown/REFERENCES.bib
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -9,7 +9,6 @@ bibliography: REFERENCES.bib
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
   out.width = "100%"
 )
 
@@ -25,7 +24,7 @@ if(Sys.info()[["sysname"]] == "Windows")
 
 <!-- badges: start -->
 [![R build status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
 <!-- badges: end -->
 
 <!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not executed -->
@@ -51,13 +50,13 @@ par(op)
 
 <!-- Load banner from file -->
 ```{r, echo=FALSE}
-knitr::include_graphics("figure_banner_300dpi.png")
+knitr::include_graphics("_pkgdown/figure_banner_300dpi.png")
 ```
 <br>    
     
 With *viscomplexr* you can create phase portraits of functions on the complex number plane. While the main purpose of this package are scientific, educational and technical applications, the sheer beauty of phase portraits may be motivation enough to explore the fascinating realm of complex-valued functions. The package is embedded in the framework of R base graphics and allows for print quality graphics files. To a great deal, *viscomplexr* follows the conventions published by @wegert_visualcpx_2012. 
 
-For a detailed step-by-step introduction see the package's vignette. After installing *viscomplexr* on your machine, you can view the vignette by calling:
+For a detailed step-by-step introduction see [this article](https://peterbiber.github.io/viscomplexr/articles/viscomplexr-vignette_for_website.html) or the package's vignette. After installing *viscomplexr* on your machine, you can view the vignette by calling:
 ``` r
 vignette("viscomplexr-vignette")
 ```
@@ -65,13 +64,13 @@ Besides making you acquainted with how to work with the package, the vignette al
 
 ## Installation
 
-The released version of *viscomplexr* can be installed from [CRAN](https://CRAN.R-project.org) with:
+The released version of *viscomplexr* can be installed from [CRAN](https://CRAN.R-project.org/package=viscomplexr) with:
 
 ``` r
 install.packages("viscomplexr")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
+And the development version from [GitHub](https://github.com/PeterBiber/viscomplexr) with:
 
 ``` r
 # install.packages("devtools")
