@@ -48,6 +48,11 @@ being parts of the Julia set, this function returns NaN+NaNi. All
 other numbers are mapped to the complex value obtained after a user-defined
 number of iterations. This function has been implemented in C++; therefore
 it is fairly fast." />
+<meta property="og:image" content="https://peterbiber.github.io/viscomplexr/docs/_pkgdown/figure_banner_300dpi.png" />
+<meta property="og:image:alt" content="Phase portrait of of the function f(z)=sin(z^3/(z-1i+2))" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content="@biber_peter" />
+<meta name="twitter:site" content="@biber_peter" />
 
 
 
@@ -88,7 +93,7 @@ it is fairly fast." />
         <li>
   <a href="../index.html">
     <span class="fas fa fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li>
@@ -97,7 +102,7 @@ it is fairly fast." />
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -114,16 +119,16 @@ it is fairly fast." />
         <li>
   <a href="https://github.com/PeterBiber/viscomplexr/">
     <span class="fab fa fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header>
 
@@ -197,9 +202,9 @@ visualizations become most interesting for <code>c</code> located in the border
 zone of the Mandelbrot set.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other fractals: 
+    <div class='dont-index'><p>Other fractals:
 <code><a href='mandelbrot.html'>mandelbrot</a>()</code></p>
-<p>Other maths: 
+<p>Other maths:
 <code><a href='blaschkeProd.html'>blaschkeProd</a>()</code>,
 <code><a href='jacobiTheta.html'>jacobiTheta</a>()</code>,
 <code><a href='mandelbrot.html'>mandelbrot</a>()</code></p></div>
@@ -214,11 +219,6 @@ zone of the Mandelbrot set.</p>
   ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1.3</span>, <span class='fl'>1.3</span><span class='op'>)</span>,
   hsvNaN <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
   nCores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>          <span class='co'># Max. two cores on CRAN, not a limit for your use</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='co'># }</span>
 
 
@@ -244,7 +244,7 @@ zone of the Mandelbrot set.</p>
       </footer>
    </div>
 
-  
+
 
 
   </body>

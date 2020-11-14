@@ -56,6 +56,11 @@ for adding annotation, landmark points  are available
 Several parameters are on hand for adjusting the mask's transparency, color,
 and similar features. some details, this function behaves less nicely under
 Windows than under Linux (see Details)." />
+<meta property="og:image" content="https://peterbiber.github.io/viscomplexr/docs/_pkgdown/figure_banner_300dpi.png" />
+<meta property="og:image:alt" content="Phase portrait of of the function f(z)=sin(z^3/(z-1i+2))" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:creator" content="@biber_peter" />
+<meta name="twitter:site" content="@biber_peter" />
 
 
 
@@ -96,7 +101,7 @@ Windows than under Linux (see Details)." />
         <li>
   <a href="../index.html">
     <span class="fas fa fas fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li>
@@ -105,7 +110,7 @@ Windows than under Linux (see Details)." />
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -122,16 +127,16 @@ Windows than under Linux (see Details)." />
         <li>
   <a href="https://github.com/PeterBiber/viscomplexr/">
     <span class="fab fa fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header>
 
@@ -277,11 +282,6 @@ ISBN 978-3-0348-0179-9.</p>
               xlab <span class='op'>=</span> <span class='st'>"real"</span>, ylab <span class='op'>=</span> <span class='st'>"imaginary"</span>,
               xaxs <span class='op'>=</span> <span class='st'>"i"</span>, yaxs <span class='op'>=</span> <span class='st'>"i"</span>,
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Max. two cores on CRAN, not a limit for your use</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='fu'>riemannMask</span><span class='op'>(</span>annotSouth <span class='op'>=</span> <span class='cn'>TRUE</span>, gridCross <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 <span class='fu'><a href='phasePortrait.html'>phasePortrait</a></span><span class='op'>(</span><span class='st'>"tan(z)"</span>, pType <span class='op'>=</span> <span class='st'>"pma"</span>,
@@ -291,11 +291,6 @@ ISBN 978-3-0348-0179-9.</p>
               xlab <span class='op'>=</span> <span class='st'>"real (1/z)"</span>, ylab <span class='op'>=</span> <span class='st'>"imaginary (1/z)"</span>,
               xaxs <span class='op'>=</span> <span class='st'>"i"</span>, yaxs <span class='op'>=</span> <span class='st'>"i"</span>,
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Max. two cores on CRAN, not a limit for your use</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='fu'>riemannMask</span><span class='op'>(</span>annotNorth <span class='op'>=</span> <span class='cn'>TRUE</span>, gridCross <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>op</span><span class='op'>)</span>
 <span class='co'># }</span>
@@ -317,11 +312,6 @@ ISBN 978-3-0348-0179-9.</p>
               xlab <span class='op'>=</span> <span class='st'>"real"</span>, ylab <span class='op'>=</span> <span class='st'>"imaginary"</span>,
               xaxs <span class='op'>=</span> <span class='st'>"i"</span>, yaxs <span class='op'>=</span> <span class='st'>"i"</span>,
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Max. two cores on CRAN, not a limit for your use</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='fu'>riemannMask</span><span class='op'>(</span>annotSouth <span class='op'>=</span> <span class='cn'>FALSE</span>, gridCross <span class='op'>=</span> <span class='cn'>FALSE</span>, circOutline <span class='op'>=</span> <span class='cn'>FALSE</span>,
             alphaMask <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
 
@@ -333,11 +323,6 @@ ISBN 978-3-0348-0179-9.</p>
               xlab <span class='op'>=</span> <span class='st'>"real (1/z)"</span>, ylab <span class='op'>=</span> <span class='st'>"imaginary (1/z)"</span>,
               xaxs <span class='op'>=</span> <span class='st'>"i"</span>, yaxs <span class='op'>=</span> <span class='st'>"i"</span>,
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='co'># Max. two cores on CRAN, not a limit for your use</span>
-  <span class='co'># \dontshow{</span>
-  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
-  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
-  <span class='co'># }</span>
 <span class='fu'>riemannMask</span><span class='op'>(</span>annotNorth <span class='op'>=</span> <span class='cn'>FALSE</span>, gridCross <span class='op'>=</span> <span class='cn'>FALSE</span>, circOutline <span class='op'>=</span> <span class='cn'>FALSE</span>,
             alphaMask <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>op</span><span class='op'>)</span>
@@ -366,7 +351,7 @@ ISBN 978-3-0348-0179-9.</p>
       </footer>
    </div>
 
-  
+
 
 
   </body>
