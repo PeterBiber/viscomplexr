@@ -50,7 +50,7 @@ par(op)
 
 <!-- Load banner from file -->
 ```{r, echo=FALSE}
-knitr::include_graphics("_pkgdown/figure_banner_300dpi.png")
+knitr::include_graphics("figure_banner_300dpi.png")
 ```
 <br>    
     

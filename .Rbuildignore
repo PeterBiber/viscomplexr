@@ -6,6 +6,7 @@
 ^vignettes/viscomplexr-vignette_for_website_cache$
 ^vignettes/viscomplexr-vignette_for_website.Rmd$
 ^vignettes/*\.png$
+^figure_*\.png$
 ^doc$
 ^Meta$
 ^README\.Rmd$
