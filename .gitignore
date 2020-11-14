@@ -6,3 +6,4 @@ Meta
 README_cache/
 src-i386/
 index_cache/
+^_pkgdown/*\.png$
