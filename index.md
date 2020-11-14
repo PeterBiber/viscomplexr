@@ -16,7 +16,7 @@ status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.sv
 
 <!-- Load banner from file -->
 
-<img src="figure_banner_300dpi.png" width="100%" /> <br>
+<img src="_pkgdown/figure_banner_300dpi.png" width="100%" /> <br>
 
 With *viscomplexr* you can create phase portraits of functions on the
 complex number plane. While the main purpose of this package are

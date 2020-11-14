@@ -1,6 +1,6 @@
 ---
 output: github_document
-bibliography: REFERENCES.bib
+bibliography: _pkgdown/REFERENCES.bib
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -9,7 +9,6 @@ bibliography: REFERENCES.bib
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
   out.width = "100%"
 )
 
@@ -51,7 +50,7 @@ par(op)
 
 <!-- Load banner from file -->
 ```{r, echo=FALSE}
-knitr::include_graphics("figure_banner_300dpi.png")
+knitr::include_graphics("_pkgdown/figure_banner_300dpi.png")
 ```
 <br>    
     
