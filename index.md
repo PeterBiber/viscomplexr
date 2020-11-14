@@ -44,13 +44,14 @@ file system.
 ## Installation
 
 The released version of *viscomplexr* can be installed from
-[CRAN](https://CRAN.R-project.org) with:
+[CRAN](https://CRAN.R-project.org/package=viscomplexr) with:
 
 ``` r
 install.packages("viscomplexr")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
+And the development version from
+[GitHub](https://github.com/PeterBiber/viscomplexr) with:
 
 ``` r
 # install.packages("devtools")
