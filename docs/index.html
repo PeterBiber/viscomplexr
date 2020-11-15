@@ -98,15 +98,15 @@
 <!-- Currently deactivated. Loading the banner as a pre-built file seems better -->
 <!-- Load banner from file -->
 <p><img src="figure_banner_300dpi.png" width="100%"><br></p>
-<p>With <em>viscomplexr</em> you can create phase portraits of functions on the complex number plane. While the main purpose of this package are scientific, educational and technical applications, the sheer beauty of phase portraits may be motivation enough to explore the fascinating realm of complex-valued functions. The package is embedded in the framework of R base graphics and allows for print quality graphics files. To a great deal, <em>viscomplexr</em> follows the conventions published by Wegert (2012).</p>
-<p>For a detailed step-by-step introduction see <a href="https://peterbiber.github.io/viscomplexr/articles/viscomplexr-vignette_for_website.html">this article</a> or the package’s vignette. After installing <em>viscomplexr</em> on your machine, you can view the vignette by calling:</p>
+<p>With the R package <em>viscomplexr</em> you can create phase portraits of functions on the complex number plane. While the main purpose of this package are scientific, educational, and technical applications, the sheer beauty of phase portraits may be motivation enough to explore the fascinating realm of complex-valued functions. The package is embedded in the framework of R base graphics and allows for print quality graphics files. To a great deal, <em>viscomplexr</em> follows the conventions published by Wegert (2012).</p>
+<p>For a detailed step-by-step introduction see <a href="https://peterbiber.github.io/viscomplexr/articles/viscomplexr-vignette_for_website.html">this article</a> or the package’s vignette. After installing <em>viscomplexr</em> on your machine, you can view the vignette by calling</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"viscomplexr-vignette"</span><span class="op">)</span></code></pre></div>
-<p>Besides making you acquainted with how to work with the package, the vignette also tells you more about some shenanigans going on behind the scenes; among them parallel processing and <em>viscomplexr</em>’s temporary file system.</p>
+<p>at the R command line. Besides making you acquainted with how to work with the package, the vignette also tells you more about some shenanigans going on behind the scenes; among them parallel processing and <em>viscomplexr</em>’s temporary file system.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>The released version of <em>viscomplexr</em> can be installed from <a href="https://CRAN.R-project.org/package=viscomplexr">CRAN</a> with:</p>
+<p>In order to work with <em>viscomplexr</em> you require an installation of R (version &gt;= 4.0) on your system. The installation files for R itself are available <a href="https://cran.r-project.org/">here</a>. The released version of <em>viscomplexr</em> can be installed from <a href="https://CRAN.R-project.org/package=viscomplexr">CRAN</a> at the R command line with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"viscomplexr"</span><span class="op">)</span></code></pre></div>
 <p>And the development version from <a href="https://github.com/PeterBiber/viscomplexr">GitHub</a> with:</p>
@@ -142,7 +142,7 @@
 <span class="co"># If you have initially opened a graphics device that plots into a file, you </span>
 <span class="co"># must close it here with</span>
 <span class="co"># dev.off()</span></code></pre></div>
-<p>While there are many options and a few useful supporting functions (see vignette and documentation), this example shows the core way of plotting phase portraits. It could even be reduced to just the function to be portrayed (here provided as a character string) and the parameters <code>xlim</code> and <code>ylim</code>. The other parameters in the example, and also the omission of the plot margins before calling <em>phasePortrait</em>, were only used in order to obtain a pretty banner for this README.</p>
+<p>While there are many options and a few useful supporting functions (see <a href="https://peterbiber.github.io/viscomplexr/articles/viscomplexr-vignette_for_website.html">this article</a> or the vignette, and the package’s documentation), this example shows the core way of plotting phase portraits. It could even be reduced to just the function to be portrayed (here provided as a character string) and the parameters <code>xlim</code> and <code>ylim</code>. The other parameters in the example, and also the omission of the plot margins before calling <em>phasePortrait</em>, were only used in order to obtain a pretty banner for this README.</p>
 </div>
 <div id="acknowledgments" class="section level2">
 <h2 class="hasAnchor">
