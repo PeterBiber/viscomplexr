@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phase Portraits of Complex Valued Functions - the R Package viscomplexr • viscomplexr</title>
+<title>Phase Portraits of Complex Functions - the R Package viscomplexr • viscomplexr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Phase Portraits of Complex Valued Functions - the R Package viscomplexr">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Phase Portraits of Complex Functions - the R Package viscomplexr">
 <meta property="og:description" content="viscomplexr">
 <meta property="og:image" content="https://peterbiber.github.io/viscomplexr/figure_banner_300dpi.png">
 <meta property="og:image:alt" content="Phase portrait of of the function f(z)=sin(z^3/(z-1i+2))">
@@ -88,7 +88,7 @@
 <script src="viscomplexr-vignette_for_website_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Phase Portraits of Complex Valued Functions - the R Package viscomplexr</h1>
+      <h1 data-toc-skip>Phase Portraits of Complex Functions - the R Package viscomplexr</h1>
                         <h4 class="author">Peter Biber</h4>
             
       
@@ -102,7 +102,7 @@
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>The <strong>R</strong> package <em>viscomplexr</em> has been written as a visualization tool for complex valued functions. More precisely, it provides functionality for making <em>phase portraits</em> of such functions, following conventions described by E. Wegert in his book <em>Visual Complex Functions</em> <span class="citation">(Wegert 2012)</span>. Conceptually, the package is intended for being used inside the framework of <strong>R</strong>’s base graphics, i.e. users of this package can freely utilize all features of base graphics for obtaining an optimum result, be it for scientific or artistic purposes. This article is not at all an introduction to function theory or an exhaustive treatment of what can be done with phase portraits - I recommend Wegert’s book for an ideal combination of both; the purpose of this article is in fact to make the reader acquainted with the technical features the package provides in a step-by-step process.</p>
+<p>The <strong>R</strong> package <em>viscomplexr</em> has been written as a visualization tool for complex functions. More precisely, it provides functionality for making <em>phase portraits</em> of such functions, following conventions described by E. Wegert in his book <em>Visual Complex Functions</em> <span class="citation">(Wegert 2012)</span>. Conceptually, the package is intended for being used inside the framework of <strong>R</strong>’s base graphics, i.e. users of this package can freely utilize all features of base graphics for obtaining an optimum result, be it for scientific or artistic purposes. This article is not at all an introduction to function theory or an exhaustive treatment of what can be done with phase portraits - I recommend Wegert’s book for an ideal combination of both; the purpose of this article is in fact to make the reader acquainted with the technical features the package provides in a step-by-step process.</p>
 <p>While the text of this article is virtually identical with the package’s vignette as available on <a href="https://CRAN.R-project.org/package=viscomplexr">CRAN</a>, CRAN’s size restrictions do not apply here. Therefore, you will find considerably more illustrations below.</p>
 </div>
 <div id="using-the-function-phaseportrait" class="section level2">
