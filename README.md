@@ -7,7 +7,7 @@
 
 [![R build
 status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
 [![metacran
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
 [![Codecov test
@@ -25,10 +25,9 @@ With *viscomplexr* you can create phase portraits of functions on the
 complex number plane. While the main purpose of this package are
 scientific, educational and technical applications, the sheer beauty of
 phase portraits may be motivation enough to explore the fascinating
-realm of complex-valued functions. The package is embedded in the
-framework of R base graphics and allows for print quality graphics
-files. To a great deal, *viscomplexr* follows the conventions published
-by Wegert (2012).
+realm of complex functions. The package is embedded in the framework of
+R base graphics and allows for print quality graphics files. To a great
+deal, *viscomplexr* follows the conventions published by Wegert (2012).
 
 For a detailed step-by-step introduction see the package’s vignette.
 After installing *viscomplexr* on your machine, you can view the
@@ -45,14 +44,18 @@ file system.
 
 ## Installation
 
-The released version of *viscomplexr* can be installed from
-[CRAN](https://CRAN.R-project.org) with:
+In order to work with viscomplexr you require an installation of R
+(version \>= 4.0) on your system. The installation files for R itself
+are available [here](https://cran.r-project.org/). The released version
+of *viscomplexr* can be installed from
+[CRAN](https://CRAN.R-project.org/package=viscomplexr) with:
 
 ``` r
 install.packages("viscomplexr")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
+And the development version from
+[GitHub](https://github.com/PeterBiber/viscomplexr) with:
 
 ``` r
 # install.packages("devtools")
