@@ -22,10 +22,10 @@ With the R package *viscomplexr* you can create phase portraits of
 functions on the complex number plane. While the main purpose of this
 package are scientific, educational, and technical applications, the
 sheer beauty of phase portraits may be motivation enough to explore the
-fascinating realm of complex-valued functions. The package is embedded
-in the framework of R base graphics and allows for print quality
-graphics files. To a great deal, *viscomplexr* follows the conventions
-published by Wegert (2012).
+fascinating realm of complex functions. The package is embedded in the
+framework of R base graphics and allows for print quality graphics
+files. To a great deal, *viscomplexr* follows the conventions published
+by Wegert (2012).
 
 For a detailed step-by-step introduction see [this
 article](https://peterbiber.github.io/viscomplexr/articles/viscomplexr-vignette_for_website.html)
