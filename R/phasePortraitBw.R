@@ -5,38 +5,23 @@
 # -----------------------------------------------------------------------------
 
 phaseModAngColBw <- function(pCompArr,
-                             pHsvCol,
-                             logBase = 2,
-                             pi2Div = 24,
+                             pBwCol,
+                             pi2Div  = 9,
+                             logBase = exp(2*pi/pi2Div),
                              argOffset = 0,
-                             bwCols = c("black", "white"),
-                             hsvNaN = c(0, 0, 0.5)) {
+                             bwCols = c("black", "grey95", "grey")) {
 
-  names(hsvNaN) <- c("h", "s", "v")
   dims    <- dim(pCompArr$value)
   argmt   <- Arg(pCompArr$value)
-  h       <- ifelse(is.nan(argmt), hsvNaN["h"],
-                    ifelse(argmt < 0, argmt + 2*pi, argmt)/(2 * pi))
+  intArg  <- trunc(ifelse(argmt - argOffset < 0, argmt + 2*pi, argmt)/(2 * pi / pi2Div))
+  intMod  <- floor(log(Mod(pCompArr$value), logBase))
 
-  vMod    <- Mod(pCompArr$value)
-  vMod    <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
-                    ifelse(is.infinite(vMod), 1,
-                           ifelse(vMod == 0, 0,
-                                  (log(vMod, logBase) %% 1)^(1/lambda))))
+  intIdx  <- (intArg + intMod) %% 2 + 1
+  intIdx  <- ifelse(is.nan(intIdx), 3, intIdx)
 
-  vAng    <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
-                    (((argmt - argOffset)/ (2 * pi / pi2Div)) %% 1)^(1/lambda))
+  pBwCol$value <- array(bwCols[intIdx], dims)
 
-  v       <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
-                    darkestShade + (1 - darkestShade) *
-                      (gamma * vMod * vAng  +
-                         (1 - gamma) * (1 - (1 - vMod) * (1 - vAng))))
-
-  s       <- ifelse(is.nan(pCompArr$value), hsvNaN["s"], stdSaturation)
-
-  pHsvCol$value <- array(hsv(h = h, v = v, s = s), dims)
-
-  return(pHsvCol)
+  return(pBwCol)
 
 } # phaseModAngColBw
 
@@ -50,8 +35,7 @@ complexArrayPlotBw <- function(zMetaInfrm,
                                pi2Div = 9,
                                logBase = exp(2*pi/pi2Div),
                                argOffset = 0,
-                               bwCols = c("black", "white"),
-                               hsvNaN = c(0, 0, 0.5),
+                               bwCols = c("black", "grey95", "grey"),
                                asp = 1,
                                xlab = "", ylab = "",
                                verbose,
@@ -86,13 +70,11 @@ complexArrayPlotBw <- function(zMetaInfrm,
                                            hsvNaN = hsvNaN)",
 
                    "pma" = "phaseModAngColBw(pListCompArr[[i]],
-                                             pHsvCol,
+                                             pBwCol,
                                              pi2Div = pi2Div,
                                              logBase = logBase,
                                              argOffset = argOffset,
-                                             bwCols = bwCols,
-                                             darkestShade = darkestShade,
-                                             hsvNaN = hsvNaN)"
+                                             bwCols = bwCols)"
   ) # switch
 
 
@@ -101,7 +83,7 @@ complexArrayPlotBw <- function(zMetaInfrm,
                                        zMetaInfrm$metaZ$wFileNames, sep = "/")
 
   # Run the color transformation function over each file
-  pHsvCol <- lapply(c(1:nrow(zMetaInfrm$metaZ)),
+  pBwCol <- lapply(c(1:nrow(zMetaInfrm$metaZ)),
                     function(i, zMetaInfrm, colCmd) {
 
                       if(verbose) cat("\n.transforming block", i, "... ")
@@ -126,28 +108,24 @@ complexArrayPlotBw <- function(zMetaInfrm,
                       # Parallel loop transforming the chunks into a color raster each;
                       # giving back a list of pointers to the rasters
                       if(verbose) cat("parallel loop starting ... ")
-                      pHsvCol <- foreach(i = c(1:length(pListCompArr)),
+                      pBwCol <- foreach(i = c(1:length(pListCompArr)),
                                          .export  = c("phaseColhsv",
                                                       "phaseModColhsv",
                                                       "phaseAngColhsv",
-                                                      "phaseModAngColhsv",
+                                                      "phaseModAngColBw",
+                                                      "bwCols",
                                                       "logBase",
-                                                      "lambda",
-                                                      "gamma",
                                                       "pi2Div",
-                                                      "stdSaturation",
-                                                      "darkestShade",
-                                                      "hsvNaN",
                                                       "newPointer",
                                                       "argOffset"),
                                          .combine = c) %dopar% {
 
-                                           pHsvCol  <- newPointer(NULL)
+                                           pBwCol  <- newPointer(NULL)
                                            eval(parse(text = colCmd))      # Does not require a return value,
                                            # changes color array via pointer
                                            pListCompArr[[i]]$value <- NULL # Reduced here, but removed after
                                            # the foreach loop
-                                           return(pHsvCol)
+                                           return(pBwCol)
                                          } # foreach
                       if(verbose) cat("done.")
 
@@ -158,26 +136,26 @@ complexArrayPlotBw <- function(zMetaInfrm,
                       # Free the others (rbindArraysbyPointer).
                       #   Enforce (one-element-) list in case there is only one value
                       #   (i.e. if foreach loop was executed sequentially, one core only)
-                      if(length(pHsvCol) == 1) pHsvCol <- list(pHsvCol)
-                      pHsvCol <- rbindArraysbyPointer(pHsvCol)
+                      if(length(pBwCol) == 1) pBwCol <- list(pBwCol)
+                      pBwCol <- rbindArraysbyPointer(pBwCol)
 
-                      return(pHsvCol)
+                      return(pBwCol)
                     }, # function in lapply
                     zMetaInfrm = zMetaInfrm, colCmd = colCmd
   ) # lapply
 
   # Now combine all blocks into the big raster ...
   if(verbose) cat("\nCombine color rasters ... ")
-  pHsvCol <- rbindArraysbyPointer(pHsvCol)
+  pBwCol <- rbindArraysbyPointer(pBwCol)
   if(verbose) cat("done.\n")
 
   # ... and plot it
   if(verbose) cat("Plotting raster image ... ")
-  rasterImage(as.raster(pHsvCol$value), xlim[1], ylim[1], xlim[2], ylim[2])
+  rasterImage(as.raster(pBwCol$value), xlim[1], ylim[1], xlim[2], ylim[2])
   if(verbose) cat("done.\n")
 
-  pHsvCol$value <- NULL
-  rm(pHsvCol)
+  pBwCol$value <- NULL
+  rm(pBwCol)
 
   return(NULL)
 
@@ -186,6 +164,35 @@ complexArrayPlotBw <- function(zMetaInfrm,
 # -----------------------------------------------------------------------------
 
 
+#' Black-and-white phase portraits
+#'
+#' @param FUN
+#' @param moreArgs
+#' @param xlim
+#' @param ylim
+#' @param invertFlip
+#' @param res
+#' @param blockSizePx
+#' @param tempDir
+#' @param nCores
+#' @param pType
+#' @param pi2Div
+#' @param logBase
+#' @param argOffset
+#' @param bwCols
+#' @param asp
+#' @param deleteTempFiles
+#' @param noScreenDevice
+#' @param autoDereg
+#' @param verbose
+#' @param ...
+#'
+#' @return
+#'
+#' @export
+#'
+#' @examples
+#'
 phasePortraitBw <- function(FUN, moreArgs = NULL, xlim, ylim,
                             invertFlip = FALSE,
                             res = 150,
@@ -196,8 +203,7 @@ phasePortraitBw <- function(FUN, moreArgs = NULL, xlim, ylim,
                             pi2Div = 9,
                             logBase = exp(2*pi/pi2Div),
                             argOffset = 0,
-                            bwCols = c("black", "white"),
-                            hsvNaN = c(0, 0, 0.5),
+                            bwCols = c("black", "grey95", "grey"),
                             asp = 1,
                             deleteTempFiles = TRUE,
                             noScreenDevice = FALSE,
@@ -341,10 +347,9 @@ phasePortraitBw <- function(FUN, moreArgs = NULL, xlim, ylim,
   # Transform into color values and plot it
   if(!noScreenDevice) {
     if(verbose) cat("\nTransforming function values into colors ...")
-    complexArrayPlot(zMetaInfrm, xlim, ylim, pType, invertFlip,
-                     lambda, gamma, pi2Div, logBase,
-                     argOffset, stdSaturation, darkestShade, hsvNaN,
-                     verbose = verbose, ...)
+    complexArrayPlotBw(zMetaInfrm, xlim, ylim, pType, invertFlip,
+                       pi2Div, logBase, argOffset, bwCols,
+                       verbose = verbose, ...)
   } # if(!noScreenDevice)
   else if(verbose) cat("\nNo plot is made (explicit wish of the user) ...")
 

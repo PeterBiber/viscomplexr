@@ -180,7 +180,7 @@ phaseModAngColhsv <- function(pCompArr, pHsvCol, lambda = 7, gamma = 9/10,
                                   (log(vMod, logBase) %% 1)^(1/lambda))))
 
   vAng    <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
-                    (((argmt - argOffset)/ (2 * pi / pi2Div)) %% 1)^(1/lambda))
+                    (((argmt - argOffset) / (2 * pi / pi2Div)) %% 1)^(1/lambda))
 
   v       <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
                     darkestShade + (1 - darkestShade) *
