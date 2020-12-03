@@ -11,6 +11,8 @@ phaseModAngColBw <- function(pCompArr,
                              argOffset = 0,
                              bwCols = c("black", "grey95", "grey")) {
 
+  hexCols <- sapply(bwCols, function(bwc) rgb(t(col2rgb(bwc)), maxColorValue = 255))
+
   dims    <- dim(pCompArr$value)
   argmt   <- Arg(pCompArr$value)
   intArg  <- trunc(ifelse(argmt - argOffset < 0, argmt + 2*pi, argmt)/(2 * pi / pi2Div))
@@ -19,7 +21,7 @@ phaseModAngColBw <- function(pCompArr,
   intIdx  <- (intArg + intMod) %% 2 + 1
   intIdx  <- ifelse(is.nan(intIdx), 3, intIdx)
 
-  pBwCol$value <- array(bwCols[intIdx], dims)
+  pBwCol$value <- array(hexCols[intIdx], dims)
 
   return(pBwCol)
 
