@@ -4,18 +4,69 @@
 
 # -----------------------------------------------------------------------------
 
+phaseModColBw <- function(pCompArr,
+                          pBwCol,
+                          logBase = exp(2*pi/18),
+                          bwCols = c("black", "grey95", "grey")) {
+
+  hexCols <- sapply(bwCols,
+                    function(bwc) rgb(t(col2rgb(bwc)), maxColorValue = 255))
+
+  dims    <- dim(pCompArr$value)
+  argmt   <- Arg(pCompArr$value)
+
+  intMod  <- floor(log(Mod(pCompArr$value), logBase))
+
+  intIdx  <- intMod %% 2 + 1
+  intIdx  <- ifelse(is.nan(intIdx), 3, intIdx)
+
+  pBwCol$value <- array(hexCols[intIdx], dims)
+
+  return(pBwCol)
+
+} # phaseModColBw
+
+# -----------------------------------------------------------------------------
+
+phaseAngColBw <- function(pCompArr,
+                          pBwCol,
+                          pi2Div = 18,
+                          argOffset = 0,
+                          bwCols = c("black", "grey95", "grey")) {
+
+  hexCols <- sapply(bwCols,
+                    function(bwc) rgb(t(col2rgb(bwc)), maxColorValue = 255))
+
+  dims    <- dim(pCompArr$value)
+  argmt   <- Arg(pCompArr$value)
+  intArg  <- floor(ifelse(argmt - argOffset < 0, argmt + 2*pi, argmt) /
+                     (2 * pi / pi2Div))
+
+  intIdx  <- intArg %% 2 + 1
+  intIdx  <- ifelse(is.nan(intIdx), 3, intIdx)
+
+  pBwCol$value <- array(hexCols[intIdx], dims)
+
+  return(pBwCol)
+
+} # phaseAngColBw
+
+# -----------------------------------------------------------------------------
+
 phaseModAngColBw <- function(pCompArr,
                              pBwCol,
-                             pi2Div  = 9,
+                             pi2Div  = 18,
                              logBase = exp(2*pi/pi2Div),
                              argOffset = 0,
                              bwCols = c("black", "grey95", "grey")) {
 
-  hexCols <- sapply(bwCols, function(bwc) rgb(t(col2rgb(bwc)), maxColorValue = 255))
+  hexCols <- sapply(bwCols,
+                    function(bwc) rgb(t(col2rgb(bwc)), maxColorValue = 255))
 
   dims    <- dim(pCompArr$value)
   argmt   <- Arg(pCompArr$value)
-  intArg  <- trunc(ifelse(argmt - argOffset < 0, argmt + 2*pi, argmt)/(2 * pi / pi2Div))
+  intArg  <- floor(ifelse(argmt - argOffset < 0, argmt + 2*pi, argmt) /
+                     (2 * pi / pi2Div))
   intMod  <- floor(log(Mod(pCompArr$value), logBase))
 
   intIdx  <- (intArg + intMod) %% 2 + 1
@@ -32,9 +83,9 @@ phaseModAngColBw <- function(pCompArr,
 complexArrayPlotBw <- function(zMetaInfrm,
                                xlim,
                                ylim,
-                               pType = "pma",
+                               pType = "ma",
                                invertFlip = FALSE,
-                               pi2Div = 9,
+                               pi2Div = 18,
                                logBase = exp(2*pi/pi2Div),
                                argOffset = 0,
                                bwCols = c("black", "grey95", "grey"),
@@ -49,34 +100,23 @@ complexArrayPlotBw <- function(zMetaInfrm,
   # Define call to color transformation function depending user's
   # choice of pType
   colCmd <- switch(pType,
-                   "p"   = "phaseColhsv(pListCompArr[[i]],
-                                        pHsvCol,
-                                        stdSaturation = stdSaturation,
-                                        hsvNaN = hsvNaN)",
+                   "m"  = "phaseModColBw(pListCompArr[[i]],
+                                         pBwCol,
+                                         logBase = logBase,
+                                         bwCols = bwCols)",
 
-                   "pm"  = "phaseModColhsv(pListCompArr[[i]],
-                                           pHsvCol,
-                                           lambda = lambda,
-                                           logBase = logBase,
-                                           stdSaturation = stdSaturation,
-                                           darkestShade = darkestShade,
-                                           hsvNaN = hsvNaN)",
+                   "a"  = "phaseAngColBw(pListCompArr[[i]],
+                                         pBwCol,
+                                         pi2Div = pi2Div,
+                                         argOffset = argOffset,
+                                         bwCols = bwCols)",
 
-                   "pa"  = "phaseAngColhsv(pListCompArr[[i]],
-                                           pHsvCol,
-                                           lambda = lambda,
-                                           pi2Div = pi2Div,
-                                           argOffset = argOffset,
-                                           stdSaturation = stdSaturation,
-                                           darkestShade = darkestShade,
-                                           hsvNaN = hsvNaN)",
-
-                   "pma" = "phaseModAngColBw(pListCompArr[[i]],
-                                             pBwCol,
-                                             pi2Div = pi2Div,
-                                             logBase = logBase,
-                                             argOffset = argOffset,
-                                             bwCols = bwCols)"
+                   "ma" = "phaseModAngColBw(pListCompArr[[i]],
+                                            pBwCol,
+                                            pi2Div = pi2Div,
+                                            logBase = logBase,
+                                            argOffset = argOffset,
+                                            bwCols = bwCols)"
   ) # switch
 
 
@@ -201,8 +241,8 @@ phasePortraitBw <- function(FUN, moreArgs = NULL, xlim, ylim,
                             blockSizePx = 2250000,
                             tempDir = NULL,
                             nCores = parallel::detectCores(),
-                            pType = "pma",
-                            pi2Div = 9,
+                            pType = "ma",
+                            pi2Div = 18,
                             logBase = exp(2*pi/pi2Div),
                             argOffset = 0,
                             bwCols = c("black", "grey95", "grey"),
