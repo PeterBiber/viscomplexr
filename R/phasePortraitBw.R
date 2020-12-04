@@ -13,8 +13,6 @@ phaseModColBw <- function(pCompArr,
                     function(bwc) rgb(t(col2rgb(bwc)), maxColorValue = 255))
 
   dims    <- dim(pCompArr$value)
-  argmt   <- Arg(pCompArr$value)
-
   intMod  <- floor(log(Mod(pCompArr$value), logBase))
 
   intIdx  <- intMod %% 2 + 1
