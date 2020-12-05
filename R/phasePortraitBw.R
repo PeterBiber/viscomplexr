@@ -1,6 +1,21 @@
-# -----------------------------------------------------------------------------
+# R package viscomplexr - phase portraits of functions in the
+# complex number plane
+# Copyright (C) 2020 Peter Biber
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-# Construction site for black-white phase portraits
+
 
 # -----------------------------------------------------------------------------
 
@@ -13,7 +28,6 @@ phaseModColBw <- function(pCompArr,
                     function(bwc) rgb(t(col2rgb(bwc)), maxColorValue = 255))
 
   dims    <- dim(pCompArr$value)
-  argmt   <- Arg(pCompArr$value)
 
   intMod  <- floor(log(Mod(pCompArr$value), logBase))
 
@@ -126,64 +140,64 @@ complexArrayPlotBw <- function(zMetaInfrm,
 
   # Run the color transformation function over each file
   pBwCol <- lapply(c(1:nrow(zMetaInfrm$metaZ)),
-                    function(i, zMetaInfrm, colCmd) {
+    function(i, zMetaInfrm, colCmd) {
 
-                      if(verbose) cat("\n.transforming block", i, "... ")
-                      # load a block (will soon become a list of pointers, hence the name)
-                      pListCompArr  <- get(load(zMetaInfrm$metaZ[i,]$wFileNames))
-                      # split it for parallel processing
-                      nCores   <- getDoParWorkers()
-                      uplow    <- verticalSplitIndex(nrow(pListCompArr), nCores)
+      if(verbose) cat("\n.transforming block", i, "... ")
+      # load a block (will soon become a list of pointers, hence the name)
+      pListCompArr  <- get(load(zMetaInfrm$metaZ[i,]$wFileNames))
+      # split it for parallel processing
+      nCores   <- getDoParWorkers()
+      uplow    <- verticalSplitIndex(nrow(pListCompArr), nCores)
 
-                      # here's the actual splitting, pListCompArr becomes a list of pointers
-                      pListCompArr  <- lapply(uplow, FUN = function(uplow, pListCompArr) {
-                        nwPtr <- newPointer(pListCompArr[c(uplow[1]:uplow[2]),])
-                        # if the split result has only one line, it will automatically become a
-                        # vector, which is undesired, because functions coming later require it
-                        # as a two-dimensional array. This is made sure here.
-                        if(uplow[1] == uplow[2]) {
-                          dim(nwPtr$value) <- c(1, length(nwPtr$value))
-                        }
-                        return(nwPtr)
-                      }, pListCompArr = pListCompArr)
+      # here's the actual splitting, pListCompArr becomes a list of pointers
+      pListCompArr  <- lapply(uplow, FUN = function(uplow, pListCompArr) {
+      nwPtr <- newPointer(pListCompArr[c(uplow[1]:uplow[2]),])
+      # if the split result has only one line, it will automatically become a
+      # vector, which is undesired, because functions coming later require it
+      # as a two-dimensional array. This is made sure here.
+      if(uplow[1] == uplow[2]) {
+        dim(nwPtr$value) <- c(1, length(nwPtr$value))
+      }
+      return(nwPtr)
+    }, pListCompArr = pListCompArr)
 
-                      # Parallel loop transforming the chunks into a color raster each;
-                      # giving back a list of pointers to the rasters
-                      if(verbose) cat("parallel loop starting ... ")
-                      pBwCol <- foreach(i = c(1:length(pListCompArr)),
-                                         .export  = c("phaseColhsv",
-                                                      "phaseModColhsv",
-                                                      "phaseAngColhsv",
-                                                      "phaseModAngColBw",
-                                                      "bwCols",
-                                                      "logBase",
-                                                      "pi2Div",
-                                                      "newPointer",
-                                                      "argOffset"),
-                                         .combine = c) %dopar% {
+    # Parallel loop transforming the chunks into a color raster each;
+    # giving back a list of pointers to the rasters
+    if(verbose) cat("parallel loop starting ... ")
+      pBwCol <- foreach(i = c(1:length(pListCompArr)),
+                        .export  = c("phaseColhsv",
+                                     "phaseModColhsv",
+                                     "phaseAngColhsv",
+                                     "phaseModAngColBw",
+                                     "bwCols",
+                                     "logBase",
+                                     "pi2Div",
+                                     "newPointer",
+                                     "argOffset"),
+                        .combine = c) %dopar% {
 
-                                           pBwCol  <- newPointer(NULL)
-                                           eval(parse(text = colCmd))      # Does not require a return value,
-                                           # changes color array via pointer
-                                           pListCompArr[[i]]$value <- NULL # Reduced here, but removed after
-                                           # the foreach loop
-                                           return(pBwCol)
-                                         } # foreach
-                      if(verbose) cat("done.")
+        pBwCol  <- newPointer(NULL)
+        eval(parse(text = colCmd))      # Does not require a return value,
+        # changes color array via pointer
+        pListCompArr[[i]]$value <- NULL # Reduced here, but removed after
+                                        # the foreach loop
+        return(pBwCol)
+      } # foreach
+      if(verbose) cat("done.")
 
-                      # Remove the original list of array pointers
-                      rm(pListCompArr)
+      # Remove the original list of array pointers
+      rm(pListCompArr)
 
-                      # Combine the color arrays in the value of the first pointer.
-                      # Free the others (rbindArraysbyPointer).
-                      #   Enforce (one-element-) list in case there is only one value
-                      #   (i.e. if foreach loop was executed sequentially, one core only)
-                      if(length(pBwCol) == 1) pBwCol <- list(pBwCol)
-                      pBwCol <- rbindArraysbyPointer(pBwCol)
+      # Combine the color arrays in the value of the first pointer.
+      # Free the others (rbindArraysbyPointer).
+      #   Enforce (one-element-) list in case there is only one value
+      #   (i.e. if foreach loop was executed sequentially, one core only)
+      if(length(pBwCol) == 1) pBwCol <- list(pBwCol)
+      pBwCol <- rbindArraysbyPointer(pBwCol)
 
-                      return(pBwCol)
-                    }, # function in lapply
-                    zMetaInfrm = zMetaInfrm, colCmd = colCmd
+      return(pBwCol)
+    }, # function in lapply
+    zMetaInfrm = zMetaInfrm, colCmd = colCmd
   ) # lapply
 
   # Now combine all blocks into the big raster ...
@@ -323,67 +337,66 @@ phasePortraitBw <- function(FUN, moreArgs = NULL, xlim, ylim,
   # This is where it really happens
   if(verbose) cat("\nEvaluation loop starting ... ")
   zMetaInfrm$metaZ$wFileNames <- vapply(c(1:nrow(zMetaInfrm$metaZ)),
-                                        function(i, zMetaInfrm, compFun,
-                                                 moreArgs) {
+    function(i, zMetaInfrm, compFun, moreArgs) {
 
-                                          if(verbose) cat("\n.processing block", i, "... ")
-                                          fileName       <- paste(zMetaInfrm$tempDir,
-                                                                  zMetaInfrm$metaZ[i,]$fileName, sep = "/")
-                                          z              <- get(load(fileName))
+      if(verbose) cat("\n.processing block", i, "... ")
+      fileName       <- paste(zMetaInfrm$tempDir,
+                              zMetaInfrm$metaZ[i,]$fileName, sep = "/")
+      z              <- get(load(fileName))
 
-                                          # Split z vertically (by rows) into nCores chunks to be processed
-                                          # in parallel
-                                          # - here's some pre-work
-                                          uplow <- verticalSplitIndex(dim(z)[1], nCores)
+      # Split z vertically (by rows) into nCores chunks to be processed
+      # in parallel
+      # - here's some pre-work
+      uplow <- verticalSplitIndex(dim(z)[1], nCores)
 
-                                          # - here's the actual splitting, z becomes a list
-                                          z <- lapply(uplow, FUN = function(uplow, z) {
-                                            return(z[c(uplow[1]:uplow[2]),])
-                                          }, z = z)
+      # - here's the actual splitting, z becomes a list
+      z <- lapply(uplow, FUN = function(uplow, z) {
+        return(z[c(uplow[1]:uplow[2]),])
+      }, z = z)
 
-                                          # Construct function call to be evaluated inside the parallel loop
-                                          if(is.null(moreArgs)) {
-                                            vCall <- "vapply(z[[i]], compFun, FUN.VALUE = complex(1))"
-                                          }
-                                          else {
-                                            vCall <- paste("vapply(z[[i]], compFun, FUN.VALUE = complex(1),",
-                                                           paste(names(moreArgs), "=", moreArgs, collapse = ","),
-                                                           ")")
-                                          }
-                                          vCall <- parse(text = vCall)
+      # Construct function call to be evaluated inside the parallel loop
+      if(is.null(moreArgs)) {
+        vCall <- "vapply(z[[i]], compFun, FUN.VALUE = complex(1))"
+      }
+      else {
+        vCall <- paste("vapply(z[[i]], compFun, FUN.VALUE = complex(1),",
+                       paste(names(moreArgs), "=", moreArgs, collapse = ","),
+                       ")")
+      }
+      vCall <- parse(text = vCall)
 
-                                          # Run the evaluation parallel on each core and put it together again
-                                          if(verbose) cat("parallel loop starting ... ")
+      # Run the evaluation parallel on each core and put it together again
+      if(verbose) cat("parallel loop starting ... ")
 
-                                          w <- foreach(i = c(1:length(z)), .combine = rbind,
-                                                       .export = c("invertFlip", "compFun")) %dopar% {
-                                                         # Make sure dimensions are correct, because
-                                                         # one-line arrays can become vectors mysteriously ...
-                                                         if(length(dim(z[[i]])) < 2) dims <- c(1, length(z[[i]]))
-                                                         else                        dims <- dim(z[[i]])
-                                                         if(invertFlip) z[[i]]            <- Conj(1 / z[[i]])
-                                                         array(eval(vCall), dim = dims)
-                                                       } # foreach i
-                                          if(verbose) cat("done.")
+      w <- foreach(i = c(1:length(z)), .combine = rbind,
+        .export = c("invertFlip", "compFun")) %dopar% {
+        # Make sure dimensions are correct, because
+        # one-line arrays can become vectors mysteriously ...
+        if(length(dim(z[[i]])) < 2) dims <- c(1, length(z[[i]]))
+        else                        dims <- dim(z[[i]])
+        if(invertFlip) z[[i]]            <- Conj(1 / z[[i]])
+        array(eval(vCall), dim = dims)
+      } # foreach i
+      if(verbose) cat("done.")
 
-                                          rm(z) # discard z array
+      rm(z) # discard z array
 
-                                          wFileName <- paste(formatC(
-                                            zMetaInfrm$metaZ[i,]$lower,
-                                            width =
-                                              trunc(log10(zMetaInfrm$metaZ$lower[nrow(zMetaInfrm$metaZ)])) + 1,
-                                            flag = "0"
-                                          ), # formatC
-                                          "wmat", zMetaInfrm$rndCode, ".RData", sep = "")
+      wFileName <- paste(formatC(
+          zMetaInfrm$metaZ[i,]$lower,
+          width =
+            trunc(log10(zMetaInfrm$metaZ$lower[nrow(zMetaInfrm$metaZ)])) + 1,
+          flag = "0"
+        ), # formatC
+        "wmat", zMetaInfrm$rndCode, ".RData", sep = "")
 
-                                          save(w, file = paste(zMetaInfrm$tempDir, wFileName, sep = "/"))
-                                          rm(w)
+      save(w, file = paste(zMetaInfrm$tempDir, wFileName, sep = "/"))
+      rm(w)
 
-                                          return(wFileName)
-                                        }, # function FUN
+      return(wFileName)
+    }, # function FUN
 
-                                        FUN.VALUE = character(1),
-                                        zMetaInfrm = zMetaInfrm, compFun = compFun, moreArgs = moreArgs
+    FUN.VALUE = character(1),
+    zMetaInfrm = zMetaInfrm, compFun = compFun, moreArgs = moreArgs
   ) # vapply
 
   # Transform into color values and plot it
@@ -428,5 +441,7 @@ phasePortraitBw <- function(FUN, moreArgs = NULL, xlim, ylim,
   invisible(TRUE) # For test purposes
 } # phasePortraitBw
 
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 
