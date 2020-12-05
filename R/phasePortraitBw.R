@@ -18,6 +18,21 @@
 
 
 # -----------------------------------------------------------------------------
+# function phaseModColBw
+
+# Calculates a hex two-color array based on an array of complex numbers, both
+# arrays handed over as pointers.
+
+# The function takes into account only the modulus values. The modulus of a
+# complex number is attributed to a zone based on the input parameter logBase,
+# and either assigned the first or the second value of the input variable
+# bwCols. Only in cases where the modulus cannot be determined (NaNs or Inf),
+# the third color in bwCols is used.
+
+# In more detail, for an input number's modulus, the logarithm with base
+# logBase is calculated and cut down to the next lower integer value. If this
+# is an even number, the first color of bwCols is taken. In case of an odd
+# number, the second color is used.
 
 phaseModColBw <- function(pCompArr,
                           pBwCol,
@@ -41,6 +56,22 @@ phaseModColBw <- function(pCompArr,
 } # phaseModColBw
 
 # -----------------------------------------------------------------------------
+# function phaseAngColBw
+
+# Calculates a hex two-color array based on an array of complex numbers, both
+# arrays handed over as pointers.
+
+# The function takes into account only the argument values. The argument of a
+# complex number is attributed to a zone based on the input parameters pi2Div
+# and argOffset. Then, it is either assigned to the first or the second value
+# of the input variable bwCols. Only in cases where the argeument cannot be
+# determined (NaNs) the third color in bwCols is used.
+
+# In more detail, the full angle (2*pi) is divided into p2Div zones, which are
+# numbered from 0 to pi2Div - 1 with increasing angle. Even and odd zone numbers
+# are attributed the first and the second color in bwCols, respectively.
+# Usually, the input parameter pi2Div should be an even number in order to avoid
+# the first and the last zone having the same color.
 
 phaseAngColBw <- function(pCompArr,
                           pBwCol,
@@ -66,6 +97,23 @@ phaseAngColBw <- function(pCompArr,
 } # phaseAngColBw
 
 # -----------------------------------------------------------------------------
+# function phaseModAngColBw
+
+# Calculates a hex two-color array based on an array of complex numbers, both
+# arrays handed over as pointers.
+
+# The function takes into account the modulus and the argument values and
+# colors the resulting grid in a chessboard-like alternation using the first
+# and the second color in the input variable bwCols. Only in cases where the
+# modulus or the argument cannot be determined (NaNs or Inf), the third color
+# in bwCols is used.
+
+# In more detail, for an input number's modulus, the logarithm with base
+# logBase is calculated and cut down to the next lower integer value. For the
+# argument, the full angle (2*pi) is divided into p2Div zones, which are
+# numbered from 0 to pi2Div - 1 with increasing angle. The sum of both integers
+# is taken, and if it is an even or an odd number, the first or the second
+# color from bwCols is used, respectively.
 
 phaseModAngColBw <- function(pCompArr,
                              pBwCol,
@@ -93,6 +141,16 @@ phaseModAngColBw <- function(pCompArr,
 } # phaseModAngColBw
 
 # -----------------------------------------------------------------------------
+# Function complexArrayPlotBw
+
+# Very much like the function complexArrayPlot, but tailored for two-color
+# plots to be created by calling phasePortraitBw.
+
+# Displays an array of complex numbers in an existing plot.
+# In order to do so,the temporary files that together form the array are
+# read from disk one by one, but each one is processed in a parallel loop.
+# The resulting array of hex color values is finally plotted as
+# a raster image.
 
 complexArrayPlotBw <- function(zMetaInfrm,
                                xlim,
