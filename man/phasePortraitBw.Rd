@@ -2,7 +2,7 @@
 % Please edit documentation in R/phasePortraitBw.R
 \name{phasePortraitBw}
 \alias{phasePortraitBw}
-\title{Black-and-white phase portraits}
+\title{Create two-color phase portraits of complex functions}
 \usage{
 phasePortraitBw(
   FUN,
@@ -14,7 +14,7 @@ phasePortraitBw(
   blockSizePx = 2250000,
   tempDir = NULL,
   nCores = parallel::detectCores(),
-  pType = "ma",
+  bwType = "ma",
   pi2Div = 18,
   logBase = exp(2 * pi/pi2Div),
   argOffset = 0,
@@ -28,14 +28,84 @@ phasePortraitBw(
 )
 }
 \arguments{
+\item{FUN}{The function to be visualized. There are two possibilities to
+provide it, a quoted character string, or a function object. The quoted
+character string must contain an expression that can be interpreted by R as
+a function of a complex number \code{z} (like e.g. "sin(z)", "(z^2 -
+1i)/(tan(z))", "1/4*z^2 - 10*z/(z^4+4)"). See the documentation of
+\code{\link{phasePortrait}} for a complete presentation of all options.}
+
+\item{moreArgs}{A named list of other arguments to FUN. The names must match
+the names of the arguments in FUN's definition.}
+
+\item{xlim}{The x limits (x1, x2) of the plot as a two-element numeric
+vector. Follows exactly the same definition as in
+\code{\link{plot.default}}. Here, \code{xlim} has to be interpreted as the
+plot limits on the real axis.}
+
+\item{ylim}{The y limits of the plot (y1, y2) to be used in the same way as
+\code{xlim}. Evidently, \code{ylim} indicates the plot limits on the
+imaginary axis.}
+
+\item{invertFlip}{If \code{TRUE}, the function is mapped over a z plane,
+which has been transformed to \code{1/z * exp(1i*pi)}. This is the
+projection required to plot the north Riemann hemisphere in the way
+proposed by \insertCite{wegert_visualcpx_2012;textual}{viscomplexr}, p. 41.
+Defaults to \code{FALSE}. If this option is chosen, the numbers at the axis
+ticks have another meaning than in the normal case. Along the real axis,
+they represent the real part of \code{1/z}, and along the imaginary axis,
+they represent the imaginary part of \code{1/z}. Thus, if you want
+annotation, you should choose appropriate axis labels like \code{xlab =
+Re(1/z)}, and \code{ylab = Im(1/z)}.}
+
+\item{res}{Desired resolution of the plot in dots per inch (dpi). Default is
+150 dpi. All other things being equal, \code{res} has a strong influence on
+computing times (double \code{res} means fourfold number of pixels to
+compute). A good approach could be to make a plot with low resolution (e.g.
+the default 150 dpi) first, adjust whatever required, and plot into a
+graphics file with high resolution after that.}
+
+\item{blockSizePx}{Number of pixels and corresponding complex values to be
+processed at the same time (see Details). Default is 2250000. This value
+gave good performance on older systems as well as on a high-end gaming
+machine, but some tweaking for your individual system might even improve
+things.}
+
+\item{tempDir}{\code{NULL} or a character string, specifying the name of the
+directory where the temporary files written by \code{phasePortrait} are
+stored. Default is \code{NULL}, which makes \code{phasePortrait} use the
+current R session's temporary directory. Note that if you specify another
+directory, it will be created if it does not exist already. Even though the
+temporary files are deleted after completing a phase portrait (unless the
+user specifies \code{deleteTempFiles = FALSE}, see below), the directory
+will remain alive even if has been created by \code{phasePortrait}.}
+
+\item{nCores}{Number of processor cores to be used in the parallel computing
+tasks. Defaults to the maximum number of cores available. Any number
+between 1 (serial computation) and the maximum number of cores available as
+indicated by \code{parallel::detectCores()} is accepted.}
+
+\item{bwType}{}
+
 \item{...}{}
 }
 \value{
 
 }
 \description{
-Black-and-white phase portraits
+\code{phasePortraitBw} allows for creating two-color phase portraits of
+complex functions based on a polar chessboard grid (cf.
+\insertCite{wegert_visualcpx_2012;textual}{viscomplexr}, p. 35). Compared to
+the full phase portraits that can be made with \code{\link{phasePortrait}},
+two-color portraits omit information. Especially in combination with full
+phase portraits they can be, however, very helpful tools for interpretation.
+Besides, two-color phase portraits have a special aesthetic appeal which is
+worth exploring for itself. In its parameters and its mode of operation,
+\code{phasePortraitBw} is very similar to \code{\link{phasePortrait}}.
 }
 \examples{
 
+}
+\references{
+\insertAllCited{}
 }
