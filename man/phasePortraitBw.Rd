@@ -198,9 +198,150 @@ All graphics parameters (\code{\link{par}}) can be freely set and the
 function \code{phasePortrait} accepts all parameters that can be passed to
 the \code{\link{plot.default}} function. This allows all kinds of plots -
 from scientific representations with annotated axes and auxiliary lines,
-notation, etc. to poster-like artistic pictures.
+notation, etc. to poster-like artistic pictures. The general mode of operation,
+including the usage of parallel processing is exactly the same as with
+\code{\link{phasePortrait}}, see details section there.
 }
 \examples{
+# Map the complex plane on itself
+
+# x11(width = 8, height = 8)     # Screen device commented out
+                                 # due to CRAN test requirements.
+                                 # Use it when trying this example
+phasePortraitBw("z", xlim = c(-2, 2), ylim = c(-2, 2),
+                xlab = "real", ylab = "imaginary",
+                verbose = FALSE, # Suppress progress messages
+                nCores = 2)      # Max. two cores allowed on CRAN
+                                 # not a limit for your own use
+\dontshow{
+# R CMD check: make sure any open connections are closed afterward
+foreach::registerDoSEQ()
+doParallel::stopImplicitCluster()
+}
+
+
+
+# Sinus with default colors and default bwType ("ma")
+
+# x11(width = 8, height = 8)       # Screen device commented out
+                                   # due to CRAN test requirements.
+                                   # Use it when trying this example
+phasePortraitBw("sin(z)",
+                xlim = c(-pi, pi),
+                ylim = c(-pi, pi),
+                nCores = 2)        # Max. two cores allowed on CRAN
+                                   # not a limit for your own use
+\dontshow{
+# R CMD check: make sure any open connections are closed afterward
+foreach::registerDoSEQ()
+doParallel::stopImplicitCluster()
+}
+
+
+
+
+# Sinus with custom colors and bwType "a"
+
+# x11(width = 8, height = 8)       # Screen device commented out
+                                   # due to CRAN test requirements.
+                                   # Use it when trying this example
+phasePortraitBw("sin(z)",
+                xlim = c(-pi, pi),
+                ylim = c(-pi, pi),
+                bwType = "a",
+                bwCols = c("darkgreen", "green", "gray"),
+                nCores = 2)        # Max. two cores allowed on CRAN
+                                   # not a limit for your own use
+\dontshow{
+# R CMD check: make sure any open connections are closed afterward
+foreach::registerDoSEQ()
+doParallel::stopImplicitCluster()
+}
+
+
+
+# Sinus with custom colors and bwType "m"
+
+# x11(width = 8, height = 8)       # Screen device commented out
+                                   # due to CRAN test requirements.
+                                   # Use it when trying this example
+phasePortraitBw("sin(z)",
+                xlim = c(-pi, pi),
+                ylim = c(-pi, pi),
+                bwType = "m",
+                bwCols = c("darkblue", "skyblue", "gray"),
+                nCores = 2)        # Max. two cores allowed on CRAN
+                                   # not a limit for your own use
+\dontshow{
+# R CMD check: make sure any open connections are closed afterward
+foreach::registerDoSEQ()
+doParallel::stopImplicitCluster()
+}
+
+
+
+# Map the complex plane on itself, show all bwType options
+\donttest{
+# x11(width = 8, height = 8)       # Screen device commented out
+                                   # due to CRAN test requirements.
+                                   # Use it when trying this example
+op <- par(mfrow = c(2, 2), mar = c(4.1, 4.1, 1.1, 1.1))
+for(bwType in c("ma", "a", "m")) {
+  phasePortraitBw("z", xlim = c(-2, 2), ylim = c(-2, 2),
+                  bwType = bwType,
+                  xlab = "real", ylab = "imaginary",
+                  verbose = FALSE, # Suppress progress messages
+                  nCores = 2)      # Max. two cores allowed on CRAN
+                                   # not a limit for your own use
+}
+# Add normal phase portrait for comparison
+phasePortrait("z", xlim = c(-2, 2), ylim = c(-2, 2),
+              xlab = "real", ylab = "imaginary",
+              verbose = FALSE,
+              pi2Div = 18,         # Use same angular division as default
+                                   # in phasePortraitBw
+              nCores = 2)
+par(op)
+
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
+}
+
+
+# A rational function, show all bwType options
+\donttest{
+# x11(width = 8, height = 8)       # Screen device commented out
+                                   # due to CRAN test requirements.
+                                   # Use it when trying this example
+funString <- "(z + 1.4i - 1.4)^2/(z^3 + 2)"
+op <- par(mfrow = c(2, 2), mar = c(4.1, 4.1, 1.1, 1.1))
+for(bwType in c("ma", "a", "m")) {
+  phasePortraitBw(funString, xlim = c(-2, 2), ylim = c(-2, 2),
+                  bwType = bwType,
+                  xlab = "real", ylab = "imaginary",
+                  verbose = FALSE, # Suppress progress messages
+                  nCores = 2)      # Max. two cores allowed on CRAN
+                                   # not a limit for your own use
+}
+# Add normal phase portrait for comparison
+phasePortrait(funString, xlim = c(-2, 2), ylim = c(-2, 2),
+              xlab = "real", ylab = "imaginary",
+              verbose = FALSE,
+              pi2Div = 18,         # Use same angular division as default
+                                   # in phasePortraitBw
+              nCores = 2)
+par(op)
+
+  \dontshow{
+  # R CMD check: make sure any open connections are closed afterward
+  foreach::registerDoSEQ()
+  doParallel::stopImplicitCluster()
+  }
+}
+
 
 }
 \references{
