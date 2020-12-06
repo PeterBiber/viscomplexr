@@ -37,7 +37,7 @@
 phaseModColBw <- function(pCompArr,
                           pBwCol,
                           logBase = exp(2*pi/18),
-                          bwCols = c("black", "grey95", "grey")) {
+                          bwCols = c("black", "gray95", "gray")) {
 
   hexCols <- sapply(bwCols,
                     function(bwc) rgb(t(col2rgb(bwc)), maxColorValue = 255))
@@ -77,7 +77,7 @@ phaseAngColBw <- function(pCompArr,
                           pBwCol,
                           pi2Div = 18,
                           argOffset = 0,
-                          bwCols = c("black", "grey95", "grey")) {
+                          bwCols = c("black", "gray95", "gray")) {
 
   hexCols <- sapply(bwCols,
                     function(bwc) rgb(t(col2rgb(bwc)), maxColorValue = 255))
@@ -120,7 +120,7 @@ phaseModAngColBw <- function(pCompArr,
                              pi2Div  = 18,
                              logBase = exp(2*pi/pi2Div),
                              argOffset = 0,
-                             bwCols = c("black", "grey95", "grey")) {
+                             bwCols = c("black", "gray95", "gray")) {
 
   hexCols <- sapply(bwCols,
                     function(bwc) rgb(t(col2rgb(bwc)), maxColorValue = 255))
@@ -288,6 +288,18 @@ complexArrayPlotBw <- function(zMetaInfrm,
 #' worth exploring for itself. In its parameters and its mode of operation,
 #' \code{phasePortraitBw} is very similar to \code{\link{phasePortrait}}.
 #'
+#' This function is intended to be used inside the framework of R base graphics.
+#' It plots into the active open graphics device where it will display the phase
+#' plot of a user defined function as a raster image. If no graphics device is
+#' open when called, the function will plot into the default graphics device.
+#' This principle allows to utilize the full functionality of R base graphics.
+#' All graphics parameters (\code{\link{par}}) can be freely set and the
+#' function \code{phasePortrait} accepts all parameters that can be passed to
+#' the \code{\link{plot.default}} function. This allows all kinds of plots -
+#' from scientific representations with annotated axes and auxiliary lines,
+#' notation, etc. to poster-like artistic pictures.
+#'
+#'
 #'
 #' @param FUN The function to be visualized. There are two possibilities to
 #'   provide it, a quoted character string, or a function object. The quoted
@@ -346,27 +358,105 @@ complexArrayPlotBw <- function(zMetaInfrm,
 #'   between 1 (serial computation) and the maximum number of cores available as
 #'   indicated by \code{parallel::detectCores()} is accepted.
 #'
-#' @param bwType
+#' @param bwType One of the three options for plotting, "m", "a", and "ma", to
+#'   be provided as a character string. Defaults to "ma". This parameter has a
+#'   comparable role to the parameter \code{pType} in
+#'   \code{\link{phasePortrait}}. Option "m" produces a plot that colors modulus
+#'   zones only. In more detail, for each input number's modulus, the logarithm
+#'   with base \code{logBase} (see below) is calculated and cut down to the next
+#'   lower integer value. If this is an even number, the first color given in
+#'   \code{bwCols} (see below) is taken. In case of an odd number, the second
+#'   color is used. Option "a" produces a plot that exclusively colors argument
+#'   (phase angle) zones. To that end, the full angle (2*pi) is divided into
+#'   \code{p2Div} (see below) zones, which are numbered from 0 to pi2Div - 1
+#'   with increasing angle. Such an integer number is attributed to the complex
+#'   number of interest according to the zone it falls into. Even and odd zone
+#'   numbers are mapped to the first and the second color in \code{bwCols},
+#'   respectively. For normal purposes, the input parameter \code{pi2Div} should
+#'   be an even number in order to avoid the first and the last zone having the
+#'   same color. With option "ma", a chessboard-like alternation of colors is
+#'   displayed over the tiles formed by the intersecting modulus and argument
+#'   zones (both determined separately as with the options "m" and "a").
 #'
+#' @param pi2Div Angle distance for the argument reference zones added for
+#'   \code{pType = "pma"} or \code{pType = "pa"}. The value has to be given as
+#'   an integer (reasonably) fraction of 2*pi (i.e. 360 degrees). Unlike with
+#'   \code{\link{phasePortrait}}, the default is 18; thus, reference zones are
+#'   delineated by default in distances of 2*pi/18, i.e. (20 degrees), starting
+#'   with 0 if not defined otherwise with the parameter \code{argOffset}. While
+#'   the default of \code{pi2Div} is 9 with \code{\link{phasePortrait}} for good
+#'   reasons (see there), setting \code{pi2Div} to an odd number is usually not
+#'   a good choice with two-color phase portraits, because the first and the
+#'   last phase angle zone would get the same color. However, as \code{pi2Div}
+#'   here defaults to double the value as with \code{\link{phasePortrait}}, both
+#'   plot types can be nicely compared even when using their specific defaults
+#'   of \code{pi2Div}.
 #'
+#' @param logBase Modulus ratio between the edges of the modulus zones in
+#'   \code{bwType} \code{"m"} and \code{"ma"}. As recommended by
+#'   \insertCite{wegert_visualcpx_2012;textual}{viscomplexr}, the default
+#'   setting is \code{logBase = exp(2*pi/pi2Div)}. This relation between the
+#'   parameters \code{logBase} and \code{pi2Div} ensures an analogue scaling of
+#'   the modulus and argument reference zones (see Details section in the
+#'   documentation of \code{\link{phasePortrait}}). Conveniently, for the
+#'   default \code{pi2Div = 18}, we obtain \code{logBase == 1.4177...}, which is
+#'   very close to the square root of 2. Thus, when crossing two modulus zones,
+#'   the modulus at the higher edge of the second zone is almost exactly two
+#'   times the value at the lower edge of the first zone.
 #'
-#' @param pi2Div
-#' @param logBase
-#' @param argOffset
-#' @param bwCols
-#' @param asp
-#' @param deleteTempFiles
-#' @param noScreenDevice
-#' @param autoDereg
-#' @param verbose
-#' @param ...
+#' @param argOffset The (complex number) argument in radians counterclockwise,
+#'   at which the argument (phase angle) reference zones are fixed, i.e. the
+#'   lower angle of the first zone. Default is 0.
+#'
+#' @param bwCols Color definition for the plot provided as a character vector of
+#'   length 3. Each element of the vector must be either a color name R
+#'   recognizes, or a hexadecimal color string like e.g. "#00FF11". The first
+#'   and the second color make the appearance of two-color phase portraits (see
+#'   \code{bwType} above for details), while the third color is reserved for
+#'   special cases, where the input value cannot sufficiently evaluated (NaNs,
+#'   partly Inf). Defaults to c("black", "gray95", "gray"), which leads to an
+#'   alternation of black and very light gray zones or tiles, and uses a neutral
+#'   gray in special cases.
+#'
+#' @param asp Aspect ratio y/x as defined in \code{\link{plot.window}}. Default
+#'   is 1, ensuring an accurate representation of distances between points on
+#'   the screen.
+#'
+#' @param deleteTempFiles If TRUE (default), all temporary files are deleted
+#'   after the plot is completed. Set it on FALSE only, if you know exactly what
+#'   you are doing - the temporary files can occupy large amounts of hard disk
+#'   space (see details).
+#'
+#' @param noScreenDevice Suppresses any graphical output if TRUE. This is only
+#'   intended for test purposes and makes probably only sense together with
+#'   \code{deleteTempFiles == FALSE}. For dimensioning purposes,
+#'   \code{phasePortraitBw} will use a 1 x 1 inch pseudo graphics device in this
+#'   case. The default for this parameter is \code{FALSE}, and you should change
+#'   it only if you really know what you are doing.
+#'
+#' @param autoDereg if TRUE, automatically register sequential backend after the
+#'   plot is completed. Default is FALSE, because registering a parallel backend
+#'   can be time consuming. Thus, if you want make several phase portraits in
+#'   succession, you should set \code{autoDereg} only for the last one, or
+#'   simply type \code{foreach::registerDoSEQ} after you are done. In any case,
+#'   you don't want to have an unused parallel backend lying about.
+#'
+#' @param verbose if TRUE (default), \code{phasePortraitBw} will continuously
+#'   write progress messages to the console. This is convenient for normal
+#'   purposes, as calculating larger phase portraits in higher resolution may
+#'   take several minutes. The setting \code{verbose = FALSE}, will suppress any
+#'   output to the console.
+#'
+#' @param ... All parameters accepted by the \code{\link{plot.default}}
+#'   function.
+#'
 #'
 #' @references
 #'   \insertAllCited{}
 #'
-#' @return
 #'
 #' @export
+#'
 #'
 #' @examples
 #'
@@ -380,7 +470,7 @@ phasePortraitBw <- function(FUN, moreArgs = NULL, xlim, ylim,
                             pi2Div = 18,
                             logBase = exp(2*pi/pi2Div),
                             argOffset = 0,
-                            bwCols = c("black", "grey95", "grey"),
+                            bwCols = c("black", "gray95", "gray"),
                             asp = 1,
                             deleteTempFiles = TRUE,
                             noScreenDevice = FALSE,

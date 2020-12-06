@@ -128,7 +128,7 @@ tasks. Defaults to the maximum number of cores available. Any number
 between 1 (serial computation) and the maximum number of cores available as
 indicated by \code{parallel::detectCores()} is accepted.}
 
-\item{pType}{One of the three options for plotting "p", "pa", "pm", and "pma"
+\item{pType}{One of the four options for plotting, "p", "pa", "pm", and "pma"
 as a character string. Defaults to "pma". Option "p" produces a mere phase
 plot, i.e. contains only colors for the complex numbers' arguments, but no
 reference lines at all. the option "pa" introduces shading zones that
@@ -145,7 +145,7 @@ includes both shading schemes.}
 
 \item{pi2Div}{Angle distance for the argument reference zones added for
 \code{pType = "pma"} or \code{pType = "pa"}. The value has to be given as
-an integer (reasonably) fraction of 2*pi (i.e. 360 degrees). the default is
+an integer (reasonably) fraction of 2*pi (i.e. 360 degrees). The default is
 9; thus, reference zones are delineated by default in distances of 2*pi/9,
 i.e. (40 degrees), starting with 0, i.e. the color red if not defined
 otherwise with the parameter \code{argOffset}. In contrast to the borders
