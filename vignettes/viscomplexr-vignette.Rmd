@@ -1,5 +1,5 @@
 ---
-title: "Phase Portraits of Complex Valued Functions with the R Package *viscomplexr*"
+title: "Phase Portraits of Complex Functions with the R Package *viscomplexr*"
 author: "Peter Biber"
 output: rmarkdown::html_vignette
 header-includes: \usepackage{amsmath}
@@ -294,7 +294,7 @@ While visualizing fractals is not among the original purposes of this package, *
 The classic visualizations of the Mandelbrot and the Julia set use a uniform color (usually black) for all points which belong to the set and color the points outside the set dependent on how quickly they diverge. Visualizations with *phasePortrait*, in contrast, color the points inside the sets by the argument and modulus of the number to which the series described above converges (or, more precisely, at which the iteration terminates). While the results are visually appealing (please try the code examples we provide below), they are not unambiguous, as the sequences that define the sets do not always converge to one single value, but to limit cycles. 
 
 The following code plots an overview picture of the Mandelbrot set. Note that the function `mandelbrot` is called with a considerably low value (30) for the parameter `itDepth` which defines the number of iterations to be calculated (default is 500). This is because we are using *phasePortrait* for plotting into a graphics window with a comparatively low resolution (see section [defining image quality](#img_qual) for how to obtain high-quality phase portraits). While a high number of iterations produces a more accurate representation of the set, the resulting filigree structures might become hardly visible or even invisible when the resolution to be plotted on is low.
-
+ 
 ```{r, eval=FALSE}
 x11(width = 8, height = 2/3 * 8)      # Open graphics window on screen
 op <- par(mar = c(0, 0, 0, 0))        # Do not leave plot margins
@@ -377,6 +377,57 @@ phasePortrait(juliaNormal,
 par(op)
 dev.off()
 ```
+
+### Phase portraits based on a polar chessboard
+
+Since version 1.1.0, *viscomplexr* provides the function `phasePortraitBw` which allows for creating two-color phase portraits of complex functions based on a polar chessboard grid (cf. @wegert_visualcpx_2012, p. 35). Compared to the full phase portraits that can be made with `phasePortrait`, two-color portraits omit information. Especially in combination with full phase portraits they can be, however, very helpful tools for interpretation. Besides, two-color phase portraits have a special aesthetic appeal which is worth exploring for itself. In its parameters and its mode of operation, `phasePortraitBw` is very similar to `phasePortrait` (see the documentations of both functions for details). The parameters `pi2Div` and `logBase` have exactly the same effect as with `phasePortrait`. Instead of the parameter `pType`, `phasePortraitBw` has the parameter `bwType` which allows for the three settings "m", "a", and "ma". These produce two-color phase portraits which take into account the modulus only, the argument (phase angle), only, and the combination of both, respectively. Plots made with the latter option show a chessboard-like color alteration over the tiles resulting from the intersection of modulus and argument zones. The following code maps the complex plane to itself, comparing all three options of `bwType`. It also adds a standard phase portrait for comparison.
+
+```{r, eval=FALSE}
+# Map the complex plane on itself, show all bwType options
+
+x11(width = 8, height = 8)
+op <- par(mfrow = c(2, 2), mar = c(4.1, 4.1, 1.1, 1.1))
+for(bwType in c("ma", "a", "m")) {
+  phasePortraitBw("z", xlim = c(-2, 2), ylim = c(-2, 2),
+                  bwType = bwType,
+                  xlab = "real", ylab = "imaginary",
+                  nCores = 2) # Increase or leave out for higher performance
+}
+# Add normal phase portrait for comparison
+phasePortrait("z", xlim = c(-2, 2), ylim = c(-2, 2),
+              xlab = "real", ylab = "imaginary",
+              pi2Div = 18,         # Use same angular division as default
+                                   # in phasePortraitBw
+              nCores = 2)     # Increase or leave out for higher performance
+par(op)
+
+```
+
+Note that the parameter `pi2Div` should not be chosen as an odd number when working with `phasePortraitBw`. In this case, the first and the last phase angle zone would obtain the same color, which is probably an undesired effect for most applications. While `pi2Div = 9` is the default setting in `phasePortrait` for good reasons (see above), its default in `phasePortraitBw` is 18. Also by default, the parameter `logBase` is linked to `pi2Div` in the same way as by default in `phasePortrait` (`logBase = exp(2*pi/pi2Div)`). So, if defaults for both, `phasePortrait` and `phasePortraitBw` are used, each zone of the former covers two zones of the latter. In the code above, however, `pi2Div` was set to 18 also in the call to `phasePortrait` for direct comparability. This is also the case in the code below, which displays a rational function.
+
+```{r eval=FALSE}
+# A rational function, show all bwType options
+
+x11(width = 8, height = 8)
+funString <- "(z + 1.4i - 1.4)^2/(z^3 + 2)"
+op <- par(mfrow = c(2, 2), mar = c(4.1, 4.1, 1.1, 1.1))
+for(bwType in c("ma", "a", "m")) {
+  phasePortraitBw(funString, xlim = c(-2, 2), ylim = c(-2, 2),
+                  bwType = bwType,
+                  xlab = "real", ylab = "imaginary",
+                  nCores = 2) # Increase or leave out for higher performance
+}
+# Add normal phase portrait for comparison
+phasePortrait(funString, xlim = c(-2, 2), ylim = c(-2, 2),
+              xlab = "real", ylab = "imaginary",
+              pi2Div = 18,         # Use same angular division as default
+                                   # in phasePortraitBw
+              nCores = 2)     # Increase or leave out for higher performance
+par(op)
+
+```
+
+While the letters 'Bw' in `phasePortraitBw` stand for 'black/white', the natural colors for such chessboard plots, the user is not limited to these. The choice of colors is defined by the parameter `bwCols` which, by default, is set as `bwCols = c("black", "gray95", "gray")`. The first and the second color are used for coloring the alternating zones, while the last color is used in cases where the function of interest produces results which cannot be sufficiently evaluated for modulus or argument (`NaN`, partly `Inf`). Note that the second color, `"gray95"` is almost, but not exactly white, which contrasts 'white' tiles against a white background in a visually unobtrusive way. The parameter `bwCols` can be freely changed; values must be either color names that **R** can interpret (call `colors()` for a list) or hexadecimal color strings like e.g. `"#00FF32"` (the format is `"#RRGGBB"` with 'RR', 'GG', and 'BB' representing red, green, and blue with an allowed value range of `00` to `FF` for each).
 
 
 ## Aesthetic hints {#hints_artistic}
