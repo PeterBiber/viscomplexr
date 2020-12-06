@@ -223,9 +223,8 @@ complexArrayPlotBw <- function(zMetaInfrm,
     # giving back a list of pointers to the rasters
     if(verbose) cat("parallel loop starting ... ")
       pBwCol <- foreach(i = c(1:length(pListCompArr)),
-                        .export  = c("phaseColhsv",
-                                     "phaseModColhsv",
-                                     "phaseAngColhsv",
+                        .export  = c("phaseModColBw",
+                                     "phaseAngColBw",
                                      "phaseModAngColBw",
                                      "bwCols",
                                      "logBase",
@@ -480,26 +479,27 @@ complexArrayPlotBw <- function(zMetaInfrm,
 #'
 #'
 #' # Sinus with default colors and default bwType ("ma")
-#'
+#' \donttest{
 #' # x11(width = 8, height = 8)       # Screen device commented out
 #'                                    # due to CRAN test requirements.
 #'                                    # Use it when trying this example
 #' phasePortraitBw("sin(z)",
 #'                 xlim = c(-pi, pi),
 #'                 ylim = c(-pi, pi),
+#'                 verbose = FALSE,
 #'                 nCores = 2)        # Max. two cores allowed on CRAN
 #'                                    # not a limit for your own use
-#' \dontshow{
-#' # R CMD check: make sure any open connections are closed afterward
-#' foreach::registerDoSEQ()
-#' doParallel::stopImplicitCluster()
+#'   \dontshow{
+#'   # R CMD check: make sure any open connections are closed afterward
+#'   foreach::registerDoSEQ()
+#'   doParallel::stopImplicitCluster()
+#'   }
 #' }
 #'
 #'
 #'
-#'
 #' # Sinus with custom colors and bwType "a"
-#'
+#' \donttest{
 #' # x11(width = 8, height = 8)       # Screen device commented out
 #'                                    # due to CRAN test requirements.
 #'                                    # Use it when trying this example
@@ -508,18 +508,20 @@ complexArrayPlotBw <- function(zMetaInfrm,
 #'                 ylim = c(-pi, pi),
 #'                 bwType = "a",
 #'                 bwCols = c("darkgreen", "green", "gray"),
+#'                 verbose = FALSE,
 #'                 nCores = 2)        # Max. two cores allowed on CRAN
 #'                                    # not a limit for your own use
-#' \dontshow{
-#' # R CMD check: make sure any open connections are closed afterward
-#' foreach::registerDoSEQ()
-#' doParallel::stopImplicitCluster()
+#'   \dontshow{
+#'   # R CMD check: make sure any open connections are closed afterward
+#'   foreach::registerDoSEQ()
+#'   doParallel::stopImplicitCluster()
+#'   }
 #' }
 #'
 #'
 #'
 #' # Sinus with custom colors and bwType "m"
-#'
+#' \donttest{
 #' # x11(width = 8, height = 8)       # Screen device commented out
 #'                                    # due to CRAN test requirements.
 #'                                    # Use it when trying this example
@@ -528,12 +530,14 @@ complexArrayPlotBw <- function(zMetaInfrm,
 #'                 ylim = c(-pi, pi),
 #'                 bwType = "m",
 #'                 bwCols = c("darkblue", "skyblue", "gray"),
+#'                 verbose = FALSE,
 #'                 nCores = 2)        # Max. two cores allowed on CRAN
 #'                                    # not a limit for your own use
-#' \dontshow{
-#' # R CMD check: make sure any open connections are closed afterward
-#' foreach::registerDoSEQ()
-#' doParallel::stopImplicitCluster()
+#'   \dontshow{
+#'   # R CMD check: make sure any open connections are closed afterward
+#'   foreach::registerDoSEQ()
+#'   doParallel::stopImplicitCluster()
+#'   }
 #' }
 #'
 #'
