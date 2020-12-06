@@ -53,7 +53,7 @@ par(op)
 ```
 <br>    
     
-With *viscomplexr* you can create phase portraits of functions on the complex number plane. While the main purpose of this package are scientific, educational and technical applications, the sheer beauty of phase portraits may be motivation enough to explore the fascinating realm of complex functions. The package is embedded in the framework of R base graphics and allows for print quality graphics files. To a great deal, *viscomplexr* follows the conventions published by @wegert_visualcpx_2012. 
+With *viscomplexr* you can create phase portraits of functions on the complex number plane. While the main purpose of this package are scientific, educational and technical applications, the sheer beauty of phase portraits may be motivation enough to explore the fascinating realm of complex functions. The package is embedded in the framework of R base graphics and allows for print quality graphics files. To a great deal, *viscomplexr* follows the conventions published by @wegert_visualcpx_2012. Since version 1.1.0, the package also allows for plots based on polar chessboards.
 
 For a detailed step-by-step introduction see the package's vignette. After installing *viscomplexr* on your machine, you can view the vignette by calling:
 ``` r

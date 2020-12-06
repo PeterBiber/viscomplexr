@@ -28,6 +28,8 @@ phase portraits may be motivation enough to explore the fascinating
 realm of complex functions. The package is embedded in the framework of
 R base graphics and allows for print quality graphics files. To a great
 deal, *viscomplexr* follows the conventions published by Wegert (2012).
+Since version 1.1.0, the package also allows for plots based on polar
+chessboards.
 
 For a detailed step-by-step introduction see the package’s vignette.
 After installing *viscomplexr* on your machine, you can view the
