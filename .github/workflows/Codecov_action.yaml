@@ -1,0 +1,15 @@
+name: Codecov for viscomplexr
+steps:
+- name: Setup R
+  uses: actions/setup-r@master
+- name: Codecov
+- uses: actions/checkout@master
+- uses: codecov/codecov-action@v1.0.15
+  with:
+    token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+    file: ./coverage.xml # optional
+    files: ./coverage1.xml,./coverage2.xml # optional
+    flags: unittests # optional
+    name: codecov-umbrella # optional
+    fail_ci_if_error: true # optional (default = false)
+    verbose: true # optional (default = false)
