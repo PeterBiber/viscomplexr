@@ -32,6 +32,7 @@
 #' @importFrom foreach    registerDoSEQ
 #' @importFrom foreach    %dopar%
 #' @importFrom Rdpack     reprompt
+#' @importFrom grDevices  col2rgb rgb
 
 # in order to avoid package build warning for the i iterator
 # in the foreach loops
