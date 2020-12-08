@@ -32,6 +32,7 @@
 #' @importFrom foreach    registerDoSEQ
 #' @importFrom foreach    %dopar%
 #' @importFrom Rdpack     reprompt
+#' @importFrom grDevices  col2rgb rgb
 
 # in order to avoid package build warning for the i iterator
 # in the foreach loops
@@ -180,7 +181,7 @@ phaseModAngColhsv <- function(pCompArr, pHsvCol, lambda = 7, gamma = 9/10,
                                   (log(vMod, logBase) %% 1)^(1/lambda))))
 
   vAng    <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
-                    (((argmt - argOffset)/ (2 * pi / pi2Div)) %% 1)^(1/lambda))
+                    (((argmt - argOffset) / (2 * pi / pi2Div)) %% 1)^(1/lambda))
 
   v       <- ifelse(is.nan(pCompArr$value), hsvNaN["v"],
                     darkestShade + (1 - darkestShade) *
@@ -758,7 +759,7 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #'   between 1 (serial computation) and the maximum number of cores available as
 #'   indicated by \code{parallel::detectCores()} is accepted.
 #'
-#' @param pType One of the three options for plotting "p", "pa", "pm", and "pma"
+#' @param pType One of the four options for plotting, "p", "pa", "pm", and "pma"
 #'   as a character string. Defaults to "pma". Option "p" produces a mere phase
 #'   plot, i.e. contains only colors for the complex numbers' arguments, but no
 #'   reference lines at all. the option "pa" introduces shading zones that
@@ -775,7 +776,7 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #'
 #' @param pi2Div Angle distance for the argument reference zones added for
 #'   \code{pType = "pma"} or \code{pType = "pa"}. The value has to be given as
-#'   an integer (reasonably) fraction of 2*pi (i.e. 360 degrees). the default is
+#'   an integer (reasonably) fraction of 2*pi (i.e. 360 degrees). The default is
 #'   9; thus, reference zones are delineated by default in distances of 2*pi/9,
 #'   i.e. (40 degrees), starting with 0, i.e. the color red if not defined
 #'   otherwise with the parameter \code{argOffset}. In contrast to the borders

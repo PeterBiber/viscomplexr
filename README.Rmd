@@ -25,7 +25,11 @@ if(Sys.info()[["sysname"]] == "Windows")
 
 <!-- badges: start -->
 [![R build status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
+[![metacran downloads](https://cranlogs.r-pkg.org/badges/grand-total/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
+[![Codecov test coverage](https://codecov.io/gh/PeterBiber/viscomplexr/branch/develop/graph/badge.svg)](https://codecov.io/gh/PeterBiber/viscomplexr?branch=master)
+[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 <!-- badges: end -->
 
 <!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not executed -->
@@ -56,7 +60,7 @@ knitr::include_graphics(banner_path)
 ```
 <br>    
     
-With *viscomplexr* you can create phase portraits of functions on the complex number plane. While the main purpose of this package are scientific, educational and technical applications, the sheer beauty of phase portraits may be motivation enough to explore the fascinating realm of complex-valued functions. The package is embedded in the framework of R base graphics and allows for print quality graphics files. To a great deal, *viscomplexr* follows the conventions published by @wegert_visualcpx_2012. 
+With *viscomplexr* you can create phase portraits of functions on the complex number plane. While the main purpose of this package are scientific, educational and technical applications, the sheer beauty of phase portraits may be motivation enough to explore the fascinating realm of complex functions. The package is embedded in the framework of R base graphics and allows for print quality graphics files. To a great deal, *viscomplexr* follows the conventions published by @wegert_visualcpx_2012. Since version 1.1.0, the package also allows for plots based on polar chessboards.
 
 For a detailed step-by-step introduction see the package's vignette. After installing *viscomplexr* on your machine, you can view the vignette by calling:
 ``` r
@@ -66,13 +70,13 @@ Besides making you acquainted with how to work with the package, the vignette al
 
 ## Installation
 
-The released version of *viscomplexr* can be installed from [CRAN](https://CRAN.R-project.org) with:
+In order to work with viscomplexr you require an installation of R (version >= 4.0) on your system. The installation files for R itself are available [here](https://cran.r-project.org/). The released version of *viscomplexr* can be installed from [CRAN](https://CRAN.R-project.org/package=viscomplexr) with:
 
 ``` r
 install.packages("viscomplexr")
 ```
 
-And the development version from [GitHub](https://github.com/) with:
+And the development version from [GitHub](https://github.com/PeterBiber/viscomplexr) with:
 
 ``` r
 # install.packages("devtools")
