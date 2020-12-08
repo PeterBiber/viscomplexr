@@ -11,7 +11,7 @@ status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.sv
 [![metacran
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
 [![Codecov test
-coverage](https://codecov.io/gh/PeterBiber/viscomplexr/branch/master/graph/badge.svg)](https://codecov.io/gh/PeterBiber/viscomplexr?branch=master)
+coverage](https://codecov.io/gh/PeterBiber/viscomplexr/branch/develop/graph/badge.svg)](https://codecov.io/gh/PeterBiber/viscomplexr?branch=master)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 <!-- badges: end -->
