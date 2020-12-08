@@ -1,3 +1,19 @@
+## Update submission (version 1.1.0)
+For version 1.1.0 the function *phasePortraitBw* was implemented which plots phase portraits based on polar chessboard grids. This is a substantial update; it virtually doubles the graphical scope provided by the package.
+
+### Test environments
+* local Ubuntu 20.04 install, R 4.0.3
+* local Windows 8.1 install, R 4.0.3
+* local Windows 10 install, R 4.0.2
+* windows-latest (Microsoft Windows Server 2019) on github, R 4.0.3
+* macOS-latest (Mac OS X) on github, R 4.0.3
+* ubuntu-20.04 (release) on github, R 4.0.3
+* ubuntu-20.04 (devel) on github, R-devel
+
+### R CMD check results
+0 errors | 0 warnings | 0 notes
+
+
 ## Resubmission
 Thanks to Gregor Seyer for his constructive review of the first submission. I fixed all issues pointed out. Find below G. Seyer's remarks and my answers to each of them.
 
