@@ -38,4 +38,4 @@ Suggests:
 VignetteBuilder: knitr
 LinkingTo: 
     Rcpp
-URL: https://peterbiber.github.io/viscomplexr, https://github.com/PeterBiber/viscomplexr
+URL: https://peterbiber.github.io/viscomplexr/, https://github.com/PeterBiber/viscomplexr/
