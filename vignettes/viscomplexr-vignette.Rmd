@@ -155,9 +155,9 @@ phasePortrait(exp, xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "pm",
 par(op) # reset graphics parameters to previous values                         
 ```
 
-If we now define the argument `pi2Div` as a number $n\:(n\in\mathbb{N})$ and use it for determining the angular difference $\Delta\varphi=\frac{2\pi}{n}$ between two subsequent phase angle reference lines, our default link between `pi2Div` and `logBase` (which is the ratio $b$ of the moduli at two subsequent iso-modulus lines) establishes $b=\mathrm{e}^{\Delta\varphi}$. This means, if we add $\Delta\varphi$ to the argument of any $w=\mathrm{e}^z\:(z\in\mathbb{C})$ or increase its modulus by the factor $\mathrm{e}^{\Delta\varphi}$, both are equidistant reference line steps in a plot of $f(z)=\mathrm{e}^z$. We visualize this with the following **R** code:
+If we now define the argument `pi2Div` as a number $n\:(n\in\mathbb{N})$ and use it for determining the angular difference $\Delta\varphi=\frac{2\pi}{n}$ between two subsequent phase angle reference lines, our default link between `pi2Div` and `logBase` (which is the ratio $b$ of the moduli at two subsequent iso-modulus lines) establishes $b=\mathrm{e}^{\Delta\varphi}$. This means, if we add $\Delta\varphi$ to the argument of any $w=\mathrm{e}^z\:(z\in\mathbb{C})$ or increase its modulus by the factor $\mathrm{e}^{\Delta\varphi}$, both are equidistant reference line steps in a plot of $f(z)=\mathrm{e}^z$. You can visualize this with the following **R** code (active 7" x 2.8" screen graphics device suggested, e.g. `x11(width = 7, height = 2.8)`):
 
-```{r figure_8, fig.width=7, fig.height=2.8, results='hide', fig.align='center', fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\mathrm{e}^z$ portrayed with the default coupling of `pi2Div` and `logBase` as implemented in *phasePortrait*.'}
+```{r eval=FALSE, figure_8, fig.width=7, fig.height=2.8, results='hide', fig.align='center', fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\mathrm{e}^z$ portrayed with the default coupling of `pi2Div` and `logBase` as implemented in *phasePortrait*.'}
 # divide graphics device into three regions and adjust plot margins 
 op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
 for(n in c(6, 9, 18)) {
