@@ -13,6 +13,9 @@ For version 1.1.0 the function *phasePortraitBw* was implemented which plots pha
 ### R CMD check results
 0 errors | 0 warnings | 0 notes
 
+### Downstream dependencies
+There are currently no downstream dependencies for this package.
+
 
 ## Resubmission
 Thanks to Gregor Seyer for his constructive review of the first submission. I fixed all issues pointed out. Find below G. Seyer's remarks and my answers to each of them.
