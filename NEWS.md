@@ -1,5 +1,7 @@
 # viscomplexr 1.1.0
 
+Published on CRAN 11. Dec 2020
+
 Implemented the function *phasePortraitBw* which allows for phase portraits based on polar chessboard grids. Such plots have a special aesthetic appeal and can at the same time support the interpretation of standard phase portraits.
 
 # viscomplexr 1.0.1
