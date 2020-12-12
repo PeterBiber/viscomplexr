@@ -39,8 +39,7 @@ While the text of this article is virtually identical with the package's vignett
 ### Visualizing the complex plane
 The package does not contain many functions, but provides a very versatile workhorse called *phasePortrait*. We will explore some of its key features now. Let us first consider a function that maps a complex number $z \in \mathbb{C}$ on itself, i.e. $f(z)=z$. After attaching the package with `library(viscomplexr)`, a phase portrait of this function is obtained very easily with:
 
-
-```{r, figure_1, fig.width = 7, fig.height = 7, results = 'hide', fig.align='center', cache = FALSE, fig.show = 'hold', fig.cap = 'Phase portrait of the function $f(z)=z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
+```{r, figure_1, fig.width = 8, fig.height = 8, results = 'hide', fig.align='center', cache = FALSE, fig.show = 'hold', fig.cap = 'Phase portrait of the function $f(z)=z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
 phasePortrait("z", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
               xlab = "real", ylab = "imaginary", main = "f(z) = z")
 
@@ -55,7 +54,7 @@ The other lines visible in the figure above relate to the modulus $r$. One such 
 ### Visual structuring - the argument *pType*
 When working with the function *phasePortrait*, it might not always be desirable to display all of these reference lines and zonings. The argument `pType` allows for four different options as illustrated in the next example:
 
-```{r figure_2, fig.width=7, fig.height=7, results="hide", fig.align='center', fig.show='hold', cache=TRUE, fig.cap= "Different options for including reference lines with the argument `pType`."}
+```{r figure_2, fig.width=8, fig.height=8, results="hide", fig.align='center', fig.show='hold', cache=TRUE, fig.cap= "Different options for including reference lines with the argument `pType`."}
 # divide graphics device into four regions and adjust plot margins 
 op <- par(mfrow = c(2, 2), 
           mar   = c(0.25, 0.55, 1.10, 0.25)) 
@@ -80,7 +79,7 @@ f(z)=\frac{(3+2\mathrm{i}+z)(-5+5\mathrm{i}+z)}{(-2-2\mathrm{i}+z)^2}
 $$
 Evidently, this function has two zeroes, $z_1=-3-2\mathrm{i}$, and $z_2=5-5\mathrm{i}$. It also has a second order pole at $z_3=2+2\mathrm{i}$. We make a phase portrait of this function over the same cutout of the complex plane as we did in the figures above. When calling *phasePortrait* with such simple functions, it is most convenient to define them as as a quoted character string in **R** syntax containing the variable $z$. Run the code below for displaying the phase portrait (active 7" x 7" screen graphics device suggested, e.g. `x11()`).  
 
-```{r figure_3, fig.width=7, fig.height=7, results='hide', fig.align='center', cache=TRUE, fig.show='hold', fig.cap='Phase portrait of the function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
+```{r figure_3, fig.width=8, fig.height=8, results='hide', fig.align='center', cache=TRUE, fig.show='hold', fig.cap='Phase portrait of the function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$.'}
 op <- par(mar = c(5.1, 4.1, 2.1, 2.1), cex = 0.8) # adjust plot margins 
                                                   # and general text size
 phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", 
@@ -93,7 +92,7 @@ The resulting figure nicely displays the function's two zeroes and the pole. Not
 
 Now, suppose we want to change the density of the reference lines for the phase angle $\varphi$. This can be done by way of the argument `pi2Div`. For usual applications, `pi2Div` should be a natural number $n\:(n\in\mathbb{N})$. It defines the angle $\Delta\varphi$ between two adjacent reference lines as a fraction of the round angle, i.e. $\Delta\varphi=\frac{2\pi}{n}$. The default value of `pi2Div` is 9, i.e. $\Delta\varphi=\frac{2\pi}{9}=40°$. Let's plot our function in three flavors of `pi2Div`, namely, 6, 9 (the default), and 18, resulting in $\Delta\varphi$ values of $\frac{\pi}{3}=60°$, $\frac{2\pi}{9}=40°$, and $\frac{\pi}{9}=20°$. In order to suppress the iso-modulus lines and display the argument reference lines only, we are using `pType = "pa"`.
 
-```{r figure_4, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ portrayed with three different settings of `pi2Div` and `pType = "pa"`.'}
+```{r figure_4, fig.width=8, fig.height=3.2, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ portrayed with three different settings of `pi2Div` and `pType = "pa"`.'}
 # divide graphics device into three regions and adjust plot margins 
 op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
 for(n in c(6, 9, 18)) {
@@ -107,7 +106,7 @@ par(op) # reset graphics parameters to previous values
 
 So far, this is exactly, what had to be expected. But see what happens when we choose the default `pType`, `"pma"` which also adds modulus reference lines:
 
-```{r figure_5, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ portrayed with three different settings of `pi2Div` and `pType = "pma"`.'}
+```{r figure_5, fig.width=8, fig.height=3.2, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ portrayed with three different settings of `pi2Div` and `pType = "pma"`.'}
 # divide graphics device into three regions and adjust plot margins 
 op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
 for(n in c(6, 9, 18)) {
@@ -123,7 +122,7 @@ Evidently, the choice of `pi2Div` has influenced the density of the iso-modulus 
 
 Before we demonstrate the special property of this linkage between $n$ and $b$, i.e. between `pi2Div` and `logBase`, we shortly show, that they can be decoupled in *phasePortrait* without any complication. In the following example, we want to define the density of the iso-modulus lines in a way that the modulus triples when traversing three zones in the direction of ascending moduli. Clearly, this requires to define `logBase` as $b=\sqrt[3]{3}\approx1.44$. Thus, when moving from one iso-modulus line to the next higher one, the modulus has increased by a factor of about $1.4$. One line further, it has about doubled (${\sqrt[3]{3}}^{2}\approx2.08$), and another line further it has exactly tripled. While varying `pi2Div` exactly as in the previous example, we now keep `logBase` constant at $\sqrt[3]{3}$. Run the code below for visualizing this (active 7" x 2.8" screen graphics device suggested, e.g. `x11(width = 7, height = 2.8)`).
 
-```{r figure_6, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ portrayed with decoupled settings of `pi2Div` and `logBase`.'}
+```{r figure_6, fig.width=8, fig.height=3.2, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ portrayed with decoupled settings of `pi2Div` and `logBase`.'}
 # divide graphics device into three regions and adjust plot margins 
 op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
 for(n in c(6, 9, 18)) {
@@ -137,7 +136,7 @@ par(op) # reset graphics parameters to previous values
 
 In order to understand why by default the parameters `pi2Div` and `logBase` are linked as described above, we consider the exponential function $f(z)=\mathrm{e}^z$. We can write $z=r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)$ and thus $f(z)=\mathrm{e}^{r\cdot(\cos\varphi+\mathrm{i}\cdot\sin\varphi)}$ or $w=f(z)=\mathrm{e}^{r\cdot\cos\varphi}\cdot\mathrm{e}^{\mathrm{i}\cdot r\cdot\sin\varphi}$. The modulus of $w$ is $\mathrm{e}^{r\cdot\cos\varphi}$ and its argument is $r\cdot\sin\varphi$ with $\Re(z)=r\cdot\cos\varphi$ and $\Im(z)=r\cdot \sin\varphi$. So, the modulus and the argument of $w=\mathrm{e}^z$ depend solely on the real and the imaginary part of $z$, respectively. This can be easily verified with a phase portrait of $f(z)=\mathrm{e}^z$. Run the code below for displaying the phase portrait (active 7" x 7" screen graphics device suggested, e.g. `x11()`). Note that in the call to *phasePortrait* we hand over the `exp` function directly as an object. Alternatively, the quoted strings `"exp(z)"` or `"exp"` can be used as well (see section [ways to provide functions to *phasePortrait*](#ways_functions) below). 
 
-```{r figure_7, fig.width = 5, fig.height = 5, results = 'hide', fig.align='center', fig.show='hold', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=\\mathrm{e}^z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$ with iso-modulus lines.'}
+```{r figure_7, fig.width = 8, fig.height = 8, results = 'hide', fig.align='center', fig.show='hold', cache = TRUE, fig.cap = 'Phase portrait of the function $f(z)=\\mathrm{e}^z$ in the window $\\left|\\Re(z)\\right| < 8.5$ and $\\left|\\Im(z)\\right| < 8.5$ with iso-modulus lines.'}
 op <- par(mar = c(5.1, 4.1, 2.1, 2.1), cex = 0.8) # adjust plot margins 
                                                   # and general text size
 phasePortrait(exp, xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "pm",
@@ -147,7 +146,7 @@ par(op) # reset graphics parameters to previous values
 
 If we now define the argument `pi2Div` as a number $n\:(n\in\mathbb{N})$ and use it for determining the angular difference $\Delta\varphi=\frac{2\pi}{n}$ between two subsequent phase angle reference lines, our default link between `pi2Div` and `logBase` (which is the ratio $b$ of the moduli at two subsequent iso-modulus lines) establishes $b=\mathrm{e}^{\Delta\varphi}$. This means, if we add $\Delta\varphi$ to the argument of any $w=\mathrm{e}^z\:(z\in\mathbb{C})$ or increase its modulus by the factor $\mathrm{e}^{\Delta\varphi}$, both are equidistant reference line steps in a plot of $f(z)=\mathrm{e}^z$. We visualize this with the following **R** code:
 
-```{r figure_8, fig.width=7, fig.height=2.8, results='hide', fig.align='center', fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\mathrm{e}^z$ portrayed with the default coupling of `pi2Div` and `logBase` as implemented in *phasePortrait*.'}
+```{r figure_8, fig.width=8, fig.height=3.2, results='hide', fig.align='center', fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\mathrm{e}^z$ portrayed with the default coupling of `pi2Div` and `logBase` as implemented in *phasePortrait*.'}
 # divide graphics device into three regions and adjust plot margins 
 op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
 for(n in c(6, 9, 18)) {
@@ -169,7 +168,7 @@ v = s + (1-s)\cdot x^{1/\lambda}
 $$
 For modulus zone shading at a point $z$ in the complex plane when portraying a function $f(z)$, $x$ is the fractional part of $\log_b{f(z)}$, with the base $b$ being the parameter `logBase` that defines the modulus reference zoning (see above). For shading argument reference zones, $x$ is simply the difference between the upper and the lower angle of an argument reference zone, linearly mapped to the range $[0, 1[$. The following code generates a $3\times3$ matrix of phase portraits of $f(z)=\tan{z^2}$ with $\lambda$ and $s$ changing along the rows and columns, respectively. Run the code for visualizing these concepts (active 7" x 7" screen graphics device suggested, e.g. `x11()`).
 
-```{r figure_9, fig.width=7, fig.height=7, fig.show='hold', results='hide', fig.align='center', cache=TRUE, fig.cap='Tuning reference zone contrast with the parameters `darkestShade` (column-wise, 0, 0.2, 0.4), and `lambda` (row-wise, 0.1, 1, 10).'}
+```{r figure_9, fig.width=8, fig.height=8, fig.show='hold', results='hide', fig.align='center', cache=TRUE, fig.cap='Tuning reference zone contrast with the parameters `darkestShade` (column-wise, 0, 0.2, 0.4), and `lambda` (row-wise, 0.1, 1, 10).'}
 op <- par(mfrow = c(3, 3), mar = c(0.2, 0.2, 0.2, 0.2))
 for(lb in c(0.1, 1, 10)) {
   for(dS in c(0, 0.2, 0.4)) {
@@ -186,7 +185,7 @@ Additional possibilities exist for tuning the interplay of modulus and argument 
 ### Be aware of branch cuts
 When exploring functions with *phasePortrait*, discontinuities of certain functions can become visible as abrupt color changes. Typical examples are integer root functions which, for a given point $z, z\in\mathbb{C}\setminus\lbrace0\rbrace$ in the complex plane, can attain $n$ values with $n$ being the root's degree. It takes, so to speak, $n$ full cycles around the origin of the complex plane in order to cover all values obtained from a function $f(z)=z^{1/n}, n\in\mathbb{N}$. This is illustrated for the third root function in the figure below. 
 
-```{r figure_10, fig.width=7, fig.height=2.7, results='hide', fig.align='center', fig.show='hold', cache=TRUE, fig.cap='Three phase portraits with branch cuts (dashed line), illustrating the three values of $f(z)=z^{1/3}$, $z \\in \\mathbb{C} \\setminus \\lbrace 0 \\rbrace$. The transitions between the phase portraits are indicated by same-coloured arrows pointing at the branch cuts.'}
+```{r figure_10, fig.width=8, fig.height=3.2, results='hide', fig.align='center', fig.show='hold', cache=TRUE, fig.cap='Three phase portraits with branch cuts (dashed line), illustrating the three values of $f(z)=z^{1/3}$, $z \\in \\mathbb{C} \\setminus \\lbrace 0 \\rbrace$. The transitions between the phase portraits are indicated by same-coloured arrows pointing at the branch cuts.'}
 op <- par(mfrow = c(1, 3), mar = c(0.4, 0.2, 0.2, 0.2))
 for(k in 0:2) {
   FUNstring <- paste0("z^(1/3) * exp(1i * 2*pi/3 * ", k, ")")
@@ -213,7 +212,7 @@ Obviously, each of the three portraits has a branch cut along the negative real 
 
 While the function $f(z)=z^{1/3}$ could be fully covered with three phase portraits, $f(z)=\log z$ has an infinite number of branches. As the (natural) logarithm of any complex number $z=r\cdot\mathrm{e}^{i\cdot\varphi}, r>0$ is $\log z=\log r+\mathrm{i}\cdot\varphi$, it is evident that the imaginary part of $\log z$ increases linearly with the argument of $z$, $\varphi$. In terms of phase portraits, this means an infinite number of stacked 'sheets' in either direction, clockwise and counterclockwise. Neighboring sheets connect at a branch cut. We illustrate this below with a phase portrait of $\log z=\log r+\mathrm{i}\cdot(\varphi+k\cdot2\pi), r > 0, \varphi\in\left[0,2\pi\right[$ for $k=-1, 0, 1$.
 
-```{r figure_11, fig.width=7, fig.height=2.7, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Three branches of $\\log z=\\log r+\\mathrm{i}\\cdot(\\varphi + k\\cdot2\\pi), r>0, \\varphi\\in\\left[0,2\\pi\\right[$, with $k=-1,0,1$. The branch cuts are marked with dashed white lines.'}
+```{r figure_11, fig.width=8, fig.height=3.2, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Three branches of $\\log z=\\log r+\\mathrm{i}\\cdot(\\varphi + k\\cdot2\\pi), r>0, \\varphi\\in\\left[0,2\\pi\\right[$, with $k=-1,0,1$. The branch cuts are marked with dashed white lines.'}
 op <- par(mfrow = c(1, 3), mar = c(0.4, 0.2, 0.2, 0.2))
 for(k in -1:1) {
   FUNstring <- paste0("log(Mod(z)) + 1i * (Arg(z) + 2 * pi * ", k, ")") 
@@ -230,7 +229,7 @@ A convenient way to visualize the whole complex number plane is based on a stere
 
 If we perform a stereographic projection of the southern hemisphere from the north pole to the complex plane (and look at the plane's upper - the northern - side), this obviously results in a phase portrait on the untransformed complex plane as were all examples shown so far in this text. We can perform an analogue procedure for the northern hemisphere, projecting it from the south pole to the complex plane. We now want to think of the northern hemisphere projection as layered on top of the southern hemisphere projection, for the northern hemisphere, which it depicts, is naturally also on top of the southern hemisphere. If, in a 'normal' visualization of the complex plane (orthogonal real and imaginary axes), a point at any location represents a complex number $z$, a point at the same location in the northern hemisphere projection is mapped into $1/z$. The origin is mapped into the point at infinity. Technically, this mapping can be easily achieved when calling the function `phasePortrait` by setting the flag `invertFlip = TRUE` (default is `FALSE`). The resulting map is, in addition, rotated counter-clockwise around the point at infinity by an angle of $\pi$. As @wegert_visualcpx_2012 argues, this way of mapping has a convenient visual effect: Consider two phase portraits of the same function, one made with `invertFlip = FALSE` and the other one with `invertFlip = TRUE`. Both are shown side by side (see the pairs of phase portraits in the next two figures below). This can be imagined as a view into a Riemann sphere that has been cut open along the equator and swung open along a hinge in the line $\Re(z)=1$ (if the southern hemisphere is at the left side) or $\Re(z)=-1$ (if the northern hemisphere is at the left side). In order to highlight the Riemann sphere in phase portraits if desired, we provide the function `riemannMask`. Let's first demonstrate this for the function $f(z)=z$.
 
-```{r figure_12, fig.width=7, fig.height=3.5, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Mapping the complex number plane on the Riemann sphere. Left: lower (southern) hemisphere; right upper (northern hemisphere). Folding both figures face to face along a vertical line in the middle between them can be imagined as closing the Riemann sphere.'}
+```{r figure_12, fig.width=8, fig.height=4, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Mapping the complex number plane on the Riemann sphere. Left: lower (southern) hemisphere; right upper (northern hemisphere). Folding both figures face to face along a vertical line in the middle between them can be imagined as closing the Riemann sphere.'}
 op <- par(mfrow = c(1, 2), mar = rep(0.1, 4))
 # Southern hemisphere
 phasePortrait("z", xlim = c(-1.4, 1.4), ylim = c(-1.4, 1.4), 
@@ -249,7 +248,7 @@ f(z)=\frac{(z^{2}+\frac{1}{\sqrt{2}}+\frac{\mathrm{i}}{\sqrt{2}})\cdot(z+\frac{1
 $$
 This function has two zeroes exactly located on the unit circle, $z_1=\mathrm{e}^{\mathrm{i}\frac{5\pi}{8}}$, and $z_2=\mathrm{e}^{\mathrm{i}\frac{13\pi}{8}}$. Moreover, it has another zero inside the unit circle, $z_3=\frac{1}{\sqrt{2}}\cdot\mathrm{e}^{\mathrm{i}\frac{5\pi}{4}}$. Equally obvious, it has a pole exactly on the unit circle, $z_4=1$. Less obvious, it has a double pole, $z_5$, at the point at infinity. The code required for producing the following figure looks somewhat bulky, but most lines are required for annotating the zeroes and poles. Note that the real axis coordinates of the northern hemisphere's annotation do not have to be multiplied with $-1$ in order to take into account the rotation of the inverted complex plane. By calling `phasePortrait` with `invertFlip = TRUE` the coordinate system of the plot is already set up correctly and will remain so for subsequent operations.
 
-```{r figure_13, fig.width=7, fig.height=3.7, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Riemann sphere plot of the function $f(z)=\\frac{(z^{2}+\\frac{1}{\\sqrt{2}}+\\frac{\\mathrm{i}}{\\sqrt{2}})\\cdot(z+\\frac{1}{2}+\\frac{\\mathrm{i}}{2})}{z-1}$. Annotated are the zeroes $z_1$, $z_2$, $z_3$, and the poles $z_4$, $z_5$.'}
+```{r figure_13, fig.width=8, fig.height=4.2, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Riemann sphere plot of the function $f(z)=\\frac{(z^{2}+\\frac{1}{\\sqrt{2}}+\\frac{\\mathrm{i}}{\\sqrt{2}})\\cdot(z+\\frac{1}{2}+\\frac{\\mathrm{i}}{2})}{z-1}$. Annotated are the zeroes $z_1$, $z_2$, $z_3$, and the poles $z_4$, $z_5$.'}
 op <- par(mfrow = c(1, 2), mar = c(0.1, 0.1, 1.4, 0.1))
 # Define function
 FUNstring <- "(z^2 + 1/sqrt(2) * (1 + 1i)) * (z + 1/2*(1 + 1i)) / (z - 1)"
@@ -286,7 +285,7 @@ The classic visualizations of the Mandelbrot and the Julia set use a uniform col
 
 The following code plots an overview picture of the Mandelbrot set. Note that the function `mandelbrot` is called with a considerably low value (30) for the parameter `itDepth` which defines the number of iterations to be calculated (default is 500). This is because we are using *phasePortrait* for plotting into a graphics window with a comparatively low resolution (see section [defining image quality](#img_qual) for how to obtain high-quality phase portraits). While a high number of iterations produces a more accurate representation of the set, the resulting filigree structures might become hardly visible or even invisible when the resolution to be plotted on is low.
 
-```{r, figure_14, fig.width=7, fig.height=2/3*7, fig.align='center', results='hide', fig.show='hold', cache=TRUE}
+```{r, figure_14, fig.width=8, fig.height=2/3*8, fig.align='center', results='hide', fig.show='hold', cache=TRUE}
 op <- par(mar = c(0, 0, 0, 0))        # Do not leave plot margins
 phasePortrait(mandelbrot, moreArgs = list(itDepth = 30),
               xlim = c(-2, 1), ylim = c(-1, 1),
@@ -380,6 +379,52 @@ knitr::include_graphics("figure_Julia_Example_2.png")
 ```
 
 
+## Phase portraits based on a polar chessboard
+
+Since version 1.1.0, *viscomplexr* provides the function `phasePortraitBw` which allows for creating two-color phase portraits of complex functions based on a polar chessboard grid (cf. @wegert_visualcpx_2012, p. 35). Compared to the full phase portraits that can be made with `phasePortrait`, two-color portraits omit information. Especially in combination with full phase portraits they can be, however, very helpful tools for interpretation. Besides, two-color phase portraits have a special aesthetic appeal which is worth exploring for itself. In its parameters and its mode of operation, `phasePortraitBw` is very similar to `phasePortrait` (see the documentations of both functions for details). The parameters `pi2Div` and `logBase` have exactly the same effect as with `phasePortrait`. Instead of the parameter `pType`, `phasePortraitBw` has the parameter `bwType` which allows for the three settings "m", "a", and "ma". These produce two-color phase portraits which take into account the modulus only, the argument (phase angle), only, and the combination of both, respectively. Plots made with the latter option show a chessboard-like color alteration over the tiles resulting from the intersection of modulus and argument zones. The following code maps the complex plane to itself, comparing all three options of `bwType`. It also adds a standard phase portrait for comparison.
+
+```{r, figure_15, fig.width=8, fig.height=8, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap="Two color portraits of the function $f(z)=z$ made with `phasePortraitBw` and `byType` 'ma' (top left), 'a' (top right), and 'm' (bottom left) together with a full phasePortrait (bottom right)."}
+# Map the complex plane on itself, show all bwType options
+
+op <- par(mfrow = c(2, 2), mar = c(4.1, 4.1, 1.1, 1.1))
+for(bwType in c("ma", "a", "m")) {
+  phasePortraitBw("z", xlim = c(-2, 2), ylim = c(-2, 2),
+                  bwType = bwType,
+                  xlab = "real", ylab = "imaginary")
+}
+# Add normal phase portrait for comparison
+phasePortrait("z", xlim = c(-2, 2), ylim = c(-2, 2),
+              xlab = "real", ylab = "imaginary",
+              pi2Div = 18)         # Use same angular division as is default
+                                   # in phasePortraitBw
+par(op)
+
+```
+
+Note that the parameter `pi2Div` should not be chosen as an odd number when working with `phasePortraitBw`. In this case, the first and the last phase angle zone would obtain the same color, which is probably an undesired effect for most applications. While `pi2Div = 9` is the default setting in `phasePortrait` for good reasons (see above), its default in `phasePortraitBw` is 18. Also by default, the parameter `logBase` is linked to `pi2Div` in the same way as by default in `phasePortrait` (`logBase = exp(2*pi/pi2Div)`). So, if defaults for both, `phasePortrait` and `phasePortraitBw` are used, each zone of the former covers two zones of the latter. In the code above, however, `pi2Div` was set to 18 also in the call to `phasePortrait` for direct comparability. This is also the case in the code below, which displays a rational function.
+
+```{r figure_16, fig.width=8, fig.height=8, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap="Two color portraits of the function $f(z)=\\frac{(z+\\sqrt{2}\\cdot\\mathrm{i}-\\sqrt{2})^2}{z^3 + 2}$ made with `phasePortraitBw` and `byType` 'ma' (top left), 'a' (top right), and 'm' (bottom left) together with a full phasePortrait (bottom right)."}
+# A rational function, show all bwType options
+
+funString <- "(z + sqrt(2)*1i - sqrt(2))^2/(z^3 + 2)"
+op <- par(mfrow = c(2, 2), mar = c(4.1, 4.1, 1.1, 1.1))
+for(bwType in c("ma", "a", "m")) {
+  phasePortraitBw(funString, xlim = c(-2, 2), ylim = c(-2, 2),
+                  bwType = bwType,
+                  xlab = "real", ylab = "imaginary")
+}
+# Add normal phase portrait for comparison
+phasePortrait(funString, xlim = c(-2, 2), ylim = c(-2, 2),
+              xlab = "real", ylab = "imaginary",
+              pi2Div = 18)         # Use same angular division as is default
+                                   # in phasePortraitBw
+par(op)
+
+```
+
+While the letters 'Bw' in `phasePortraitBw` stand for 'black/white', the natural colors for such chessboard plots, the user is not limited to these. The choice of colors is defined by the parameter `bwCols` which, by default, is set as `bwCols = c("black", "gray95", "gray")`. The first and the second color are used for coloring the alternating zones, while the last color is used in cases where the function of interest produces results which cannot be sufficiently evaluated for modulus or argument (`NaN`, partly `Inf`). Note that the second color, `"gray95"` is almost, but not exactly white, which contrasts 'white' tiles against a white background in a visually unobtrusive way. The parameter `bwCols` can be freely changed; values must be either color names that **R** can interpret (call `colors()` for a list) or hexadecimal color strings like e.g. `"#00FF32"` (the format is `"#RRGGBB"` with 'RR', 'GG', and 'BB' representing red, green, and blue with an allowed value range of `00` to `FF` for each).
+
+
 ## Aesthetic hints {#hints_artistic}
 While phase portraits were originally invented for scientific and technical purposes, their aesthetic quality is a feature in itself. In this section, we give a few technical hints that might be helpful for obtaining appealing graphics. We will be not only talking about features implemented in this package, but also mention some useful options provided by R base graphics. A general recommendation when plotting for maximum aesthetic results is also to first check out the function to be plotted with lower resolutions (e.g. the default 150 dpi), and a smaller format (but with the desired device aspect ratio), adjust the domain (`xlim`, `ylim`), and all other parameters of *phasePortrait* you might want to change (including the parameters `gamma` and `stdSaturation` we have not mentioned in this vignette, so far). Only if you are satisfied with the result at that stage, you should start the run with the desired final resolution and format, as plots at high resolution and large formats may be time-consuming depending on your hardware (see also the section [defining image quality](#img_qual)). When using the function `riemannMask` you could try changing the mask's transparency (`alphaMask`) and it's color (`colMask`). Often, black is a good alternative to the default white). Besides such simple issues there are, however, a few points we will talk about in more detail below.
 
@@ -403,39 +448,27 @@ par(op)
 ```
 
 ### Dealing with axes
-Usually, when aiming for mainly aesthetic effects, you want to suppress plot axes from being drawn. As phase *phasePortrait* accepts, via its `...` argument, all arguments also accepted by **R**'s `plot.default`,
+Usually, when aiming for mainly aesthetic effects, you want to suppress plot axes from being drawn. As phase *phasePortrait* and *phasePortraitBw* accept, via the `...` argument, all arguments also accepted by **R**'s `plot.default`,
 this can be easily achieved by providing the argument `axes = FALSE`:
 
-```{r, eval=FALSE, fig.width=7, fig.height=2/3*7, fig.align='center', results='hide', fig.show='hold', cache=TRUE}
+```{r, figure_17, fig.width=8, fig.height=2/3*8, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap="Phase portrait called with `axes = FALSE`. Note the unequal figure margins. These are **R**-default in order to reserve space for the usual annotations. Adjusting them is possible by means of the graphics parameters `mar` or `mai` as explained above."}
 phasePortrait("tan(z^3 + 1/2 - 2i)/(1 - 1i - z)", 
               xlim = c(-6, 6), ylim = c(-3, 3),
               axes = FALSE)
 ```
 
-Note the unequal figure margins. These are **R**-default in order to reserve space for the usual annotations. Adjusting them is possible by means of the graphics parameters `mar` or `mai` as explained above.
+This does, however, not only suppress both axes, but also the box usually drawn around a plot. If such a box is desired, it can be simply added afterwards by calling `box()`:
 
-<!-- Load the plot as an image, 150 dpi -->
-```{r, echo=FALSE, out.width='100%'}
-knitr::include_graphics("figure_axes_left_away.png")
-```
-
-Note that this does not only suppress both axes, but also the box usually drawn around a plot. If such a box is desired, it can be simply added afterwards by calling `box()`:
-
-```{r, eval=FALSE, fig.width=7, fig.height=2/3*7, fig.align='center', results='hide', fig.show='hold', cache=TRUE}
+```{r, figure_18, fig.width=8, fig.height=2/3*8, fig.align='center', results='hide', fig.show='hold', cache=TRUE}
 phasePortrait("tan(z^3 + 1/2 - 2i)/(1 - 1i - z)", 
               xlim = c(-6, 6), ylim = c(-3, 3),
               axes = FALSE)
 box()
 ```
 
-<!-- Load the plot as an image, 150 dpi -->
-```{r, echo=FALSE, out.width='100%'}
-knitr::include_graphics("figure_with_box.png")
-```
-
 If axes are desired together with a special aesthetic appeal (e.g. for presentations), it is worth trying out a black background and white axes. However, there are unexpected hurdles to take, before the result looks as it should:
 
-```{r, eval=FALSE, fig.width=7, fig.height=2/3*7, fig.align='center', results='hide', fig.show='hold', cache=TRUE}
+```{r, figure_19, fig.width=8, fig.height=2/3*8, fig.align='center', results='hide', fig.show='hold', dev.args=list(bg = 'black', fg = 'white'), cache=TRUE}
 # set background and foreground colors
 op <- par(bg = "black", fg = "white")
 # Setting the parameter fg has an effect on the box, the axes, and the axes' 
@@ -453,19 +486,14 @@ phasePortrait("tan(z^3 + 1/2 - 2i)/(2 - 1i - z)",
 par(op)
 ```
 
-<!-- Load the plot as an image, 150 dpi -->
-```{r, echo=FALSE, out.width='100%'}
-knitr::include_graphics("figure_black_bg_white_text.png")
-```
-
 Note that by default the axes are constructed with an overhang of 4% beyond the ranges given with `xlim` and `ylim` at each end. More often than not this looks nice, but sometimes it is undesired, e.g. when a phase portrait is intended to cover the full display without any frame and margin. This behavior is due to the graphical parameters `xaxs` and `yaxs` (axis style) being set to 'r' ('regular') by default. Setting these parameters as `xaxs = "i"` and `yaxs = "i"` ('internal'), no overhang is added. Both, `xaxs` and `yaxs`, can be either set in a call to `par()` or handed as arguments to *phasePortrait*. We will come back to these parameters in the following section.
 
 ### Device ratio and margins
 You might want to plot a phase portrait that fully covers the graphics device. The following code example shows how to achieve this. First, it is necessary to set the plot margins to zero (note that the outer margins are zero by default, so, usually, there is no need to care for them). Second, as *phasePortrait* uses an aspect ratio of 1 by default, `xlim` and `ylim` have to exactly match the aspect ratio of the graphics device to be plotted in. In order to facilitate this, we provide the functions `ylimFromXlim` and `xlimFromYlim`. In the example, we use the former in order to match `xlim` and `ylim` a device aspect ratio of 16/9. Third, in order to omit the 4% axis overhang (would look like a margin), the parameters `xaxs` and `yaxs` are set to "i". Setting `axes` to FALSE is not absolutely necessary in this case, but is good style.
 
-```{r, eval=FALSE}
+```{r, figure_20, fig.width=8, fig.height=9/16*8, fig.align='center', results='hide', fig.show='hold', cache=TRUE}
 # Open graphics device with 16/9 aspect ratio and 7 inch width
-x11(width = 7, height = 9/16 * 7)
+x11(width = 8, height = 9/16 * 8)
 op <- par(mar = c(0, 0, 0, 0)) # Set plot margins to zero
 xlim <- c(-3, 3)
 # Calculate ylim with desired center fitting the desired aspect ratio
@@ -477,16 +505,11 @@ phasePortrait(jacobiTheta, moreArgs = list(tau = 1i/5 + 1/5), pType = "p",
 par(op)
 ```
 
-<!-- Load the plot as an image, 150 dpi -->
-```{r, echo=FALSE, out.width='100%'}
-knitr::include_graphics("figure_full_cover_device.png")
-```
-
 Not many changes are necessary for obtaining a phase portrait like above but with a frame. A convenient way to do this is to set the outer margins of the graphics device in inches with the graphical parameter `omi` and the background to the desired color. Adding this to the code above, however, leads to differing horizontal and vertical frame widths. This occurs because, due to the margin setting, the required ratio of the `xlim` and `ylim` ranges is no longer exactly 16/9. The precise ratio has to be calculated and provided to `ylimFromXlim` as shown in the code example below.
 
-```{r, eval=FALSE}
+```{r, figure_21, fig.width=8, fig.height=9/16*8, fig.align='center', results='hide', fig.show='hold', cache=TRUE, dev.args=list(bg='black')}
 # Open graphics device with 16/9 aspect ratio and a width of 7 inches 
-x11(width = 7, height = 9/16 * 7)
+x11(width = 8, height = 9/16 * 8)
 # Set plot margins to zero, outer margins to 1/7 inch,
 #   and background color to black
 outerMar <- 1/7 # outer margin width in inches
@@ -505,19 +528,14 @@ phasePortrait("sin(jacobiTheta(z, tau))/z", moreArgs = list(tau = 1i/5 + 1/5),
 par(op)
 ```
 
-<!-- Load the plot as an image, 150 dpi -->
-```{r, echo=FALSE, out.width='100%'}
-knitr::include_graphics("figure_equal_margins.png")
-```
-
 
 ## Technical moreabouts {#tech_moreabouts}
 This chapter details a few technical points which might be of interest for optimizing the results obtained by using the **R** package at hand. We talk about different ways to [provide functions](#ways_functions) to *phasePortrait*, and about how to control [image quality](#img_qual). And there is more: The function *phasePortrait* has to perform several memory and time critical operations. In order to keep memory utilization on a reasonable level and to optimize computing times, the function works with [temporary files](#tempfiles) and [parallel processing](#par_proc). We explain both below, because the user can influence their behavior. For avoiding unnecessary copying of big arrays, *phasePortrait* makes also use of pointers, but as there is no related control option for the user, we reserve this for a later version of this vignette.
 
 
-### Ways to provide functions to *phasePortrait* {#ways_functions}
+### Ways to provide functions to *phasePortrait* and *phasePortraitBw* {#ways_functions}
 #### Quoted character strings
-Any function to be visualized with *phasePortrait* must be provided as the argument `FUN`. In some cases (see below), the argument `moreArgs` can turn out useful in combination with `FUN`. Probably the easiest way of defining `FUN` is a character string which is an expression **R** can evaluate as a function of a complex number $z$. See some examples:
+Any function to be visualized with *phasePortrait* or *phasePortraitBw* must be provided as the argument `FUN`. In some cases (see below), the argument `moreArgs` can turn out useful in combination with `FUN`. Probably the easiest way of defining `FUN` is a character string which is an expression **R** can evaluate as a function of a complex number $z$. See some examples:
 
 ```{r, eval = FALSE}
 # Note that 'FUN =' is not required if the argument to FUN is handed to 
