@@ -48,7 +48,7 @@ set itself. For numbers that can be identified as not being elements of the
 Mandelbrot set, we obtain a NaN+NaNi value; for all other numbers,
 the function gives back the value after a user-defined number of iterations.
 The function has been implemented in C++; it runs fairly fast." />
-<meta property="og:image" content="https://peterbiber.github.io/viscomplexr/docs/_pkgdown/figure_banner_300dpi.png" />
+<meta property="og:image" content="https://peterbiber.github.io/viscomplexr/figure_banner_300dpi.png" />
 <meta property="og:image:alt" content="Phase portrait of of the function f(z)=sin(z^3/(z-1i+2))" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@biber_peter" />
@@ -84,7 +84,7 @@ The function has been implemented in C++; it runs fairly fast." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">viscomplexr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@ The function has been implemented in C++; it runs fairly fast." />
         <li>
   <a href="../index.html">
     <span class="fas fa fas fa-home fa-lg"></span>
-
+     
   </a>
 </li>
 <li>
@@ -102,7 +102,7 @@ The function has been implemented in C++; it runs fairly fast." />
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
-
+     
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -119,16 +119,16 @@ The function has been implemented in C++; it runs fairly fast." />
         <li>
   <a href="https://github.com/PeterBiber/viscomplexr/">
     <span class="fab fa fab fa-github fa-lg"></span>
-
+     
   </a>
 </li>
       </ul>
-
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-
+      
 
       </header>
 
@@ -183,9 +183,9 @@ iteration for <code>n = 0, ..., itDepth - 1</code> and permanently checks for
 returns <code>NaN+NaNi</code>. In all other cases, it returns <code>a[itDepth]</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other fractals:
+    <div class='dont-index'><p>Other fractals: 
 <code><a href='juliaNormal.html'>juliaNormal</a>()</code></p>
-<p>Other maths:
+<p>Other maths: 
 <code><a href='blaschkeProd.html'>blaschkeProd</a>()</code>,
 <code><a href='jacobiTheta.html'>jacobiTheta</a>()</code>,
 <code><a href='juliaNormal.html'>juliaNormal</a>()</code></p></div>
@@ -201,6 +201,11 @@ returns <code>NaN+NaNi</code>. In all other cases, it returns <code>a[itDepth]</
   ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1.2</span>, <span class='fl'>1.2</span><span class='op'>)</span>,
   hsvNaN <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
   nCores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>          <span class='co'># Max. two cores on CRAN, not a limit for your use</span>
+  <span class='co'># \dontshow{</span>
+  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
+  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='co'># }</span>
 <span class='co'># }</span>
 
 </pre>
@@ -225,7 +230,7 @@ returns <code>NaN+NaNi</code>. In all other cases, it returns <code>a[itDepth]</
       </footer>
    </div>
 
-
+  
 
 
   </body>

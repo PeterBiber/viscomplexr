@@ -42,7 +42,7 @@
 <meta property="og:title" content="Jacobi theta function — jacobiTheta" />
 <meta property="og:description" content="Approximation of &quot;the&quot; Jacobi theta function using the first nn
 factors in its triple product version" />
-<meta property="og:image" content="https://peterbiber.github.io/viscomplexr/docs/_pkgdown/figure_banner_300dpi.png" />
+<meta property="og:image" content="https://peterbiber.github.io/viscomplexr/figure_banner_300dpi.png" />
 <meta property="og:image:alt" content="Phase portrait of of the function f(z)=sin(z^3/(z-1i+2))" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@biber_peter" />
@@ -78,7 +78,7 @@ factors in its triple product version" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">viscomplexr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@ factors in its triple product version" />
         <li>
   <a href="../index.html">
     <span class="fas fa fas fa-home fa-lg"></span>
-
+     
   </a>
 </li>
 <li>
@@ -96,7 +96,7 @@ factors in its triple product version" />
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
-
+     
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -113,16 +113,16 @@ factors in its triple product version" />
         <li>
   <a href="https://github.com/PeterBiber/viscomplexr/">
     <span class="fab fa fab fa-github fa-lg"></span>
-
+     
   </a>
 </li>
       </ul>
-
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-
+      
 
       </header>
 
@@ -174,7 +174,7 @@ has been implemented in C++, but it is only slightly faster than well-crafted
 R versions, because the calculation can be nicely vectorized in R.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other maths:
+    <div class='dont-index'><p>Other maths: 
 <code><a href='blaschkeProd.html'>blaschkeProd</a>()</code>,
 <code><a href='juliaNormal.html'>juliaNormal</a>()</code>,
 <code><a href='mandelbrot.html'>mandelbrot</a>()</code></p></div>
@@ -184,24 +184,44 @@ R versions, because the calculation can be nicely vectorized in R.</p>
 <span class='fu'><a href='phasePortrait.html'>phasePortrait</a></span><span class='op'>(</span><span class='va'>jacobiTheta</span>, moreArgs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>tau <span class='op'>=</span> <span class='fl'>1i</span><span class='op'>/</span><span class='fl'>2</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>4</span><span class='op'>)</span>,
 pType <span class='op'>=</span> <span class='st'>"p"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>,
 nCores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span> <span class='co'># Max. two cores on CRAN, not a limit for your use</span>
+  <span class='co'># \dontshow{</span>
+  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
+  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='co'># }</span>
 <span class='co'># }</span>
 
 <span class='co'># \donttest{</span>
 <span class='fu'><a href='phasePortrait.html'>phasePortrait</a></span><span class='op'>(</span><span class='va'>jacobiTheta</span>, moreArgs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>tau <span class='op'>=</span> <span class='fl'>1i</span><span class='op'>/</span><span class='fl'>2</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>2</span><span class='op'>)</span>,
 pType <span class='op'>=</span> <span class='st'>"p"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>,
 nCores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+  <span class='co'># \dontshow{</span>
+  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
+  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='co'># }</span>
 <span class='co'># }</span>
 
 <span class='co'># \donttest{</span>
 <span class='fu'><a href='phasePortrait.html'>phasePortrait</a></span><span class='op'>(</span><span class='va'>jacobiTheta</span>, moreArgs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>tau <span class='op'>=</span> <span class='fl'>1i</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>+</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span><span class='op'>)</span>,
 pType <span class='op'>=</span> <span class='st'>"p"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>,
 nCores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+  <span class='co'># \dontshow{</span>
+  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
+  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='co'># }</span>
 <span class='co'># }</span>
 
 <span class='co'># \donttest{</span>
 <span class='fu'><a href='phasePortrait.html'>phasePortrait</a></span><span class='op'>(</span><span class='va'>jacobiTheta</span>, moreArgs <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>tau <span class='op'>=</span> <span class='fl'>1i</span><span class='op'>/</span><span class='fl'>4</span><span class='op'>+</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>2</span><span class='op'>)</span>,
 pType <span class='op'>=</span> <span class='st'>"p"</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>,
 nCores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+  <span class='co'># \dontshow{</span>
+  <span class='co'># R CMD check: make sure any open connections are closed afterward</span>
+  <span class='fu'>foreach</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>registerDoSEQ</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='fu'>doParallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/doParallel/man/registerDoParallel.html'>stopImplicitCluster</a></span><span class='op'>(</span><span class='op'>)</span>
+  <span class='co'># }</span>
 <span class='co'># }</span>
 
 
@@ -227,7 +247,7 @@ nCores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</sp
       </footer>
    </div>
 
-
+  
 
 
   </body>
