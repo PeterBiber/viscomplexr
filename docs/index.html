@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">viscomplexr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
 <!-- Currently deactivated. Loading the banner as a pre-built file seems better -->
 <!-- Load banner from file -->
 <p><img src="figure_banner_300dpi.png" width="100%"><br></p>
-<p>With the R package <em>viscomplexr</em> you can create phase portraits of functions on the complex number plane. While the main purpose of this package are scientific, educational, and technical applications, the sheer beauty of phase portraits may be motivation enough to explore the fascinating realm of complex functions. The package is embedded in the framework of R base graphics and allows for print quality graphics files. To a great deal, <em>viscomplexr</em> follows the conventions published by Wegert (2012).</p>
+<p>With the R package <em>viscomplexr</em> you can create phase portraits of functions on the complex number plane. While the main purpose of this package are scientific, educational, and technical applications, the sheer beauty of phase portraits may be motivation enough to explore the fascinating realm of complex functions. The package is embedded in the framework of R base graphics and allows for print quality graphics files. To a great deal, <em>viscomplexr</em> follows the conventions published by Wegert (2012). Since version 1.1.0, the package also facilitates two-color plots based on polar chessboards.</p>
 <p>For a detailed step-by-step introduction see <a href="https://peterbiber.github.io/viscomplexr/articles/viscomplexr-vignette_for_website.html">this article</a> or the package’s vignette. After installing <em>viscomplexr</em> on your machine, you can view the vignette by calling</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span><span class="op">(</span><span class="st">"viscomplexr-vignette"</span><span class="op">)</span></code></pre></div>
@@ -123,7 +123,7 @@
 <span class="co"># f(z) = sin(z^3/(z - 1i + 2))</span>
 <span class="co"># in the domain [-6, 6] (real), and [-2.4, 2.4] (imaginary)</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://peterbiber.github.io/viscomplexr">viscomplexr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://peterbiber.github.io/viscomplexr/">viscomplexr</a></span><span class="op">)</span>
 
 <span class="co"># You can open any R graphics device here (bmp, jpeg, png, tiff, pdf,</span>
 <span class="co"># windows, x11, ...), see R documentation if you are not familiar with these.</span>
@@ -200,6 +200,10 @@
 <ul class="list-unstyled">
 <li><a href="https://github.com/PeterBiber/viscomplexr/actions"><img src="https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 <li><a href="https://cran.r-project.org/package=viscomplexr"><img src="https://www.r-pkg.org/badges/version/viscomplexr" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://img.shields.io/badge/license-GPL--3-blue.svg" alt="license"></a></li>
+<li><a href="https://cran.r-project.org/package=viscomplexr"><img src="https://cranlogs.r-pkg.org/badges/grand-total/viscomplexr" alt="metacran downloads"></a></li>
+<li><a href="https://codecov.io/gh/PeterBiber/viscomplexr?branch=master"><img src="https://codecov.io/gh/PeterBiber/viscomplexr/branch/develop/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="lifecycle"></a></li>
 </ul>
 </div>
 </div>

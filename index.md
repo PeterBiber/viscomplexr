@@ -8,6 +8,12 @@
 [![R build
 status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
+[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![metacran
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
+[![Codecov test
+coverage](https://codecov.io/gh/PeterBiber/viscomplexr/branch/develop/graph/badge.svg)](https://codecov.io/gh/PeterBiber/viscomplexr?branch=master)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 <!-- badges: end -->
 
 <!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not executed -->
@@ -25,7 +31,8 @@ sheer beauty of phase portraits may be motivation enough to explore the
 fascinating realm of complex functions. The package is embedded in the
 framework of R base graphics and allows for print quality graphics
 files. To a great deal, *viscomplexr* follows the conventions published
-by Wegert (2012).
+by Wegert (2012). Since version 1.1.0, the package also facilitates
+two-color plots based on polar chessboards.
 
 For a detailed step-by-step introduction see [this
 article](https://peterbiber.github.io/viscomplexr/articles/viscomplexr-vignette_for_website.html)
