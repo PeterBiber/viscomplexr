@@ -1,8 +1,8 @@
 Package: viscomplexr
 Type: Package
 Title: Phase Portraits of Functions in the Complex Number Plane
-Version: 1.1.0.9004
-Date: 2020-12-13
+Version: 1.1.0.9005
+Date: 2021-04-25
 Authors@R: person("Peter", "Biber", email = "castor.fiber@gmx.de", 
                   role = c("aut", "cre"),
                   comment = c(ORCID = "0000-0002-9700-8708"))
@@ -13,7 +13,7 @@ Description: Functionality for creating phase portraits of functions in the
 Language: en_US    
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 Imports: 
     doParallel (>= 1.0.15),
     grDevices,
