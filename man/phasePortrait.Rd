@@ -13,7 +13,7 @@ phasePortrait(
   res = 150,
   blockSizePx = 2250000,
   tempDir = NULL,
-  nCores = parallel::detectCores(),
+  nCores = min(1, parallel::detectCores() - 1),
   pType = "pma",
   pi2Div = 9,
   logBase = exp(2 * pi/pi2Div),

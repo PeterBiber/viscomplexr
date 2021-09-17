@@ -755,9 +755,11 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #'   will remain alive even if has been created by \code{phasePortrait}.
 #'
 #' @param nCores Number of processor cores to be used in the parallel computing
-#'   tasks. Defaults to the maximum number of cores available. Any number
-#'   between 1 (serial computation) and the maximum number of cores available as
-#'   indicated by \code{parallel::detectCores()} is accepted.
+#'   tasks. Defaults to the maximum number of cores available minus 1. Any
+#'   number between 1 (serial computation) and the maximum number of cores
+#'   available as indicated by \code{parallel::detectCores()} is accepted. If
+#'   \code{nCores} is set to a value greater than the available number of cores,
+#'   the function will use one core less than available.
 #'
 #' @param pType One of the four options for plotting, "p", "pa", "pm", and "pma"
 #'   as a character string. Defaults to "pma". Option "p" produces a mere phase
@@ -844,7 +846,7 @@ makeFunctionFromInput <- function(FUN, moreArgs = NULL) {
 #'
 #' @param autoDereg if TRUE, automatically register sequential backend after the
 #'   phase portrait is completed. Default is FALSE, because registering a
-#'   parallel backend can be time consuming. Thus, if you want make several
+#'   parallel backend can be time consuming. Thus, if you want to make several
 #'   phase portraits in succession, you should set \code{autoDereg} only for the
 #'   last one, or simply type \code{foreach::registerDoSEQ} after you are done.
 #'   In any case, you don't want to have an unused parallel backend lying about.
@@ -1168,7 +1170,7 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
                           res = 150,
                           blockSizePx = 2250000,
                           tempDir = NULL,
-                          nCores = parallel::detectCores(),
+                          nCores = max(1, parallel::detectCores() - 1),
                           pType = "pma",
                           pi2Div = 9,
                           logBase = exp(2*pi/pi2Div),
@@ -1222,8 +1224,10 @@ phasePortrait <- function(FUN, moreArgs = NULL, xlim, ylim,
   # Register parallel Cluster if required or change number of workers
   nWorkers   <- getDoParWorkers() # number registered
   availCores <- detectCores()     # number available
-  nCores     <- min(max(nCores, 1), availCores) # register at least 1 :)
-                                                # and not more than available
+  #   Leave one core free if user has typed in simply a large number
+  if(nCores > availCores) nCores <- availCores - 1
+    nCores     <- min(max(nCores, 1), availCores) # register at least 1 :)
+                                                  # and not more than available
   if(nCores != 1) {
     if(nWorkers != nCores) {
       if(verbose) cat("\nRegistering parallel workers ... ")
