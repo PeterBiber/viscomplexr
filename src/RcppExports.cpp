@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // mandelbrot
 std::complex<double> mandelbrot(std::complex<double> z, int itDepth);
 RcppExport SEXP _viscomplexr_mandelbrot(SEXP zSEXP, SEXP itDepthSEXP) {
