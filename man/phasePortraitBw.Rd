@@ -13,7 +13,7 @@ phasePortraitBw(
   res = 150,
   blockSizePx = 2250000,
   tempDir = NULL,
-  nCores = parallel::detectCores(),
+  nCores = max(1, parallel::detectCores() - 1),
   bwType = "ma",
   pi2Div = 18,
   logBase = exp(2 * pi/pi2Div),
@@ -81,9 +81,11 @@ user specifies \code{deleteTempFiles = FALSE}, see below), the directory
 will remain alive even if has been created by \code{phasePortrait}.}
 
 \item{nCores}{Number of processor cores to be used in the parallel computing
-tasks. Defaults to the maximum number of cores available. Any number
-between 1 (serial computation) and the maximum number of cores available as
-indicated by \code{parallel::detectCores()} is accepted.}
+tasks. Defaults to the maximum number of cores available minus 1. Any
+number between 1 (serial computation) and the maximum number of cores
+available as indicated by \code{parallel::detectCores()} is accepted. If
+\code{nCores} is set to a value greater than the available number of cores,
+the function will use one core less than available.}
 
 \item{bwType}{One of the three options for plotting, "m", "a", and "ma", to
 be provided as a character string. Defaults to "ma". This parameter has a
@@ -163,7 +165,7 @@ it only if you really know what you are doing.}
 
 \item{autoDereg}{if TRUE, automatically register sequential backend after the
 plot is completed. Default is FALSE, because registering a parallel backend
-can be time consuming. Thus, if you want make several phase portraits in
+can be time consuming. Thus, if you want to make several phase portraits in
 succession, you should set \code{autoDereg} only for the last one, or
 simply type \code{foreach::registerDoSEQ} after you are done. In any case,
 you don't want to have an unused parallel backend lying about.}
