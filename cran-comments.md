@@ -5,8 +5,8 @@ Two improvements were made for version 1.1.1:
   *phasePortrait* and *phasePortraitBw* was reduced to one core less than
   available
 * The LazyData specification was removed from the DESCRIPTION as the package
-  does not comprise any data. This lead to a NOTE in the CRAN package check
-  results since March 2021
+  does not comprise any data. This avoids a NOTE in the CRAN package check
+  results since a policy update in March 2021
 
 ### Test environments
 * ubuntu-20.04 on github, R-devel
