@@ -1,12 +1,17 @@
 ## Update submission (version 1.1.1)
-Two improvements were made for version 1.1.1:
+Three improvements were made for version 1.1.1:
 
 * The default setting of how many processor cores to be used by the functions
   *phasePortrait* and *phasePortraitBw* was reduced to one core less than
-  available
+  available.
 * The LazyData specification was removed from the DESCRIPTION as the package
   does not comprise any data. This avoids a NOTE in the CRAN package check
-  results since a policy update in March 2021
+  results since a policy update in March 2021.
+* Two illustrations were removed from the vignette because new tests on MacOs
+  indicated a tarball size slightly beyond the 5 MB allowed on CRAN. Links to
+  the fully illustrated version of the vignette on the package's website were
+  included in the vignette and in the README.
+
 
 ### Test environments
 * ubuntu-20.04 on github, R-devel
@@ -16,12 +21,12 @@ Two improvements were made for version 1.1.1:
 * windows server 2008 (64-bit) on win-builder, R-4.1.1
 * windows server 2008 (64-bit) on win-builder, R-4.0.5
 * macOS-latest on github, R 4.1.1
-* local Manjaro (Kernel 5.14.2-1-MANJARO (64-bit)) install, R.4.1.1
+* local manjaro (Kernel 5.14.2-1-MANJARO (64-bit)) install, R.4.1.1
 
 ### R CMD check results
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 0 notes,
 
-Except for the local Manjaro install, where R CMD check returns the 
+except for the local Manjaro install, where R CMD check returns the 
 note _Compilation used the following non-portable flag(s): ‘-march=x86-64’_.
 This is, however, a local setting that will not affect the install on other
 machines.

@@ -6,6 +6,10 @@
 * Removed the LazyData specification from the DESCRIPTION as the package
   does not comprise any data. This avoids a NOTE in the CRAN package check
   results since a policy update in March 2021.
+* Removed two illustrations from the vignette due to tarball size > 5 MB on 
+  MacOs. Links to the fully illustrated vignette on the package's website are 
+  now included in the vignette and in the README.
+
 
 # viscomplexr 1.1.0
 
