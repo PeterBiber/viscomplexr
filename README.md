@@ -43,7 +43,11 @@ vignette("viscomplexr-vignette")
 Besides making you acquainted with how to work with the package, the
 vignette also tells you more about some shenanigans going on behind the
 scenes; among them parallel processing and *viscomplexr*’s temporary
-file system.
+file system. Due to CRAN size restrictions, the number of illustrations
+in the vignette is kept to a minimum. Visit the [package’s
+website](https://peterbiber.github.io/viscomplexr/) for a [richly
+illustrated version of the
+vignette](https://peterbiber.github.io/viscomplexr/articles/viscomplexr-vignette_for_website.html).
 
 ## Installation
 

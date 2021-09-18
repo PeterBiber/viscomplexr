@@ -10,10 +10,12 @@ Two improvements were made for version 1.1.1:
 
 ### Test environments
 * ubuntu-20.04 on github, R-devel
-* ubuntu-20.04 on github, R 4.1.1
-* windows-latest on github, R 4.1.1
+* ubuntu-20.04 on github, R-4.1.1
+* windows-latest on github, R-4.1.1
+* windows server 2008 (64-bit) on win-builder, R-devel
+* windows server 2008 (64-bit) on win-builder, R-4.1.1
+* windows server 2008 (64-bit) on win-builder, R-4.0.5
 * macOS-latest on github, R 4.1.1
-* local Windows 10 install, R.4.1.1
 * local Manjaro (Kernel 5.14.2-1-MANJARO (64-bit)) install, R.4.1.1
 
 ### R CMD check results
