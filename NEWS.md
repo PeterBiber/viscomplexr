@@ -1,5 +1,7 @@
 # viscomplexr 1.1.1
 
+Published on CRAN 18. Sep 2021
+
 * Default number of processor cores to be used by the functions 
   *phasePortrait* and *phasePortraitBw* was reduced to one core less than 
   available
