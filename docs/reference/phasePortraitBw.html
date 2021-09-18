@@ -86,7 +86,7 @@ phasePortraitBw is very similar to phasePortrait." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">viscomplexr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@ phasePortraitBw is very similar to phasePortrait." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
 
   </a>
 </li>
@@ -120,7 +120,7 @@ phasePortraitBw is very similar to phasePortrait." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/PeterBiber/viscomplexr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
 
   </a>
 </li>
@@ -164,7 +164,7 @@ worth exploring for itself. In its parameters and its mode of operation,
   res <span class='op'>=</span> <span class='fl'>150</span>,
   blockSizePx <span class='op'>=</span> <span class='fl'>2250000</span>,
   tempDir <span class='op'>=</span> <span class='cn'>NULL</span>,
-  nCores <span class='op'>=</span> <span class='fu'>parallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/parallel/detectCores.html'>detectCores</a></span><span class='op'>(</span><span class='op'>)</span>,
+  nCores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'>parallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/parallel/detectCores.html'>detectCores</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>1</span><span class='op'>)</span>,
   bwType <span class='op'>=</span> <span class='st'>"ma"</span>,
   pi2Div <span class='op'>=</span> <span class='fl'>18</span>,
   logBase <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fl'>2</span> <span class='op'>*</span> <span class='va'>pi</span><span class='op'>/</span><span class='va'>pi2Div</span><span class='op'>)</span>,
@@ -253,9 +253,11 @@ will remain alive even if has been created by <code>phasePortrait</code>.</p></t
     <tr>
       <th>nCores</th>
       <td><p>Number of processor cores to be used in the parallel computing
-tasks. Defaults to the maximum number of cores available. Any number
-between 1 (serial computation) and the maximum number of cores available as
-indicated by <code><a href='https://rdrr.io/r/parallel/detectCores.html'>parallel::detectCores()</a></code> is accepted.</p></td>
+tasks. Defaults to the maximum number of cores available minus 1. Any
+number between 1 (serial computation) and the maximum number of cores
+available as indicated by <code><a href='https://rdrr.io/r/parallel/detectCores.html'>parallel::detectCores()</a></code> is accepted. If
+<code>nCores</code> is set to a value greater than the available number of cores,
+the function will use one core less than available.</p></td>
     </tr>
     <tr>
       <th>bwType</th>
@@ -354,7 +356,7 @@ it only if you really know what you are doing.</p></td>
       <th>autoDereg</th>
       <td><p>if TRUE, automatically register sequential backend after the
 plot is completed. Default is FALSE, because registering a parallel backend
-can be time consuming. Thus, if you want make several phase portraits in
+can be time consuming. Thus, if you want to make several phase portraits in
 succession, you should set <code>autoDereg</code> only for the last one, or
 simply type <code><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>foreach::registerDoSEQ</a></code> after you are done. In any case,
 you don't want to have an unused parallel backend lying about.</p></td>

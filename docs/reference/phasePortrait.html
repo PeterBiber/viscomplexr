@@ -56,7 +56,7 @@ lines for the argument are available. This function is designed for being
 used inside the framework of R base graphics. It makes use of parallel
 computing, and depending on the desired resolution it may create extensive
 sets of large temporary files (see Details and Examples)." />
-<meta property="og:image" content="https://peterbiber.github.io/viscomplexr/docs/_pkgdown/figure_banner_300dpi.png" />
+<meta property="og:image" content="https://peterbiber.github.io/viscomplexr/figure_banner_300dpi.png" />
 <meta property="og:image:alt" content="Phase portrait of of the function f(z)=sin(z^3/(z-1i+2))" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:creator" content="@biber_peter" />
@@ -92,7 +92,7 @@ sets of large temporary files (see Details and Examples)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">viscomplexr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@ sets of large temporary files (see Details and Examples)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
 
   </a>
 </li>
@@ -126,7 +126,7 @@ sets of large temporary files (see Details and Examples)." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/PeterBiber/viscomplexr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
 
   </a>
 </li>
@@ -176,7 +176,7 @@ sets of large temporary files (see Details and Examples).</p>
   res <span class='op'>=</span> <span class='fl'>150</span>,
   blockSizePx <span class='op'>=</span> <span class='fl'>2250000</span>,
   tempDir <span class='op'>=</span> <span class='cn'>NULL</span>,
-  nCores <span class='op'>=</span> <span class='fu'>parallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/parallel/detectCores.html'>detectCores</a></span><span class='op'>(</span><span class='op'>)</span>,
+  nCores <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'>parallel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/parallel/detectCores.html'>detectCores</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>-</span> <span class='fl'>1</span><span class='op'>)</span>,
   pType <span class='op'>=</span> <span class='st'>"pma"</span>,
   pi2Div <span class='op'>=</span> <span class='fl'>9</span>,
   logBase <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='fl'>2</span> <span class='op'>*</span> <span class='va'>pi</span><span class='op'>/</span><span class='va'>pi2Div</span><span class='op'>)</span>,
@@ -306,13 +306,15 @@ will remain alive even if has been created by <code>phasePortrait</code>.</p></t
     <tr>
       <th>nCores</th>
       <td><p>Number of processor cores to be used in the parallel computing
-tasks. Defaults to the maximum number of cores available. Any number
-between 1 (serial computation) and the maximum number of cores available as
-indicated by <code><a href='https://rdrr.io/r/parallel/detectCores.html'>parallel::detectCores()</a></code> is accepted.</p></td>
+tasks. Defaults to the maximum number of cores available minus 1. Any
+number between 1 (serial computation) and the maximum number of cores
+available as indicated by <code><a href='https://rdrr.io/r/parallel/detectCores.html'>parallel::detectCores()</a></code> is accepted. If
+<code>nCores</code> is set to a value greater than the available number of cores,
+the function will use one core less than available.</p></td>
     </tr>
     <tr>
       <th>pType</th>
-      <td><p>One of the three options for plotting "p", "pa", "pm", and "pma"
+      <td><p>One of the four options for plotting, "p", "pa", "pm", and "pma"
 as a character string. Defaults to "pma". Option "p" produces a mere phase
 plot, i.e. contains only colors for the complex numbers' arguments, but no
 reference lines at all. the option "pa" introduces shading zones that
@@ -331,7 +333,7 @@ includes both shading schemes.</p></td>
       <th>pi2Div</th>
       <td><p>Angle distance for the argument reference zones added for
 <code>pType = "pma"</code> or <code>pType = "pa"</code>. The value has to be given as
-an integer (reasonably) fraction of 2*pi (i.e. 360 degrees). the default is
+an integer (reasonably) fraction of 2*pi (i.e. 360 degrees). The default is
 9; thus, reference zones are delineated by default in distances of 2*pi/9,
 i.e. (40 degrees), starting with 0, i.e. the color red if not defined
 otherwise with the parameter <code>argOffset</code>. In contrast to the borders
@@ -422,7 +424,7 @@ it only if you really know what you are doing.</p></td>
       <th>autoDereg</th>
       <td><p>if TRUE, automatically register sequential backend after the
 phase portrait is completed. Default is FALSE, because registering a
-parallel backend can be time consuming. Thus, if you want make several
+parallel backend can be time consuming. Thus, if you want to make several
 phase portraits in succession, you should set <code>autoDereg</code> only for the
 last one, or simply type <code><a href='https://rdrr.io/pkg/foreach/man/registerDoSEQ.html'>foreach::registerDoSEQ</a></code> after you are done.
 In any case, you don't want to have an unused parallel backend lying about.</p></td>
@@ -582,7 +584,6 @@ ISBN 978-3-0348-0179-9.</p>
               verbose <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='co'># Suppress progress messages</span>
               nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>      <span class='co'># Max. two cores allowed on CRAN</span>
                                <span class='co'># not a limit for your own use</span>
-
 
 <span class='co'># A rational function</span>
 <span class='co'># \donttest{</span>
