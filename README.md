@@ -5,8 +5,7 @@
 
 <!-- badges: start -->
 
-[![R build
-status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions)
+[![check-standard](https://github.com/PeterBiber/viscomplexr/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions/workflows/check-standard.yaml)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
 [![metacran
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
@@ -14,8 +13,8 @@ downloads](https://cranlogs.r-pkg.org/badges/grand-total/viscomplexr)](https://c
 coverage](https://codecov.io/gh/PeterBiber/viscomplexr/branch/develop/graph/badge.svg)](https://codecov.io/gh/PeterBiber/viscomplexr?branch=master)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-<!-- badges: end -->
 
+<!-- badges: end -->
 <!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not executed -->
 <!-- Currently deactivated. Loading the banner as a pre-built file seems better -->
 <!-- Load banner from file -->
