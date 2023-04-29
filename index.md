@@ -5,9 +5,8 @@
 
 <!-- badges: start -->
 
-[![R build
-status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions)
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
+[![check-standard](https://github.com/PeterBiber/viscomplexr/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions/workflows/check-standard.yaml)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![metacran
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
@@ -17,9 +16,7 @@ coverage](https://codecov.io/gh/PeterBiber/viscomplexr/branch/develop/graph/badg
 <!-- badges: end -->
 
 <!-- Make a pretty banner. The code is executed but not displayed here. Below, it is displayed in the example section, but not executed -->
-
 <!-- Currently deactivated. Loading the banner as a pre-built file seems better -->
-
 <!-- Load banner from file -->
 
 <img src="figure_banner_300dpi.png" width="100%" /> <br>
@@ -141,8 +138,8 @@ switch(1 + trunc(runif(1, 0, 6)),
 **Veronika Biber** provided expert advice for improving the vignette.
 **Johannes Biber** turned out the most patient pre-release tester one
 can imagine, boosting things with his high-end gaming machine. Thanks,
-guys\! Also thanks to **Gregor Seyer** for his helpful review of the
-CRAN submission.
+guys! Also thanks to **Gregor Seyer** for his helpful review of the CRAN
+submission.
 
 Clearly, programming in R would not be what it is, weren’t there some R
 titans who generously share their knowledge online. While I keep
@@ -151,9 +148,9 @@ Wickham** and **Dirk Eddelbüttel**.
 
 ## References
 
-<div id="refs" class="references">
+<div id="refs" class="references csl-bib-body hanging-indent">
 
-<div id="ref-wegert_visualcpx_2012">
+<div id="ref-wegert_visualcpx_2012" class="csl-entry">
 
 Wegert, Elias. 2012. *Visual Complex Functions. An Introduction with
 Phase Portraits*. Basel Heidelberg New York Dordrecht London: Springer.

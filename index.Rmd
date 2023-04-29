@@ -23,7 +23,7 @@ if(Sys.info()[["sysname"]] == "Windows")
 # viscomplexr
 
 <!-- badges: start -->
-[![R build status](https://github.com/PeterBiber/viscomplexr/workflows/R-CMD-check/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions)
+[![check-standard](https://github.com/PeterBiber/viscomplexr/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions/workflows/check-standard.yaml)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![metacran downloads](https://cranlogs.r-pkg.org/badges/grand-total/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
