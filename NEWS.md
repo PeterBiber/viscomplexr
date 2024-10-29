@@ -1,3 +1,9 @@
+# viscomplexr 1.1.2 (not on CRAN yet)
+
+* Fixed a "lost-braces" note from R-CMD-check caused by a typo in the 
+  documentation
+
+
 # viscomplexr 1.1.1
 
 Published on CRAN 18. Sep 2021
