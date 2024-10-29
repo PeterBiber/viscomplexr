@@ -347,7 +347,7 @@ notation, etc. to poster-like artistic pictures.\cr
   user has chosen \code{pType = "pma"}, x-values \code{xMod} and \code{xArg}
   are calculated separately for the modulus and the argument, respectively.
   They are transformed into preliminary v-values as follows:\cr\cr
-  \code{vMod = xMod^(1/lambda)} and {vArg = xArg^(1/lambda)}\cr\cr
+  \code{vMod = xMod^(1/lambda)} and \code{vArg = xArg^(1/lambda)}\cr\cr
   From these, the final v value results as\cr\cr
   \code{v = darkestShade + (1-darkestShade) * (gamma * vMod * vArg +
   (1-gamma) * (1 - (1-vMod) * (1-vArg)))}\cr\cr
