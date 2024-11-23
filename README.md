@@ -10,7 +10,7 @@
 [![metacran
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
 [![Codecov test
-coverage](https://codecov.io/gh/PeterBiber/viscomplexr/branch/develop/graph/badge.svg)](https://codecov.io/gh/PeterBiber/viscomplexr?branch=master)
+coverage](https://codecov.io/gh/PeterBiber/viscomplexr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/PeterBiber/viscomplexr?branch=master)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
@@ -51,7 +51,7 @@ vignette](https://peterbiber.github.io/viscomplexr/articles/viscomplexr-vignette
 ## Installation
 
 In order to work with viscomplexr you require an installation of R
-(version \>= 4.0) on your system. The installation files for R itself
+(version \>= 4.2) on your system. The installation files for R itself
 are available [here](https://cran.r-project.org/). The released version
 of *viscomplexr* can be installed from
 [CRAN](https://CRAN.R-project.org/package=viscomplexr) with:
@@ -147,7 +147,8 @@ Wickham** and **Dirk Eddelbüttel**.
 
 ## References
 
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
 
 <div id="ref-wegert_visualcpx_2012" class="csl-entry">
 

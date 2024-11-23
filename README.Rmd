@@ -27,7 +27,7 @@ if(Sys.info()[["sysname"]] == "Windows")
 [![check-standard](https://github.com/PeterBiber/viscomplexr/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/PeterBiber/viscomplexr/actions/workflows/check-standard.yaml)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
 [![metacran downloads](https://cranlogs.r-pkg.org/badges/grand-total/viscomplexr)](https://cran.r-project.org/package=viscomplexr)
-[![Codecov test coverage](https://codecov.io/gh/PeterBiber/viscomplexr/branch/develop/graph/badge.svg)](https://codecov.io/gh/PeterBiber/viscomplexr?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/PeterBiber/viscomplexr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/PeterBiber/viscomplexr?branch=master)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
