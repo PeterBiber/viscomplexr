@@ -70,7 +70,7 @@ Besides making you acquainted with how to work with the package, the vignette al
 
 ## Installation
 
-In order to work with viscomplexr you require an installation of R (version >= 4.0) on your system. The installation files for R itself are available [here](https://cran.r-project.org/). The released version of *viscomplexr* can be installed from [CRAN](https://CRAN.R-project.org/package=viscomplexr) with:
+In order to work with viscomplexr you require an installation of R (version >= 4.2) on your system. The installation files for R itself are available [here](https://cran.r-project.org/). The released version of *viscomplexr* can be installed from [CRAN](https://CRAN.R-project.org/package=viscomplexr) with:
 
 ``` r
 install.packages("viscomplexr")
