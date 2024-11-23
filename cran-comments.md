@@ -1,3 +1,15 @@
+## Update submission (version 1.1.2)
+* Corrected language entry in DESCRIPTION to "en-US" instead of "en_US" which
+  caused a CRAN note.
+* Fixed a "lost-braces" note from R-CMD-check caused by a typo in the 
+  documentation.
+
+### Test environments
+* local ubuntu-24.10, R-4.4.2
+
+
+
+
 ## Update submission (version 1.1.1)
 Three improvements were made for version 1.1.1:
 

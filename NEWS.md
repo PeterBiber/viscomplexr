@@ -1,4 +1,4 @@
-# viscomplexr 1.1.2 (not on CRAN yet)
+# viscomplexr 1.1.2
 * Corrected language entry in DESCRIPTION to "en-US" instead of "en_US" which
   caused a CRAN note.
 * Fixed a "lost-braces" note from R-CMD-check caused by a typo in the 
