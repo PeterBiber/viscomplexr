@@ -5,9 +5,21 @@
   documentation.
 
 ### Test environments
+* windows server 2022 on win-builder, R-devel
+* windows-latest on github, R-4.4.2
 * local ubuntu-24.10, R-4.4.2
+* ubuntu-latest on github, R-devel
+* ubuntu-latest on github, R-4.4.2
+* ubuntu-latest on github, R-oldrel
+* macOS-13 on github, R-4.4.2
 
+### R CMD check results
+0 errors | 0 warnings | 0 notes,
 
+except for the local Ubuntu install, where R CMD check returns the 
+note _Compilation used the following non-portable flag(s): ‘-mno-omit-leaf-frame-pointer’_.
+This is, however, a local setting that will not affect the install on other
+machines.
 
 
 ## Update submission (version 1.1.1)
