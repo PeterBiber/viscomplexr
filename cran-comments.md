@@ -5,6 +5,7 @@
   documentation.
 
 ### Test environments
+* local windows 11 Pro, R-4.4.2
 * windows server 2022 on win-builder, R-devel
 * windows-latest on github, R-4.4.2
 * local ubuntu-24.10, R-4.4.2
